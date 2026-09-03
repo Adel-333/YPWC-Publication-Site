@@ -1,0 +1,27 @@
+# dependencies
+node_modules/
+.pnpm-store/
+package/
+
+# next.js
+.next/
+out/
+
+# production
+build/
+
+# local env
+.env
+.env*.local
+.vscode/
+
+# logs
+*.log
+pnpm-debug.log*
+
+# local packaged tooling
+pnpm-*.tgz
+pnpm.cjs
+
+# TypeScript cache
+*.tsbuildinfo
