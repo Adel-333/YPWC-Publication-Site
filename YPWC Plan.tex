@@ -2,7 +2,7 @@
 
 \usepackage[
   top=0.55cm,
-  bottom=0.95cm,
+  bottom=0.8cm,
   left=1.15cm,
   right=1.15cm,
   headheight=22pt,
@@ -20,6 +20,7 @@
 \usepackage{amsmath}
 \usepackage{graphicx}
 \usepackage{parskip}
+\setlength{\parskip}{4pt}
 \usepackage{hyperref}
 
 % --- palette: deep navy, light blue, silver ---
@@ -37,7 +38,7 @@
 \newcommand{\logopair}{%
   \includegraphics[width=30pt]{public/assets/club-shield-transparent.png}%
   \hspace{5pt}%
-  \textcolor{divider}{\rule[-5pt]{0.7pt}{16pt}}%
+  \textcolor{divider}{\rule[6pt]{0.7pt}{18pt}}%
   \hspace{5pt}%
   \includegraphics[width=30pt]{public/assets/ypwc-logo-360.png}}
 
@@ -51,9 +52,12 @@
 
 \titleformat{\section}[block]
   {\bfseries\sffamily\Large\color{white}}{\color{sky}\S\,}{0.6em}{}
-\titlespacing*{\section}{0pt}{1.1em}{0.45em}
+\titlespacing*{\section}{0pt}{0.6em}{0.25em}
 
 \newcommand{\HRule}{\color{sky}\rule{\linewidth}{0.6pt}}
+
+\renewcommand{\labelitemi}{\textcolor{sky}{\textbullet}}
+\renewcommand{\labelitemii}{\textcolor{divider}{\textbullet}}
 
 \begin{document}
 
@@ -62,12 +66,12 @@
 \begin{center}
   \includegraphics[width=56pt]{public/assets/club-shield-transparent.png}%
   \hspace{9pt}%
-  \textcolor{divider}{\rule[-9pt]{0.8pt}{30pt}}%
+  \textcolor{divider}{\rule[15pt]{0.8pt}{34pt}}%
   \hspace{9pt}%
-  \includegraphics[width=56pt]{public/assets/ypwc-logo-360.png}\\[15pt]
-  \HRule\\[11pt]
-  {\Huge\bfseries\sffamily\color{white} Youth Physics Writing Contest}\\[9pt]
-  {\large\color{bodytext}\sffamily A magazine-style physics writing competition}\\[11pt]
+  \includegraphics[width=56pt]{public/assets/ypwc-logo-360.png}\\[10pt]
+  \HRule\\[8pt]
+  {\Huge\bfseries\sffamily\color{white} Youth Physics Writing Contest}\\[7pt]
+  {\large\color{bodytext}\sffamily A magazine-style physics writing competition}\\[7pt]
   \HRule
 \end{center}
 
@@ -76,9 +80,9 @@ Youth Physics Writing Contest is a school-level competition where one physics
 idea becomes a piece of writing people enjoy reading. Students from grades 9 to
 12 take a single scientific corner and shape it into a clear, warm,
 magazine-style article, the way a feature writer would, rather than the way a
-lab report gets written. Curiosity matters more than prior experience or
-grades. There is one round, every article is judged once against the same
-scale, and the strongest pieces end up in a Physics Club Magazine issue.
+lab report gets written. There is one round, every article is judged once
+against the same scale, and the strongest pieces end up in a Physics Club
+Magazine issue.
 
 \section{Format}
 Every article follows the shape of a good magazine feature. It opens with a
@@ -87,22 +91,19 @@ reader in quickly. The body explains the physics in plain language, written for
 a curious nonspecialist, and points to where the idea shows up in real life. It
 closes with an interesting insight and a short, memorable ending.
 
-Length sits between \textbf{600 and 1500 words}. Warm, clear language beats
-jargon, so analogies are welcome and graphs, figures, and GIFs help. A strong
-article usually holds one central idea instead of three small ones, and numbers
-are used honestly and checked twice. AI-generated text is not accepted; the
-writing has to be the student's own.
+Length sits between \textbf{600 and 1500 words}. Warm, clear language beats jargon, so analogies are welcome and graphs,
+figures, and GIFs help. A strong article usually holds one central idea.
+AI-generated text is not accepted; the writing has to be the student's own.
 
 \section{Topics}
 Writers begin with a scientific desk and then find the human story inside it.
 A student might ask why a phone flashlight looks blue in the dark, how one wave
-can silence another, or what a black hole really is. The six desks below accept
-that kind of question: the night sky, from the phases of the Moon to the edges
-of the galaxy; the hidden mechanics of electricity and magnetism, from a fridge
-magnet to a power grid; sound and waves, from ripples in a glass to
-noise-cancelling headphones; a honest, careful simplification of modern and
-quantum physics; thermodynamics, from a cooling cup of tea to a large engine;
-and the physics quietly hiding in daily life.
+can silence another, or what a black hole really is. The six desks below accept that kind of question: the night sky, from the
+phases of the Moon to the edges of the galaxy; electricity and magnetism, from
+a fridge magnet to a power grid; sound and waves, from ripples in a glass to
+noise-cancelling headphones; modern and quantum physics, carefully simplified;
+thermodynamics, from a cooling cup of tea to an engine; and the physics hiding
+in daily life.
 
 \section{Timeline}
 Submissions arrive through the contest page as a Word or PDF file, alongside an
@@ -124,39 +125,43 @@ The dates look like this:
 \end{tabular}
 \end{center}
 
-Writers who are unsure where to start can send a single question to the club
-before the deadline. Everything else, from the rubric to the submission form,
-is available on the contest page.
-
 \section{Evaluation}
-Writers already know the scale before judging begins. Every article earns up to
-\textbf{one hundred points}, decided across six categories: scientific accuracy
-and conceptual understanding (30), physical reasoning and analysis (20),
-clarity, structure and communication (20), creativity and intellectual
-contribution (15), real-world connection (10), and research and references (5).
-Mentors and editors score each piece independently against the same scale, and
-participants receive brief editorial feedback as part of the experience.
+Every writer knows the scale before judging begins, so nothing about the score
+comes as a surprise. Each article earns up to \textbf{one hundred points},
+spread across six categories, and mentors and editors score every piece
+independently against the same scale.
+
+\begin{itemize}
+  \setlength\itemsep{2pt}
+  \item \textbf{Scientific accuracy and conceptual understanding (30 points).} The facts and the math have to be right. A concept explained in the writer's own words earns more than a memorized definition, and full marks also require naming the article's assumptions and limits.
+  \item \textbf{Physical reasoning and analysis (20 points).} Each claim follows from the one before it, so the argument reads like a chain of thoughts, not a list. Numbers are used honestly and checked twice, and the strongest pieces show insight beyond a neat summary of the textbook.
+  \item \textbf{Clarity, structure and communication (20 points).} The article stays organized, and a reader who never took the course can still follow the science. Wording is precise, paragraphs move in a clear order, and grammar never blocks the physics.
+  \item \textbf{Creativity and intellectual contribution (15 points).} There is a fresh angle presented in the writer's own way. Independent thinking counts for more than a tidy tour of sourced material.
+  \item \textbf{Real-world connection (10 points).} The topic matters outside the classroom, and the physics is applied correctly to that real situation, not just named in passing.
+  \item \textbf{Research and references (5 points).} Sources are reliable, evidence is used where it strengthens the argument, and citations are complete enough to trace.
+\end{itemize}
+
+Participants receive brief editorial feedback as part of the experience, with a
+note about what worked and what could grow.
 
 \begin{quote}
-\itshape Writing ``$F = ma$'' on its own shows little. Explaining the law,
-applying it correctly, and noting its assumptions and limits shows real
-understanding.
+\itshape Writing ``$F = ma$'' on its own shows little. Explaining it,
+applying it correctly, and noting its limits shows real understanding.
 \end{quote}
 
 \section{Results and Awards}
 Medals go to the top 30\% of participants in a Gold, Silver, and Bronze ratio
 of 3 to 2 to 1. The three strongest articles on the leaderboard receive special
 prizes, and everyone who enters receives a certificate that names the article
-and its writer. Results are announced on \textbf{October 10}, and the
-leaderboard appears on the contest page the same day.
+and its writer. Results are announced on \textbf{October 10}, when the
+leaderboard appears on the contest page.
 
 \section{Publication}
-Selected articles are gathered into a dedicated Physics Club Magazine issue for
-the wider school community to read, with each piece credited to its writer. The
-finished magazine stays available online so writers can share it, because the
-published issue is the real output of the competition, not just a ranking.
+Selected articles are gathered into a dedicated Physics Club Magazine issue
+for the wider school community to read, each piece credited to its writer. The
+finished magazine stays online so writers can share it; the published issue is
+the real output of the competition, not just a ranking.
 
-\vspace{1.4em}
 \begin{center}
 \large\itshape\color{bodytext} Share your writing voice with the Physics Club Magazine.
 \end{center}

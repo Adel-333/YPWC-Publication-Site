@@ -7,9 +7,7 @@ import {
   BookOpen,
   ClipboardCheck,
   Download,
-  FileText,
   HelpCircle,
-  Orbit,
   PenLine,
   Plus,
   Send,
@@ -34,82 +32,10 @@ import { cn } from "@/lib/utils";
 const navItems = [
   { label: "Overview", href: "#overview" },
   { label: "Brief", href: "#brief" },
-  { label: "Rubric", href: "#studio" },
   { label: "Timeline", href: "#timeline" },
   { label: "FAQ", href: "#faq" },
   { label: "Register", href: "#register" },
   { label: "Format", href: "#format" },
-];
-
-const rubricSections = [
-  {
-    id: "accuracy",
-    title: "Scientific Accuracy & Conceptual Understanding",
-    points: 30,
-    icon: BookOpen,
-    items: [
-      { label: "Factual and mathematical accuracy", points: 10 },
-      { label: "Conceptual understanding", points: 10 },
-      { label: "Assumptions and limitations", points: 10 },
-    ],
-  },
-  {
-    id: "reasoning",
-    title: "Physical Reasoning & Analysis",
-    points: 20,
-    icon: Orbit,
-    items: [
-      { label: "Logical reasoning", points: 6 },
-      { label: "Analysis and synthesis", points: 6 },
-      { label: "Quantitative reasoning", points: 4 },
-      { label: "Depth of insight", points: 4 },
-    ],
-  },
-  {
-    id: "clarity",
-    title: "Clarity, Structure & Communication",
-    points: 20,
-    icon: FileText,
-    items: [
-      { label: "Organization", points: 6 },
-      { label: "Explanation", points: 6 },
-      { label: "Precision", points: 4 },
-      { label: "Writing quality", points: 4 },
-    ],
-  },
-  {
-    id: "creativity",
-    title: "Creativity & Intellectual Contribution",
-    points: 15,
-    icon: Sparkles,
-    items: [
-      { label: "Original perspective", points: 5 },
-      { label: "Creative communication", points: 4 },
-      { label: "Independent thinking", points: 6 },
-    ],
-  },
-  {
-    id: "world",
-    title: "Real-World Connection",
-    points: 10,
-    icon: Users,
-    items: [
-      { label: "Relevance", points: 3 },
-      { label: "Applying the physics", points: 4 },
-      { label: "Significance", points: 3 },
-    ],
-  },
-  {
-    id: "research",
-    title: "Research & References",
-    points: 5,
-    icon: ClipboardCheck,
-    items: [
-      { label: "Source quality", points: 2 },
-      { label: "Use of evidence", points: 2 },
-      { label: "Citation", points: 1 },
-    ],
-  },
 ];
 
 const briefCards = [
@@ -534,7 +460,7 @@ function Hero() {
                 <ArrowRight className="size-4" aria-hidden="true" />
               </a>
               <a
-                href="#studio"
+                href="#brief"
                 className="inline-flex h-12 items-center justify-center gap-2 rounded-md border border-white/16 bg-white/[0.04] px-6 text-sm font-semibold text-white transition hover:-translate-y-0.5 hover:border-club-light hover:bg-white/[0.07]"
               >
                 Explore the brief
@@ -704,74 +630,6 @@ function Brief() {
               <Download className="size-4" />
               YPWC Plan (PDF)
             </a>
-          </div>
-        </Reveal>
-      </div>
-    </section>
-  );
-}
-
-function Studio() {
-  return (
-    <section id="studio" className="px-4 py-24 sm:px-6 lg:px-8">
-      <div className="mx-auto max-w-7xl">
-        <SectionHeader
-          eyebrow="Judging rubric"
-          title="One hundred points, set before the first article arrives."
-          text="Every submission is scored against the same six categories, so the process stays fair from first read to final ranking."
-        />
-        <div className="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {rubricSections.map((section, index) => {
-            const Icon = section.icon;
-            return (
-              <Reveal key={section.id} delay={index * 0.05}>
-                <motion.article
-                  whileHover={{ y: -6 }}
-                  transition={{ type: "spring", stiffness: 260, damping: 20 }}
-                  className="group relative h-full overflow-hidden rounded-lg border border-white/12 bg-[#15161d] p-7 shadow-blue-soft"
-                >
-                  <div className="absolute -right-16 -top-16 size-40 rounded-full bg-club/10 blur-2xl opacity-0 transition-opacity duration-500 group-hover:opacity-100" aria-hidden="true" />
-                  <div className="relative">
-                    <div className="flex items-center justify-between gap-4">
-                      <motion.span
-                        whileHover={{ scale: 1.1, rotate: -4 }}
-                        transition={{ type: "spring", stiffness: 300, damping: 15 }}
-                        className="inline-flex size-11 shrink-0 items-center justify-center rounded-md bg-club/16 text-club-light"
-                      >
-                        <Icon className="size-5" aria-hidden="true" />
-                      </motion.span>
-                      <span className="rounded-md border border-club-light/30 bg-club/10 px-3 py-1 text-center text-sm font-semibold text-club-light">
-                        {section.points} pts
-                      </span>
-                    </div>
-                    <h3 className="mt-5 text-xl font-semibold leading-snug text-white">
-                      {section.title}
-                    </h3>
-                    <ul className="mt-5 grid gap-2">
-                      {section.items.map((item) => (
-                        <li
-                          key={item.label}
-                          className="flex items-baseline justify-between gap-3 rounded-md border border-white/10 bg-white/[0.035] px-3 py-2.5 text-sm leading-6 text-white/72 transition-colors duration-300 group-hover:border-club-light/25 group-hover:bg-white/[0.05]"
-                        >
-                          <span>{item.label}</span>
-                          <span className="shrink-0 font-semibold text-club-light">{item.points}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </motion.article>
-              </Reveal>
-            );
-          })}
-        </div>
-        <Reveal>
-          <div className="mt-10 rounded-lg border border-club-light/24 bg-club/8 px-6 py-7 text-center md:px-8">
-            <p className="text-sm leading-7 text-white/64">
-              The six categories add up to <span className="font-semibold text-white">100 points</span>.
-              The top 30% of participants receive medals in a Gold : Silver : Bronze ratio of{" "}
-              <span className="font-semibold text-white">3 : 2 : 1</span>, and the top 3 on the
-              leaderboard earn special prizes.
-            </p>
           </div>
         </Reveal>
       </div>
@@ -1499,7 +1357,6 @@ export function YpwcLanding() {
       <Hero />
       <Overview />
       <Brief />
-      <Studio />
       <Organizer />
       <Stats />
       <Timeline />
