@@ -25,3 +25,6 @@ pnpm.cjs
 
 # TypeScript cache
 *.tsbuildinfo
+
+.vercel
+.env*

@@ -34,65 +34,80 @@ import { cn } from "@/lib/utils";
 const navItems = [
   { label: "Overview", href: "#overview" },
   { label: "Brief", href: "#brief" },
-  { label: "Studio", href: "#studio" },
+  { label: "Rubric", href: "#studio" },
   { label: "Timeline", href: "#timeline" },
-  { label: "Leaderboard", href: "#leaderboard" },
   { label: "FAQ", href: "#faq" },
   { label: "Register", href: "#register" },
   { label: "Format", href: "#format" },
 ];
 
-const studioTabs = [
+const rubricSections = [
   {
-    id: "topics",
-    label: "Topics",
-    title: "Choose a scientific desk, then find the human story inside it.",
-    icon: Sparkles,
+    id: "accuracy",
+    title: "Scientific Accuracy & Conceptual Understanding",
+    points: 30,
+    icon: BookOpen,
     items: [
-      "Space and Astronomy",
-      "Electricity and Magnetism",
-      "Waves and Sound",
-      "Modern and Quantum Physics",
-      "Thermodynamics",
-      "Physics in Daily Life",
+      { label: "Factual and mathematical accuracy", points: 10 },
+      { label: "Conceptual understanding", points: 10 },
+      { label: "Assumptions and limitations", points: 10 },
     ],
   },
   {
-    id: "article",
-    label: "Article Shape",
-    title: "Write like a publication, not a lab report.",
+    id: "reasoning",
+    title: "Physical Reasoning & Analysis",
+    points: 20,
+    icon: Orbit,
+    items: [
+      { label: "Logical reasoning", points: 6 },
+      { label: "Analysis and synthesis", points: 6 },
+      { label: "Quantitative reasoning", points: 4 },
+      { label: "Depth of insight", points: 4 },
+    ],
+  },
+  {
+    id: "clarity",
+    title: "Clarity, Structure & Communication",
+    points: 20,
     icon: FileText,
     items: [
-      "Title with a clear promise",
-      "Introduction with a hook",
-      "Main explanation for non-specialists",
-      "Real-life applications",
-      "Interesting insight or paradox",
-      "Short, memorable conclusion",
+      { label: "Organization", points: 6 },
+      { label: "Explanation", points: 6 },
+      { label: "Precision", points: 4 },
+      { label: "Writing quality", points: 4 },
     ],
   },
   {
-    id: "rounds",
-    label: "Selection",
-    title: "A single round, evaluated fairly from start to finish.",
+    id: "creativity",
+    title: "Creativity & Intellectual Contribution",
+    points: 15,
+    icon: Sparkles,
+    items: [
+      { label: "Original perspective", points: 5 },
+      { label: "Creative communication", points: 4 },
+      { label: "Independent thinking", points: 6 },
+    ],
+  },
+  {
+    id: "world",
+    title: "Real-World Connection",
+    points: 10,
     icon: Users,
     items: [
-      "One final submission, judged only once",
-      "Every article scored against the same 100-point rubric",
-      "Top 30% of participants receive medals",
+      { label: "Relevance", points: 3 },
+      { label: "Applying the physics", points: 4 },
+      { label: "Significance", points: 3 },
     ],
   },
   {
-    id: "rubric",
-    label: "Rubric",
-    title: "The judging values are clear before writers begin.",
+    id: "research",
+    title: "Research & References",
+    points: 5,
     icon: ClipboardCheck,
     items: [
-      "Scientific accuracy - 40 points",
-      "Writing clarity and flow - 25 points",
-      "Creativity and originality - 20 points",
-      "Real-life connection - 10 points",
-      "References and support - 5 points",
+      { label: "Source quality", points: 2 },
+      { label: "Use of evidence", points: 2 },
+      { label: "Citation", points: 1 },
     ],
   },
 ];
@@ -358,14 +373,6 @@ function Header() {
             height={40}
             className="relative z-10 size-9 object-contain sm:size-10"
           />
-          <span className="hidden min-w-0 md:block">
-            <span className="block truncate text-sm font-semibold text-white">
-              Young Physics Writers Contest
-            </span>
-            <span className="block truncate text-xs text-white/52">
-              Physics Club Magazine
-            </span>
-          </span>
         </a>
         <nav className="hidden items-center gap-1 lg:flex" aria-label="Primary navigation">
           {navItems.map((item) => (
@@ -378,13 +385,22 @@ function Header() {
             </a>
           ))}
         </nav>
-        <a
-          href="#register"
-          className="inline-flex h-10 items-center gap-2 rounded-md bg-club px-4 text-sm font-semibold text-white transition hover:-translate-y-0.5 hover:bg-[#2e8cff]"
-        >
-          Register
-          <ArrowRight className="size-4" aria-hidden="true" />
-        </a>
+        <div className="flex items-center gap-2">
+          <a
+            href="#leaderboard"
+            className="inline-flex h-10 items-center gap-2 rounded-md border border-white/16 bg-white/[0.04] px-4 text-sm font-semibold text-white transition hover:-translate-y-0.5 hover:border-club-light hover:bg-white/[0.07]"
+          >
+            <Trophy className="size-4" aria-hidden="true" />
+            Leaderboard
+          </a>
+          <a
+            href="#register"
+            className="inline-flex h-10 items-center gap-2 rounded-md bg-club px-4 text-sm font-semibold text-white transition hover:-translate-y-0.5 hover:bg-[#2e8cff]"
+          >
+            Register
+            <ArrowRight className="size-4" aria-hidden="true" />
+          </a>
+        </div>
       </div>
     </header>
   );
@@ -598,9 +614,10 @@ function Overview() {
                 </div>
               </div>
               <p className="mt-8 max-w-2xl text-lg leading-8 text-white/68">
-                The page is organized like an editorial brief: first the idea,
-                then the participant essentials, then the submission studio,
-                organizer identity, awards, and registration.
+                Think of this page as an editorial brief. It starts with the big
+                idea, walks you through the practical details, introduces the
+                club behind the contest and what you can win, and closes where
+                everything comes together, at registration.
               </p>
             </div>
           </Reveal>
@@ -699,15 +716,15 @@ function Studio() {
     <section id="studio" className="px-4 py-24 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl">
         <SectionHeader
-          eyebrow="Submission studio"
-          title="Everything you need, organized in one place."
-          text="Topics, article shape, selection, and the rubric sit together so you can review every detail without jumping around."
+          eyebrow="Judging rubric"
+          title="One hundred points, set before the first article arrives."
+          text="Every submission is scored against the same six categories, so the process stays fair from first read to final ranking."
         />
-        <div className="mt-14 grid gap-6 md:grid-cols-2">
-          {studioTabs.map((tab, index) => {
-            const Icon = tab.icon;
+        <div className="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {rubricSections.map((section, index) => {
+            const Icon = section.icon;
             return (
-              <Reveal key={tab.id} delay={index * 0.05}>
+              <Reveal key={section.id} delay={index * 0.05}>
                 <motion.article
                   whileHover={{ y: -6 }}
                   transition={{ type: "spring", stiffness: 260, damping: 20 }}
@@ -715,25 +732,29 @@ function Studio() {
                 >
                   <div className="absolute -right-16 -top-16 size-40 rounded-full bg-club/10 blur-2xl opacity-0 transition-opacity duration-500 group-hover:opacity-100" aria-hidden="true" />
                   <div className="relative">
-                    <div className="flex items-start gap-4">
+                    <div className="flex items-center justify-between gap-4">
                       <motion.span
-                        whileHover={{ scale: 1.12, rotate: -3 }}
+                        whileHover={{ scale: 1.1, rotate: -4 }}
                         transition={{ type: "spring", stiffness: 300, damping: 15 }}
-                        className="inline-flex size-12 shrink-0 items-center justify-center rounded-md bg-club/16 text-club-light"
+                        className="inline-flex size-11 shrink-0 items-center justify-center rounded-md bg-club/16 text-club-light"
                       >
-                        <Icon className="size-6" aria-hidden="true" />
+                        <Icon className="size-5" aria-hidden="true" />
                       </motion.span>
-                      <h3 className="pt-1 text-2xl font-semibold leading-tight text-white md:text-3xl">
-                        {tab.title}
-                      </h3>
+                      <span className="rounded-md border border-club-light/30 bg-club/10 px-3 py-1 text-center text-sm font-semibold text-club-light">
+                        {section.points} pts
+                      </span>
                     </div>
-                    <ul className="mt-6 grid gap-3">
-                      {tab.items.map((item) => (
+                    <h3 className="mt-5 text-xl font-semibold leading-snug text-white">
+                      {section.title}
+                    </h3>
+                    <ul className="mt-5 grid gap-2">
+                      {section.items.map((item) => (
                         <li
-                          key={item}
-                          className="rounded-md border border-white/10 bg-white/[0.035] p-4 text-sm leading-6 text-white/72 transition-colors duration-300 group-hover:border-club-light/25 group-hover:bg-white/[0.05]"
+                          key={item.label}
+                          className="flex items-baseline justify-between gap-3 rounded-md border border-white/10 bg-white/[0.035] px-3 py-2.5 text-sm leading-6 text-white/72 transition-colors duration-300 group-hover:border-club-light/25 group-hover:bg-white/[0.05]"
                         >
-                          {item}
+                          <span>{item.label}</span>
+                          <span className="shrink-0 font-semibold text-club-light">{item.points}</span>
                         </li>
                       ))}
                     </ul>
@@ -743,6 +764,16 @@ function Studio() {
             );
           })}
         </div>
+        <Reveal>
+          <div className="mt-10 rounded-lg border border-club-light/24 bg-club/8 px-6 py-7 text-center md:px-8">
+            <p className="text-sm leading-7 text-white/64">
+              The six categories add up to <span className="font-semibold text-white">100 points</span>.
+              The top 30% of participants receive medals in a Gold : Silver : Bronze ratio of{" "}
+              <span className="font-semibold text-white">3 : 2 : 1</span>, and the top 3 on the
+              leaderboard earn special prizes.
+            </p>
+          </div>
+        </Reveal>
       </div>
     </section>
   );
@@ -849,13 +880,13 @@ const timelineSteps = [
     step: "03",
     title: "Judging",
     description: "Every article is scored once against the 100-point rubric by club mentors and editors.",
-    date: "October 1 - October 5",
+    date: "October 1 - October 10",
   },
   {
     step: "04",
     title: "Results & medals",
     description: "The top 30% of participants receive medals in a 3:2:1 Gold-Silver-Bronze ratio. The top 3 earn special prizes.",
-    date: "October 5",
+    date: "October 10",
   },
   {
     step: "05",
@@ -872,7 +903,7 @@ function Timeline() {
         <SectionHeader
           eyebrow="Competition timeline"
           title="One round, from registration to results."
-          text="Registration runs from September 4 to September 30, with results announced on October 5."
+          text="Registration runs from September 4 to September 30, with results announced on October 10."
         />
         <div className="relative mt-16">
           <div className="absolute left-8 top-0 hidden h-full w-px bg-gradient-to-b from-club-light/60 via-club/30 to-transparent md:block" aria-hidden="true" />
@@ -908,9 +939,9 @@ function Timeline() {
 }
 
 const leaderboardEntries = [
-  { rank: 1, name: "To be announced", medal: "Gold", note: "Top prize" },
-  { rank: 2, name: "To be announced", medal: "Silver", note: "Runner-up" },
-  { rank: 3, name: "To be announced", medal: "Bronze", note: "Third place" },
+  { rank: 1, name: "TBA", medal: "Gold", note: "Top prize" },
+  { rank: 2, name: "TBA", medal: "Silver", note: "Runner-up" },
+  { rank: 3, name: "TBA", medal: "Bronze", note: "Third place" },
 ] satisfies Array<{
   rank: number;
   name: string;
@@ -925,7 +956,7 @@ function Leaderboard() {
         <SectionHeader
           eyebrow="Leaderboard"
           title="The top 3 earn special prizes."
-          text="Results are announced on October 5. The top three participants on the leaderboard receive special prizes, and the wider top 30% receive medals."
+          text="Results are announced on October 10. The top three participants on the leaderboard receive special prizes, and the wider top 30% receive medals."
         />
         <div className="mt-14 grid gap-4 md:grid-cols-3">
           {leaderboardEntries.map((entry, index) => (
@@ -964,7 +995,7 @@ function Leaderboard() {
         <Reveal>
           <div className="mt-8 rounded-lg border border-club-light/20 bg-club/6 p-6 text-center">
             <p className="text-sm leading-7 text-white/64">
-              Results will appear here on <span className="font-semibold text-white">October 5</span>.
+              Results will appear here on <span className="font-semibold text-white">October 10</span>.
               The top 30% of all participants receive medals in a Gold : Silver : Bronze ratio of{" "}
               <span className="font-semibold text-white">3 : 2 : 1</span>.
             </p>
@@ -981,12 +1012,16 @@ const faqItems = [
     answer: "Any student from grades 9 to 12 who is interested in physics and writing. There is no prerequisite other than curiosity and a willingness to explain science clearly.",
   },
   {
+    question: "What should I write about?",
+    answer: "Choose a scientific desk, then find the human story inside it. Space and astronomy, electricity and magnetism, waves and sound, modern and quantum physics, thermodynamics, and physics in daily life are all open desks to write from.",
+  },
+  {
     question: "What is the required article length?",
     answer: "Articles should be between 600 and 1500 words. Submissions can be in Word or PDF format, and you may also upload an image or GIF to accompany your article.",
   },
   {
     question: "When can I register?",
-    answer: "Registration opens on September 4 and closes on September 30. Results are announced on October 5.",
+    answer: "Registration opens on September 4 and closes on September 30. Results are announced on October 10.",
   },
   {
     question: "Can I use AI tools to write my article?",
@@ -994,7 +1029,7 @@ const faqItems = [
   },
   {
     question: "How are articles evaluated?",
-    answer: "Judging uses a 100-point rubric: scientific accuracy (40), writing clarity and flow (25), creativity and originality (20), real-life connection (10), and references (5).",
+    answer: "The judging values are clear before writers begin. Every article is scored against 100 points split across six categories: scientific accuracy and conceptual understanding (30), physical reasoning and analysis (20), clarity and structure (20), creativity and intellectual contribution (15), real-world connection (10), and research and references (5).",
   },
   {
     question: "How are winners and medals decided?",

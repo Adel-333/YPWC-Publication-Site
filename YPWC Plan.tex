@@ -1,90 +1,164 @@
-\documentclass[11pt]{article}
-\usepackage[a4paper,margin=1in]{geometry}
-\usepackage[T1]{fontenc}
-\usepackage{titlesec}
-\usepackage{enumitem}
-\usepackage{xcolor}
-\usepackage{fancyhdr}
+\documentclass[12pt]{article}
 
-\definecolor{club}{HTML}{1473E6}
-\titleformat{\section}{\Large\bfseries\color{club}}{}{0em}{}
-\titleformat{\subsection}{\large\bfseries}{}{0em}{}
+\usepackage[
+  top=0.55cm,
+  bottom=0.95cm,
+  left=1.15cm,
+  right=1.15cm,
+  headheight=22pt,
+  includehead,includefoot,
+  heightrounded,
+]{geometry}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{charter}
+\usepackage[scaled=0.96]{helvet}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage[table]{xcolor}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{parskip}
+\usepackage{hyperref}
+
+% --- palette: deep navy, light blue, silver ---
+\definecolor{navy}{HTML}{0B1626}
+\definecolor{line}{HTML}{2A3A55}
+\definecolor{divider}{HTML}{9FB2CC}
+\definecolor{sky}{HTML}{5C9EFF}
+\definecolor{bodytext}{HTML}{D3DCE8}
+\definecolor{footer}{HTML}{5A6B84}
+
+\pagecolor{navy}
+
+\hypersetup{colorlinks=true,linkcolor=sky,urlcolor=sky,pdftitle={Youth Physics Writing Contest}}
+
+\newcommand{\logopair}{%
+  \includegraphics[width=30pt]{public/assets/club-shield-transparent.png}%
+  \hspace{5pt}%
+  \textcolor{divider}{\rule[-5pt]{0.7pt}{16pt}}%
+  \hspace{5pt}%
+  \includegraphics[width=30pt]{public/assets/ypwc-logo-360.png}}
 
 \pagestyle{fancy}
-\setlength{\headheight}{14pt}
-\fancyhead[L]{Physics Club}
-\fancyhead[R]{Youth Physics Writing Contest}
-\fancyfoot[C]{\thepage}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\headrule}{\hbox to\headwidth{\color{line}\leaders\hrule height \headrulewidth\hfill}}
+\fancyhead[L]{\logopair}
+\fancyhead[R]{\small\color{bodytext}\sffamily YPWC~\textbullet~Physics Club Magazine}
+\fancyfoot[C]{\color{footer}\thepage}
 
-\title{\textbf{Youth Physics Writing Contest}}
-\author{Adel Mohamed}
-\date{}
+\titleformat{\section}[block]
+  {\bfseries\sffamily\Large\color{white}}{\color{sky}\S\,}{0.6em}{}
+\titlespacing*{\section}{0pt}{1.1em}{0.45em}
+
+\newcommand{\HRule}{\color{sky}\rule{\linewidth}{0.6pt}}
 
 \begin{document}
 
-\maketitle
+\color{bodytext}
 
-\section*{Overview}
-This document is a practical plan for running a physics writing competition at
-our school. The aim is to push students to turn physics into writing people
-actually enjoy reading, in a magazine style rather than a formal paper.
+\begin{center}
+  \includegraphics[width=56pt]{public/assets/club-shield-transparent.png}%
+  \hspace{9pt}%
+  \textcolor{divider}{\rule[-9pt]{0.8pt}{30pt}}%
+  \hspace{9pt}%
+  \includegraphics[width=56pt]{public/assets/ypwc-logo-360.png}\\[15pt]
+  \HRule\\[11pt]
+  {\Huge\bfseries\sffamily\color{white} Youth Physics Writing Contest}\\[9pt]
+  {\large\color{bodytext}\sffamily A magazine-style physics writing competition}\\[11pt]
+  \HRule
+\end{center}
 
-\section*{Suitable Topics}
-\begin{itemize}
-\item Space and Astronomy
-\item Electricity and Magnetism
-\item Waves and Sound
-\item Modern Physics
-\item Quantum Physics (simplified)
-\item Thermodynamics
-\item Physics in Daily Life
-\end{itemize}
+\section{Overview}
+Youth Physics Writing Contest is a school-level competition where one physics
+idea becomes a piece of writing people enjoy reading. Students from grades 9 to
+12 take a single scientific corner and shape it into a clear, warm,
+magazine-style article, the way a feature writer would, rather than the way a
+lab report gets written. Curiosity matters more than prior experience or
+grades. There is one round, every article is judged once against the same
+scale, and the strongest pieces end up in a Physics Club Magazine issue.
 
-\section*{Format}
-Each article follows a magazine structure:
-\begin{itemize}
-\item Title
-\item Introduction: a short hook that catches attention
-\item Main Explanation: the physics idea made clear
-\item Real-life Applications
-\item Interesting Insight: a surprising fact or paradox
-\item Conclusion: a brief closing
-\end{itemize}
+\section{Format}
+Every article follows the shape of a good magazine feature. It opens with a
+title that promises something specific, and an introduction that pulls the
+reader in quickly. The body explains the physics in plain language, written for
+a curious nonspecialist, and points to where the idea shows up in real life. It
+closes with an interesting insight and a short, memorable ending.
 
-Length sits between 600 and 1500 words. Write for a curious nonspecialist. Keep
-language warm and clear. Graphs, figures, and GIFs are welcome. Analogies and
-everyday examples help. AI-generated text is not accepted.
+Length sits between \textbf{600 and 1500 words}. Warm, clear language beats
+jargon, so analogies are welcome and graphs, figures, and GIFs help. A strong
+article usually holds one central idea instead of three small ones, and numbers
+are used honestly and checked twice. AI-generated text is not accepted; the
+writing has to be the student's own.
 
-\section*{Submission and Dates}
-Articles go in as Word or PDF, alongside an optional image or GIF. The form
-collects name, school, and topic. Registration is open from September 4 to
-September 30. Judging runs from October 1 to October 5.
+\section{Topics}
+Writers begin with a scientific desk and then find the human story inside it.
+A student might ask why a phone flashlight looks blue in the dark, how one wave
+can silence another, or what a black hole really is. The six desks below accept
+that kind of question: the night sky, from the phases of the Moon to the edges
+of the galaxy; the hidden mechanics of electricity and magnetism, from a fridge
+magnet to a power grid; sound and waves, from ripples in a glass to
+noise-cancelling headphones; a honest, careful simplification of modern and
+quantum physics; thermodynamics, from a cooling cup of tea to a large engine;
+and the physics quietly hiding in daily life.
 
-\section*{Evaluation}
-Each piece is scored out of 100:
-\begin{itemize}
-\item Scientific accuracy - 40
-\item Clarity and flow - 25
-\item Creativity and originality - 20
-\item Real-life connection - 10
-\item References and support - 5
-\end{itemize}
+\section{Timeline}
+Submissions arrive through the contest page as a Word or PDF file, alongside an
+optional GIF. The form records the student's name, school, chosen topic, and
+the exact submission time, and no edits are accepted once registration closes.
+The dates look like this:
 
-Mentors and editors read each article independently against the same rubric so
-the process stays fair.
+\begin{center}
+\renewcommand{\arraystretch}{1.55}
+\arrayrulecolor{line}
+\begin{tabular}{@{}l@{\hspace{2.8em}}l@{}}
+  \color{white}\bfseries\sffamily Registration opens & \color{bodytext} September 4 \\
+  \hline
+  \color{white}\bfseries\sffamily Registration closes & \color{bodytext} September 30 \\
+  \hline
+  \color{white}\bfseries\sffamily Judging & \color{bodytext} October 1 to October 10 \\
+  \hline
+  \color{white}\bfseries\sffamily Results and medals & \color{bodytext} October 10 \\
+\end{tabular}
+\end{center}
 
-\section*{Results and Awards}
-There is a single round. The top 30\% of participants receive medals in a
-Gold : Silver : Bronze ratio of 3 : 2 : 1. The top three on the leaderboard get
-special prizes, and everyone receives a certificate. Results are announced on
-October 5.
+Writers who are unsure where to start can send a single question to the club
+before the deadline. Everything else, from the rubric to the submission form,
+is available on the contest page.
 
-\section*{Publication}
-The strongest articles are gathered into a digital magazine issue for the wider
-school community to read. The finished magazine is the real output of the
-competition, not just a ranking.
+\section{Evaluation}
+Writers already know the scale before judging begins. Every article earns up to
+\textbf{one hundred points}, decided across six categories: scientific accuracy
+and conceptual understanding (30), physical reasoning and analysis (20),
+clarity, structure and communication (20), creativity and intellectual
+contribution (15), real-world connection (10), and research and references (5).
+Mentors and editors score each piece independently against the same scale, and
+participants receive brief editorial feedback as part of the experience.
 
-\vspace{2em}
-\noindent\large\itshape Share your writing voice with the Physics Club Magazine.
+\begin{quote}
+\itshape Writing ``$F = ma$'' on its own shows little. Explaining the law,
+applying it correctly, and noting its assumptions and limits shows real
+understanding.
+\end{quote}
+
+\section{Results and Awards}
+Medals go to the top 30\% of participants in a Gold, Silver, and Bronze ratio
+of 3 to 2 to 1. The three strongest articles on the leaderboard receive special
+prizes, and everyone who enters receives a certificate that names the article
+and its writer. Results are announced on \textbf{October 10}, and the
+leaderboard appears on the contest page the same day.
+
+\section{Publication}
+Selected articles are gathered into a dedicated Physics Club Magazine issue for
+the wider school community to read, with each piece credited to its writer. The
+finished magazine stays available online so writers can share it, because the
+published issue is the real output of the competition, not just a ranking.
+
+\vspace{1.4em}
+\begin{center}
+\large\itshape\color{bodytext} Share your writing voice with the Physics Club Magazine.
+\end{center}
 
 \end{document}
