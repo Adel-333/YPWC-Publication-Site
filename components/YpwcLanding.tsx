@@ -336,70 +336,90 @@ function EditorialCardStack() {
   const reduced = useReducedMotion();
 
   return (
-    <div className="relative h-[24rem] overflow-hidden rounded-md border border-white/10 bg-black/18" aria-hidden="true">
-      <motion.div
-        className="absolute left-[8%] top-[18%] h-56 w-40 rotate-[-10deg] border border-white/16 bg-white/[0.08] shadow-blue-soft"
-        animate={reduced ? {} : { y: [0, -10, 0], rotate: [-10, -7, -10] }}
-        transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
-      >
-        <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(92,158,255,0.16),transparent_54%)]" />
-        <Image
-          src="/assets/club-shield-transparent.webp"
-          alt=""
-          width={130}
-          height={130}
-          className="absolute left-1/2 top-9 w-24 -translate-x-1/2 object-contain opacity-90"
-        />
-        <p className="absolute inset-x-4 top-36 text-center text-[0.62rem] font-semibold uppercase leading-4 tracking-[0.12em] text-white/70">
-          Once a member, Always a member
-        </p>
-        <div className="absolute inset-x-5 bottom-7 space-y-3">
-          <div className="h-2 w-24 bg-club-light/45" />
-          <div className="h-2 w-28 bg-white/32" />
-          <div className="h-2 w-20 bg-white/20" />
-        </div>
-      </motion.div>
-
-      <motion.div
-        className="absolute left-[28%] top-[7%] h-72 w-52 rotate-[4deg] overflow-hidden border border-club-light/38 bg-[#0e3f8d] shadow-[0_34px_90px_rgba(0,0,0,0.42)]"
-        animate={reduced ? {} : { y: [0, 12, 0], rotate: [4, 2, 4] }}
-        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-      >
+    <>
+      <div className="relative mx-auto h-72 w-52 overflow-hidden rounded-md border border-club-light/38 bg-[#0e3f8d] shadow-[0_34px_90px_rgba(0,0,0,0.42)] sm:hidden" aria-hidden="true">
         <div className="absolute inset-0 bg-[linear-gradient(115deg,rgba(255,255,255,0.18),transparent_42%,rgba(255,255,255,0.08))]" />
         <Image
           src="/assets/ypwc-logo-360.webp"
           alt=""
           width={180}
           height={180}
-          className="absolute left-1/2 top-10 w-32 -translate-x-1/2 object-contain"
+          className="absolute left-1/2 top-8 w-24 -translate-x-1/2 object-contain"
         />
-        <div className="absolute inset-x-6 bottom-7">
+        <div className="absolute inset-x-6 bottom-6">
           <p className="text-[0.6rem] font-semibold uppercase tracking-[0.18em] text-white/60">
             Physics Club Magazine
           </p>
-          <div className="mt-4 h-3 w-full bg-white/85" />
-          <div className="mt-3 h-3 w-2/3 bg-white/65" />
+          <div className="mt-3 h-3 w-full bg-white/85" />
+          <div className="mt-2 h-3 w-2/3 bg-white/65" />
         </div>
-      </motion.div>
+      </div>
 
-      <motion.div
-        className="absolute right-[6%] top-[20%] h-60 w-40 rotate-[13deg] border border-white/14 bg-[#f4f7fb] text-[#111014] shadow-blue-soft"
-        animate={reduced ? {} : { y: [0, -14, 0], rotate: [13, 16, 13] }}
-        transition={{ duration: 7.5, repeat: Infinity, ease: "easeInOut" }}
-      >
-        <div className="mx-5 mt-6 flex items-center gap-3">
-          <BookOpen className="size-5 text-[#0e3f8d]" />
-          <span className="h-px flex-1 bg-[#0e3f8d]/30" />
-        </div>
-        <div className="mx-5 mt-10 text-4xl font-semibold">100</div>
-        <div className="mx-5 mt-2 text-[0.65rem] font-semibold uppercase tracking-[0.16em] text-[#0e3f8d]">
-          rubric points
-        </div>
-        <div className="mx-5 mt-5 text-sm font-semibold uppercase tracking-[0.12em] text-[#0e3f8d]">
-          Register Now!
-        </div>
-      </motion.div>
-    </div>
+      <div className="relative hidden h-[24rem] overflow-hidden rounded-md border border-white/10 bg-black/18 sm:block" aria-hidden="true">
+        <motion.div
+          className="absolute left-[8%] top-[18%] h-56 w-40 rotate-[-10deg] border border-white/16 bg-white/[0.08] shadow-blue-soft"
+          animate={reduced ? {} : { y: [0, -10, 0], rotate: [-10, -7, -10] }}
+          transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
+        >
+          <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(92,158,255,0.16),transparent_54%)]" />
+          <Image
+            src="/assets/club-shield-transparent.webp"
+            alt=""
+            width={130}
+            height={130}
+            className="absolute left-1/2 top-9 w-24 -translate-x-1/2 object-contain opacity-90"
+          />
+          <p className="absolute inset-x-4 top-36 text-center text-[0.62rem] font-semibold uppercase leading-4 tracking-[0.12em] text-white/70">
+            Once a member, Always a member
+          </p>
+          <div className="absolute inset-x-5 bottom-7 space-y-3">
+            <div className="h-2 w-24 bg-club-light/45" />
+            <div className="h-2 w-28 bg-white/32" />
+            <div className="h-2 w-20 bg-white/20" />
+          </div>
+        </motion.div>
+
+        <motion.div
+          className="absolute left-[28%] top-[7%] h-72 w-52 rotate-[4deg] overflow-hidden border border-club-light/38 bg-[#0e3f8d] shadow-[0_34px_90px_rgba(0,0,0,0.42)]"
+          animate={reduced ? {} : { y: [0, 12, 0], rotate: [4, 2, 4] }}
+          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+        >
+          <div className="absolute inset-0 bg-[linear-gradient(115deg,rgba(255,255,255,0.18),transparent_42%,rgba(255,255,255,0.08))]" />
+          <Image
+            src="/assets/ypwc-logo-360.webp"
+            alt=""
+            width={180}
+            height={180}
+            className="absolute left-1/2 top-10 w-32 -translate-x-1/2 object-contain"
+          />
+          <div className="absolute inset-x-6 bottom-7">
+            <p className="text-[0.6rem] font-semibold uppercase tracking-[0.18em] text-white/60">
+              Physics Club Magazine
+            </p>
+            <div className="mt-4 h-3 w-full bg-white/85" />
+            <div className="mt-3 h-3 w-2/3 bg-white/65" />
+          </div>
+        </motion.div>
+
+        <motion.div
+          className="absolute right-[6%] top-[20%] h-60 w-40 rotate-[13deg] border border-white/14 bg-[#f4f7fb] text-[#111014] shadow-blue-soft"
+          animate={reduced ? {} : { y: [0, -14, 0], rotate: [13, 16, 13] }}
+          transition={{ duration: 7.5, repeat: Infinity, ease: "easeInOut" }}
+        >
+          <div className="mx-5 mt-6 flex items-center gap-3">
+            <BookOpen className="size-5 text-[#0e3f8d]" />
+            <span className="h-px flex-1 bg-[#0e3f8d]/30" />
+          </div>
+          <div className="mx-5 mt-10 text-4xl font-semibold">100</div>
+          <div className="mx-5 mt-2 text-[0.65rem] font-semibold uppercase tracking-[0.16em] text-[#0e3f8d]">
+            rubric points
+          </div>
+          <div className="mx-5 mt-5 text-sm font-semibold uppercase tracking-[0.12em] text-[#0e3f8d]">
+            Register Now!
+          </div>
+        </motion.div>
+      </div>
+    </>
   );
 }
 
@@ -522,19 +542,19 @@ function Overview() {
           <Reveal>
             <div className="relative overflow-hidden rounded-lg border border-white/12 bg-[#15161d] p-8 shadow-blue-soft">
               <div className="absolute -right-24 -top-24 size-72 rounded-full border border-club-light/20" aria-hidden="true" />
-              <div className="flex items-center gap-5">
+              <div className="flex flex-col items-start gap-5 sm:flex-row sm:items-center">
                 <Image
                   src="/assets/ypwc-logo-360.webp"
                   alt="Young Physics Writers Contest logo"
                   width={120}
                   height={120}
-                  className="size-24 object-contain"
+                  className="size-20 shrink-0 object-contain sm:size-24"
                 />
-                <div>
+                <div className="min-w-0">
                   <p className="text-xs font-semibold uppercase tracking-[0.2em] text-club-light">
                     Main home
                   </p>
-                  <h2 className="mt-3 text-4xl font-semibold leading-tight text-white">
+                  <h2 className="mt-3 text-balance text-3xl font-semibold leading-tight text-white sm:text-4xl">
                     A publication-first physics competition.
                   </h2>
                 </div>
@@ -782,6 +802,12 @@ function Timeline() {
                     transition={{ type: "spring", stiffness: 260, damping: 18 }}
                     className="group rounded-lg border border-white/12 bg-white/[0.045] p-6 md:flex-1"
                   >
+                    <motion.div
+                      className="mb-3 inline-flex size-8 items-center justify-center rounded-full border border-club-light/40 bg-[#111014] text-xs font-bold text-club-light md:hidden"
+                      whileHover={{ scale: 1.1 }}
+                    >
+                      {step.step}
+                    </motion.div>
                     <p className="text-xs font-semibold uppercase tracking-[0.15em] text-club-light">{step.date}</p>
                     <h3 className="mt-2 text-xl font-semibold text-white transition-colors duration-300 group-hover:text-club-light">{step.title}</h3>
                     <p className="mt-2 leading-7 text-white/64">{step.description}</p>
@@ -1331,8 +1357,9 @@ function Footer() {
           </a>
         </div>
       </div>
-      <div className="mx-auto mt-8 max-w-7xl border-t border-white/10 pt-6 text-center text-sm text-white/40">
-        Organized by the Physics Club Magazine · <a href="https://www.octphysicsclub.org/" className="hover:text-club-light">octphysicsclub.org</a>
+      <div className="mx-auto mt-8 max-w-7xl space-y-2 border-t border-white/10 pt-6 text-center text-sm text-white/40">
+        <p>© {new Date().getFullYear()} Youth Physics Writing Contest · Physics Club Magazine. All rights reserved.</p>
+        <p>Organized by the Physics Club Magazine · <a href="https://www.octphysicsclub.org/" className="hover:text-club-light">octphysicsclub.org</a></p>
       </div>
     </footer>
   );
