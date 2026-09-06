@@ -62,17 +62,17 @@ const briefCards = [
 const overviewCards = [
   {
     title: "Main Idea",
-    body: "YPWC turns physics understanding into public writing: accurate, clear, visual, and interesting enough to read like a magazine feature.",
+    body: "Participants select a physics topic and develop it into an accessible article. Submissions may use illustrations, diagrams, examples, and other forms of visual explanation to communicate the subject effectively.",
     icon: Sparkles,
   },
   {
     title: "Who It Is For",
-    body: "Students who enjoy explaining concepts, building analogies, connecting science to life, and writing for curious non-specialists.",
+    body: "YPWC is open to Egyptian students interested in physics and scientific writing, including those who want to explain physics to readers without a specialized background.",
     icon: Users,
   },
   {
     title: "What Makes It Unique",
-    body: "The competition includes editorial feedback and publication, so the final outcome is a stronger article, not only a score.",
+    body: "YPWC combines competition with editorial review and publication. Selected submissions receive feedback and may be published through the Young Physics Writers Contest, giving students the opportunity to develop their work beyond the competition.",
     icon: BookOpen,
   },
 ];
@@ -423,6 +423,42 @@ function EditorialCardStack() {
   );
 }
 
+function TypewriterText({ text, className }: { text: string; className?: string }) {
+  const reduced = useReducedMotion();
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    if (reduced) {
+      setCount(text.length);
+      return;
+    }
+    setCount(0);
+    let i = 0;
+    let intervalId: number | undefined;
+    const timerId = window.setTimeout(() => {
+      intervalId = window.setInterval(() => {
+        i += 1;
+        setCount(i);
+        if (i >= text.length) window.clearInterval(intervalId);
+      }, 26);
+    }, 650);
+    return () => {
+      window.clearTimeout(timerId);
+      if (intervalId !== undefined) window.clearInterval(intervalId);
+    };
+  }, [text, reduced]);
+
+  return (
+    <span className={className}>
+      {reduced ? text : text.slice(0, count)}
+      <span
+        className="ml-0.5 inline-block h-[1.05em] w-0.5 translate-y-[0.18em] bg-club-light align-baseline"
+        aria-hidden="true"
+      />
+    </span>
+  );
+}
+
 function Hero() {
   const reduced = useReducedMotion();
   const { scrollY } = useScroll();
@@ -460,11 +496,10 @@ function Hero() {
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
-              className="mt-7 max-w-2xl text-lg leading-8 text-white/72 md:text-xl"
+              transition={{ duration: 0.6, delay: 0.65, ease: [0.22, 1, 0.36, 1] }}
+              className="mt-7 max-w-2xl min-h-24 text-lg leading-8 text-white/72 md:text-xl md:min-h-16"
             >
-              A school-level writing competition for students who can turn one
-              physics idea into a clear, creative, magazine-worthy article.
+              <TypewriterText text="A national writing competition for high school students to transform a physics idea into a creative and publication-ready article." />
             </motion.p>
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -560,10 +595,9 @@ function Overview() {
                 </div>
               </div>
               <p className="mt-8 max-w-2xl text-lg leading-8 text-white/68">
-                Think of this page as an editorial brief. It starts with the big
-                idea, walks you through the practical details, introduces the
-                club behind the contest and what you can win, and closes where
-                everything comes together, at registration.
+                YPWC is a physics writing competition that challenges students
+                to communicate physics clearly and accurately through original
+                articles.
               </p>
             </div>
           </Reveal>
@@ -605,8 +639,8 @@ function Brief() {
       <div className="mx-auto max-w-7xl">
         <SectionHeader
           eyebrow="Competition brief"
-          title="Fast to understand. Serious enough to publish."
-          text="YPWC asks students to explain physics with accuracy, structure, voice, and visual thinking. The goal is not a formal research paper. It is a readable article for curious people."
+          title="Physics writing for publication."
+          text="YPWC is a national competition that asks students to communicate physics through accurate, well-structured articles. Submissions are evaluated as pieces of scientific writing, with emphasis on clarity, accuracy, and effective communication."
         />
         <div className="mt-14 grid gap-4 md:grid-cols-3">
           {briefCards.map((card, index) => {
