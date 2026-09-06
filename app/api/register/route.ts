@@ -11,6 +11,8 @@ export async function POST(request: Request) {
     const topic = formData.get("topic") as string;
     const title = formData.get("title") as string;
     const pitch = formData.get("pitch") as string;
+    const sourceLink = (formData.get("sourceLink") as string || "").trim();
+    const publicationRights = Boolean(formData.get("publicationRights"));
     const file = formData.get("articleFile") as File | null;
     const images = (formData.getAll("articleImage") as File[]).filter(
       (f) => f && f.size > 0
@@ -67,6 +69,8 @@ export async function POST(request: Request) {
       topic,
       title,
       pitch,
+      sourceLink,
+      publicationRights,
       file: fileData,
       image: imageData,
       driveFolderId: "1eEbOp7OGsz2Cu90gJSdQ6uRn5I0supsp",

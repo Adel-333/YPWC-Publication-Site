@@ -1074,6 +1074,12 @@ function RegistrationForm() {
     if (gifFiles.some((f) => !/\.(gif)$/i.test(f.name)))
       newErrors.articleImage = "Only GIF files are accepted";
 
+    const sourceLink = (fd.get("sourceLink") as string || "").trim();
+    if (sourceLink && !/^https?:\/\/\S+$/i.test(sourceLink))
+      newErrors.sourceLink = "Enter a valid link beginning with http:// or https://";
+
+    if (!fd.get("publicationRights")) newErrors.publicationRights = "Required";
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   }, []);
@@ -1244,6 +1250,20 @@ function RegistrationForm() {
                 {errors.articleFile ? <p className="text-xs text-red-400 mt-1">{errors.articleFile}</p> : null}
               </label>
               <label className="space-y-2 md:col-span-2">
+                <span className="text-sm font-medium text-white/72">Source file link (optional)</span>
+                <input
+                  name="sourceLink"
+                  type="url"
+                  inputMode="url"
+                  className={fieldClass("sourceLink")}
+                  placeholder="https://drive.google.com/... or https://github.com/..."
+                />
+                <p className="text-xs text-white/44">
+                  Paste a link to your Word document, GitHub repository, or LaTeX project folder so the full source files stay with the magazine.
+                </p>
+                {errors.sourceLink ? <p className="text-xs text-red-400">{errors.sourceLink}</p> : null}
+              </label>
+              <label className="space-y-2 md:col-span-2">
                 <span className="text-sm font-medium text-white/72">Article GIF(s)</span>
                 <input
                   type="file"
@@ -1255,6 +1275,24 @@ function RegistrationForm() {
                 <p className="text-xs text-white/44">Optional GIFs to accompany your article. You can choose more than one.</p>
                 {errors.articleImage ? <p className="text-xs text-red-400 mt-1">{errors.articleImage}</p> : null}
               </label>
+              <div className="md:col-span-2">
+                <label className="flex cursor-pointer items-start gap-3 rounded-md border border-white/12 bg-white/[0.035] px-4 py-3.5">
+                  <input
+                    type="checkbox"
+                    name="publicationRights"
+                    value="yes"
+                    className="mt-0.5 size-4 shrink-0 rounded border-white/30 bg-[#111014] accent-club"
+                  />
+                  <span className="text-sm leading-6 text-white/68">
+                    By submitting, I grant the <span className="font-semibold text-white">Physics Club Magazine</span> full
+                    editorial and publication rights: the club may edit, format, translate, and publish my article in the
+                    magazine and online.
+                  </span>
+                </label>
+                {errors.publicationRights ? (
+                  <p className="mt-1 text-xs text-red-400">You must accept the publication rights to submit</p>
+                ) : null}
+              </div>
             </div>
             <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
               <p className="text-sm leading-6 text-white/52">
