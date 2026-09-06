@@ -857,9 +857,9 @@ function Timeline() {
 }
 
 const leaderboardEntries = [
-  { rank: 1, name: "TBA", medal: "Gold", note: "Top prize" },
-  { rank: 2, name: "TBA", medal: "Silver", note: "Runner-up" },
-  { rank: 3, name: "TBA", medal: "Bronze", note: "Third place" },
+  { rank: 1, name: "To be determined", medal: "Gold", note: "First place" },
+  { rank: 2, name: "To be determined", medal: "Silver", note: "Second" },
+  { rank: 3, name: "To be determined", medal: "Bronze", note: "Third" },
 ] satisfies Array<{
   rank: number;
   name: string;
