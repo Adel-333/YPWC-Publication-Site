@@ -4,7 +4,7 @@ export default function Home() {
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "Event",
-    name: "Young Physics Writers Contest",
+    name: "Young Physics Writing Contest",
     description:
       "A magazine-style physics writing competition by Physics Club Magazine.",
     organizer: {

@@ -4,8 +4,8 @@ import "./globals.css";
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.octphysicsclub.org"),
   title: {
-    default: "Young Physics Writers Contest | Physics Club Magazine",
-    template: "%s | Young Physics Writers Contest",
+    default: "Young Physics Writing Contest | Physics Club Magazine",
+    template: "%s | Young Physics Writing Contest",
   },
   icons: {
     icon: "/assets/WWW YPWC.png",
@@ -14,14 +14,14 @@ export const metadata: Metadata = {
   description:
     "A magazine-style physics writing competition by Physics Club Magazine for students who explain science with clarity, creativity, and editorial craft.",
   keywords: [
-    "Young Physics Writers Contest",
+    "Young Physics Writing Contest",
     "Physics Club Magazine",
     "physics writing",
     "student science competition",
     "STEM October Physics Club",
   ],
   openGraph: {
-    title: "Young Physics Writers Contest",
+    title: "Young Physics Writing Contest",
     description:
       "Write a physics article with the clarity of a teacher and the imagination of a magazine writer.",
     siteName: "Physics Club Magazine",
@@ -30,14 +30,14 @@ export const metadata: Metadata = {
         url: "/assets/ypwc-mark-text.png",
         width: 1000,
         height: 1000,
-        alt: "Young Physics Writers Contest mark",
+        alt: "Young Physics Writing Contest mark",
       },
     ],
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Young Physics Writers Contest",
+    title: "Young Physics Writing Contest",
     description:
       "A premium student competition for magazine-style physics articles.",
     images: ["/assets/ypwc-mark-text.png"],

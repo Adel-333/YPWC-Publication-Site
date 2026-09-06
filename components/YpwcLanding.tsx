@@ -72,7 +72,7 @@ const overviewCards = [
   },
   {
     title: "What Makes It Unique",
-    body: "YPWC combines competition with editorial review and publication. Selected submissions receive feedback and may be published through the Young Physics Writers Contest, giving students the opportunity to develop their work beyond the competition.",
+    body: "YPWC combines competition with editorial review and publication. Selected submissions receive feedback and may be published through the Young Physics Writing Contest, giving students the opportunity to develop their work beyond the competition.",
     icon: BookOpen,
   },
 ];
@@ -491,7 +491,7 @@ function Hero() {
               transition={{ duration: 0.8, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
               className="mt-7 max-w-5xl text-balance text-5xl font-semibold leading-[1.02] text-white md:text-7xl lg:text-8xl"
             >
-              Young Physics Writers Contest
+              Young Physics Writing Contest
             </motion.h1>
             <motion.p
               initial={{ opacity: 0, y: 20 }}
@@ -554,7 +554,7 @@ function Hero() {
               />
               <Image
                 src="/assets/ypwc-logo-360.webp"
-                alt="Young Physics Writers Contest logo"
+                alt="Young Physics Writing Contest logo"
                 fill
                 priority
                 className="relative z-10 object-contain drop-shadow-[0_30px_90px_rgba(0,120,255,0.28)]"
@@ -580,7 +580,7 @@ function Overview() {
               <div className="flex flex-col items-start gap-5 sm:flex-row sm:items-center">
                 <Image
                   src="/assets/ypwc-logo-360.webp"
-                  alt="Young Physics Writers Contest logo"
+                  alt="Young Physics Writing Contest logo"
                   width={120}
                   height={120}
                   className="size-20 shrink-0 object-contain sm:size-24"
