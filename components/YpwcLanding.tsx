@@ -470,7 +470,7 @@ function Hero() {
     <section id="hero" className="hero-lines relative isolate overflow-hidden px-4 pt-28 sm:px-6 lg:px-8">
       <FloatingOrbs />
       <motion.div style={{ y: reduced ? 0 : heroY, opacity: reduced ? 1 : heroOpacity }}>
-        <div className="mx-auto grid min-h-[calc(100vh-4rem)] max-w-7xl items-center gap-10 pb-20 lg:grid-cols-[1.03fr_0.97fr]">
+        <div className="mx-auto grid min-h-[calc(100vh-4rem)] max-w-7xl items-center gap-10 pb-20 min-[880px]:grid-cols-[1.03fr_0.97fr]">
           <motion.div
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
@@ -780,19 +780,19 @@ const timelineSteps = [
     step: "01",
     title: "Registration opens",
     description: "Submit your intent with topic, draft direction, and your article. No separate rounds.",
-    date: "September 4 - September 30",
+    date: "September 7 - October 5",
   },
   {
     step: "02",
     title: "Registration closes",
-    description: "All submissions are locked at the end of September. No further changes accepted.",
-    date: "September 30",
+    description: "All submissions are locked on October 5. No further changes accepted.",
+    date: "October 5",
   },
   {
     step: "03",
     title: "Judging",
     description: "Every article is scored once against the 100-point rubric by club mentors and editors.",
-    date: "October 1 - October 10",
+    date: "October 5 - October 10",
   },
   {
     step: "04",
@@ -815,7 +815,7 @@ function Timeline() {
         <SectionHeader
           eyebrow="Competition timeline"
           title="One round, from registration to results."
-          text="Registration runs from September 4 to September 30, with results announced on October 10."
+          text="Registration runs from September 7 to October 5. Judging follows from October 5 to October 10, and results are announced on October 10."
         />
         <div className="relative mt-16">
           <div className="absolute left-8 top-0 hidden h-full w-px bg-gradient-to-b from-club-light/60 via-club/30 to-transparent md:block" aria-hidden="true" />
@@ -939,7 +939,7 @@ const faqItems = [
   },
   {
     question: "When can I register?",
-    answer: "Registration opens on September 4 and closes on September 30. Results are announced on October 10.",
+    answer: "Registration opens on September 7 and closes on October 5. Judging runs from October 5 to October 10, and results are announced on October 10.",
   },
   {
     question: "Can I use AI tools to write my article?",
