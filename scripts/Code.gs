@@ -1,3 +1,22 @@
+function getDriveFolder(folderId) {
+  if (folderId) {
+    try {
+      return DriveApp.getFolderById(folderId);
+    } catch (e) {}
+  }
+
+  var cached = PropertiesService.getScriptProperties().getProperty("YPWC_FOLDER_ID");
+  if (cached) {
+    try {
+      return DriveApp.getFolderById(cached);
+    } catch (e) {}
+  }
+
+  var folder = DriveApp.createFolder("YPWC Submissions");
+  PropertiesService.getScriptProperties().setProperty("YPWC_FOLDER_ID", folder.getId());
+  return folder;
+}
+
 function doPost(e) {
   try {
     const data = JSON.parse(e.postData.contents);
@@ -12,6 +31,8 @@ function doPost(e) {
       "Chosen Topic",
       "Article Title",
       "Article Pitch",
+      "Source File Link",
+      "Publication Rights",
       "Article File",
       "Article Image",
     ];
@@ -20,9 +41,10 @@ function doPost(e) {
       sheet.appendRow(headers);
     }
 
+    const folder = getDriveFolder(data.driveFolderId);
+
     let fileLink = "";
     if (data.file) {
-      const folder = DriveApp.getFolderById(data.driveFolderId);
       const blob = Utilities.newBlob(
         Utilities.base64Decode(data.file.content),
         data.file.type,
@@ -34,7 +56,6 @@ function doPost(e) {
 
     let imageLink = "";
     if (data.image) {
-      const folder = DriveApp.getFolderById(data.driveFolderId);
       const links = [];
       const images = Array.isArray(data.image) ? data.image : [data.image];
       for (var i = 0; i < images.length; i++) {
@@ -59,6 +80,8 @@ function doPost(e) {
       data.topic || "",
       data.title || "",
       data.pitch || "",
+      data.sourceLink || "",
+      data.publicationRights ? "Yes" : "No",
       fileLink,
       imageLink,
     ]);

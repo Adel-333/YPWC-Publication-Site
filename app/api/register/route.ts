@@ -73,7 +73,8 @@ export async function POST(request: Request) {
       publicationRights,
       file: fileData,
       image: imageData,
-      driveFolderId: "1eEbOp7OGsz2Cu90gJSdQ6uRn5I0supsp",
+      driveFolderId:
+        process.env.GOOGLE_DRIVE_FOLDER_ID || "1eEbOp7OGsz2Cu90gJSdQ6uRn5I0supsp",
       timestamp: new Date().toISOString(),
     };
 
@@ -107,7 +108,7 @@ export async function POST(request: Request) {
       if (result.success === false) {
         console.error("Apps Script registration error:", result.error);
         return NextResponse.json(
-          { success: false, error: "Registration could not be saved" },
+          { success: false, error: "Registration could not be saved", detail: result.error },
           { status: 502 }
         );
       }
