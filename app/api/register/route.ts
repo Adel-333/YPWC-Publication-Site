@@ -105,12 +105,12 @@ export async function POST(request: Request) {
     try {
       const result = JSON.parse(responseText) as { success?: boolean; error?: string };
       if (result.success === false) {
-        console.error("Apps Script registration error:", result.error);
-        return NextResponse.json(
-          { success: false, error: "Registration could not be saved" },
-          { status: 502 }
-        );
-      }
+  console.error("Apps Script registration error:", result.error);
+  return NextResponse.json(
+    { success: false, error: result.error || "Unknown Apps Script error" },
+    { status: 502 }
+  );
+}
     } catch {
       console.error("Apps Script returned non-JSON response:", responseText);
       return NextResponse.json(
