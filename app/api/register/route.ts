@@ -108,7 +108,7 @@ export async function POST(request: Request) {
       if (result.success === false) {
         console.error("Apps Script registration error:", result.error);
         return NextResponse.json(
-          { success: false, error: "Registration could not be saved", detail: result.error },
+          { success: false, error: result.error || "Unknown Apps Script error", detail: result.error },
           { status: 502 }
         );
       }
