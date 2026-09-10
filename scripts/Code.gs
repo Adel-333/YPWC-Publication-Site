@@ -143,7 +143,8 @@ function getSubmissionsSheet() {
   var ss = SpreadsheetApp.getActiveSpreadsheet();
   var sheet = ss.getSheetByName(SUBMISSIONS_SHEET);
   if (!sheet) {
-    sheet = ss.getActiveSheet();
+    sheet = ss.insertSheet(SUBMISSIONS_SHEET);
+    sheet.appendRow(EXPECTED_HEADERS.slice());
   }
   return sheet;
 }
@@ -196,7 +197,7 @@ function sheetStatus() {
   return ok({ rows: data.length - 1, headers: data[0], sampleEmails: data.slice(1, 6).map(function (r) { return r[3]; }) });
 }
 
-const SCRIPT_VERSION = "v3.0";
+const SCRIPT_VERSION = "v3.1";
 
 function doGet(e) {
   var action = (e && e.parameter && e.parameter.action) || "";
