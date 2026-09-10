@@ -20,7 +20,7 @@ function getDriveFolder(folderId) {
 function doPost(e) {
   try {
     const data = JSON.parse(e.postData.contents);
-    const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+    const sheet = getSubmissionsSheet();
 
     const headers = [
       "Timestamp",
@@ -137,8 +137,19 @@ function getVal(src, headers, name) {
   return i !== -1 && src[i] !== undefined ? src[i] : "";
 }
 
+const SUBMISSIONS_SHEET = "Registrations 2026";
+
+function getSubmissionsSheet() {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var sheet = ss.getSheetByName(SUBMISSIONS_SHEET);
+  if (!sheet) {
+    sheet = ss.getActiveSheet();
+  }
+  return sheet;
+}
+
 function migrateSheet() {
-  var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  var sheet = getSubmissionsSheet();
   var data = sheet.getDataRange().getValues();
 
   if (data.length && data[0][0] === EXPECTED_HEADERS[0] && data[0].length === EXPECTED_HEADERS.length) {
@@ -179,7 +190,7 @@ function migrateSheet() {
 }
 
 function sheetStatus() {
-  var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  var sheet = getSubmissionsSheet();
   var data = sheet.getDataRange().getValues();
   if (!data.length) return ok({ rows: 0, headers: [] });
   return ok({ rows: data.length - 1, headers: data[0], sampleEmails: data.slice(1, 6).map(function (r) { return r[3]; }) });
