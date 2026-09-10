@@ -196,13 +196,15 @@ function sheetStatus() {
   return ok({ rows: data.length - 1, headers: data[0], sampleEmails: data.slice(1, 6).map(function (r) { return r[3]; }) });
 }
 
+const SCRIPT_VERSION = "v3.0";
+
 function doGet(e) {
   var action = (e && e.parameter && e.parameter.action) || "";
   var key = (e && e.parameter && e.parameter.key) || "";
 
   if (key !== ADMIN_KEY) {
     return ContentService.createTextOutput(
-      JSON.stringify({ status: "ok", message: "YPWC Registration endpoint is active." })
+      JSON.stringify({ status: "ok", version: SCRIPT_VERSION, message: "YPWC Registration endpoint is active." })
     ).setMimeType(ContentService.MimeType.JSON);
   }
 
@@ -212,5 +214,5 @@ function doGet(e) {
   if (action === "sheet_status") {
     return sheetStatus();
   }
-  return ok({ message: "Unknown action" });
+  return ok({ message: "Unknown action", version: SCRIPT_VERSION });
 }
