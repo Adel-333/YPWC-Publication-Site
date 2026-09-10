@@ -96,8 +96,110 @@ function doPost(e) {
   }
 }
 
-function doGet() {
+const EXPECTED_HEADERS = [
+  "Timestamp",
+  "Full Name",
+  "School",
+  "Email",
+  "Grade",
+  "Chosen Topic",
+  "Article Title",
+  "Article Pitch",
+  "Source File Link",
+  "Publication Rights",
+  "Article File",
+  "Article Image",
+];
+
+const ADMIN_KEY = "ypwc-admin-2026-X7k2";
+
+function ok(obj) {
   return ContentService.createTextOutput(
-    JSON.stringify({ status: "ok", message: "YPWC Registration endpoint is active." })
+    JSON.stringify(Object.assign({ success: true }, obj))
   ).setMimeType(ContentService.MimeType.JSON);
+}
+
+function bad(obj) {
+  return ContentService.createTextOutput(
+    JSON.stringify(Object.assign({ success: false }, obj))
+  ).setMimeType(ContentService.MimeType.JSON);
+}
+
+function getIdx(headers, name) {
+  for (var i = 0; i < headers.length; i++) {
+    if (String(headers[i]).trim() === name) return i;
+  }
+  return -1;
+}
+
+function getVal(src, headers, name) {
+  var i = getIdx(headers, name);
+  return i !== -1 && src[i] !== undefined ? src[i] : "";
+}
+
+function migrateSheet() {
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  var data = sheet.getDataRange().getValues();
+
+  if (data.length && data[0][0] === EXPECTED_HEADERS[0] && data[0].length === EXPECTED_HEADERS.length) {
+    return ok({ alreadyMigrated: true, keptRows: data.length - 1 });
+  }
+
+  var oldHeaders = data.length ? data[0] : [];
+  var idx = {};
+  for (var i = 0; i < EXPECTED_HEADERS.length; i++) idx[EXPECTED_HEADERS[i]] = i;
+
+  var out = [EXPECTED_HEADERS.slice()];
+  var deletedTests = 0;
+  for (var r = 1; r < data.length; r++) {
+    var src = data[r];
+    if (src.length === 0) continue;
+    var email = String(getVal(src, oldHeaders, "Email") || "");
+    if (/^test/i.test(email.trim())) { deletedTests++; continue; }
+
+    var row = [];
+    for (var c = 0; c < EXPECTED_HEADERS.length; c++) row[c] = "";
+    row[idx["Timestamp"]] = getVal(src, oldHeaders, "Timestamp");
+    row[idx["Full Name"]] = getVal(src, oldHeaders, "Full Name");
+    row[idx["School"]] = getVal(src, oldHeaders, "School");
+    row[idx["Email"]] = getVal(src, oldHeaders, "Email");
+    row[idx["Grade"]] = getVal(src, oldHeaders, "Grade");
+    row[idx["Chosen Topic"]] = getVal(src, oldHeaders, "Chosen Topic");
+    row[idx["Article Title"]] = getVal(src, oldHeaders, "Article Title");
+    row[idx["Article Pitch"]] = getVal(src, oldHeaders, "Article Pitch");
+    row[idx["Article File"]] = getVal(src, oldHeaders, "Article File");
+    out.push(row);
+  }
+
+  sheet.clear({ contentsOnly: true });
+  if (out.length) {
+    sheet.getRange(1, 1, out.length, EXPECTED_HEADERS.length).setValues(out);
+  }
+  return ok({ migrated: true, keptRows: out.length - 1, deletedTests: deletedTests });
+}
+
+function sheetStatus() {
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  var data = sheet.getDataRange().getValues();
+  if (!data.length) return ok({ rows: 0, headers: [] });
+  return ok({ rows: data.length - 1, headers: data[0], sampleEmails: data.slice(1, 6).map(function (r) { return r[3]; }) });
+}
+
+function doGet(e) {
+  var action = (e && e.parameter && e.parameter.action) || "";
+  var key = (e && e.parameter && e.parameter.key) || "";
+
+  if (key !== ADMIN_KEY) {
+    return ContentService.createTextOutput(
+      JSON.stringify({ status: "ok", message: "YPWC Registration endpoint is active." })
+    ).setMimeType(ContentService.MimeType.JSON);
+  }
+
+  if (action === "migrate_sheet") {
+    return migrateSheet();
+  }
+  if (action === "sheet_status") {
+    return sheetStatus();
+  }
+  return ok({ message: "Unknown action" });
 }
