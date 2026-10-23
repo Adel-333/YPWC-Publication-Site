@@ -184,51 +184,41 @@ function PodiumCard({ winner }: { winner: Winner }) {
   const isGold = winner.rank === 1;
   const isSilver = winner.rank === 2;
 
-  const cardBorder = isGold
-    ? "border-[#d8b65f]/40 bg-gradient-to-b from-[#d8b65f]/[0.08] via-white/[0.02] to-transparent"
+  const accentColor = isGold
+    ? "text-[#c9a84c]"
     : isSilver
-    ? "border-zinc-400/40 bg-gradient-to-b from-zinc-300/[0.07] via-white/[0.02] to-transparent"
-    : "border-[#cd7f32]/40 bg-gradient-to-b from-[#cd7f32]/[0.07] via-white/[0.02] to-transparent";
+    ? "text-zinc-400"
+    : "text-[#a0643a]";
 
-  const badgeStyle = isGold
-    ? "border-[#d8b65f]/50 bg-[#d8b65f]/15 text-[#f4d27a]"
-    : isSilver
-    ? "border-zinc-400/50 bg-zinc-400/15 text-zinc-200"
-    : "border-[#cd7f32]/50 bg-[#cd7f32]/15 text-[#e69b5c]";
+  const rankLabel = isGold ? "Gold" : isSilver ? "Silver" : "Bronze";
 
   return (
-    <div
-      className={`relative flex flex-col justify-between rounded-xl border p-6 shadow-lg transition hover:-translate-y-1 ${cardBorder}`}
-    >
+    <div className="relative flex flex-col justify-between rounded-xl border border-white/10 bg-[#15161d] p-6 transition hover:-translate-y-0.5">
       <div>
         <div className="flex items-center justify-between">
-          <span
-            className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-bold uppercase tracking-wider ${badgeStyle}`}
-          >
-            <span>Rank #{winner.rank}</span>
-            <span>&bull;</span>
-            <span>{winner.medal}</span>
+          <span className={`text-xs font-bold uppercase tracking-widest ${accentColor}`}>
+            #{winner.rank} &mdash; {rankLabel}
           </span>
-          <span className="rounded bg-white/5 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-white/60 border border-white/10">
+          <span className="text-[10px] font-medium uppercase tracking-wider text-white/35">
             {winner.track}
           </span>
         </div>
 
-        <h3 className="mt-5 font-serif text-2xl font-bold text-white">
+        <h3 className="mt-4 font-serif text-xl font-bold text-white leading-snug">
           {winner.name}
         </h3>
 
-        <div className="mt-1.5 flex items-center gap-1.5 text-xs text-club-light">
-          <GraduationCap className="size-4 shrink-0" />
+        <div className="mt-1.5 flex items-center gap-1.5 text-xs text-white/50">
+          <GraduationCap className="size-3.5 shrink-0" />
           <span>{winner.school}</span>
         </div>
 
-        <div className="mt-5 border-t border-white/10 pt-4">
-          <p className="font-serif text-sm font-semibold italic text-white/90">
+        <div className="mt-5 border-t border-white/8 pt-4">
+          <p className="font-serif text-sm italic text-white/75 leading-relaxed">
             &ldquo;{winner.title}&rdquo;
           </p>
           {winner.summary && (
-            <p className="mt-2 text-xs leading-relaxed text-white/60">
+            <p className="mt-2 text-xs leading-relaxed text-white/45">
               {winner.summary}
             </p>
           )}

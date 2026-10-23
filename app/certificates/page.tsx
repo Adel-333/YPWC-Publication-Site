@@ -173,18 +173,20 @@ function CertificatesContent() {
 
         {/* Verification Form */}
         <div className="mx-auto mt-10 max-w-xl">
-          <form onSubmit={handleVerify} className="relative flex items-center">
-            <Search className="pointer-events-none absolute left-4 size-5 text-white/40" />
-            <input
-              type="text"
-              value={inputCode}
-              onChange={(e) => setInputCode(e.target.value)}
-              placeholder="Enter Certificate ID (e.g. YPWC-2026-01)..."
-              className="h-13 w-full rounded-xl border border-white/14 bg-[#15161d] pl-12 pr-28 text-sm text-white placeholder-white/40 shadow-lg transition focus:border-club-light focus:outline-none focus:ring-1 focus:ring-club-light"
-            />
+          <form onSubmit={handleVerify} className="flex items-stretch gap-2">
+            <div className="relative flex-1">
+              <Search className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 size-4 text-white/40" />
+              <input
+                type="text"
+                value={inputCode}
+                onChange={(e) => setInputCode(e.target.value)}
+                placeholder="Certificate ID, e.g. YPWC-2026-01"
+                className="h-11 w-full rounded-lg border border-white/14 bg-[#15161d] pl-10 pr-4 text-sm text-white placeholder-white/35 transition focus:border-club-light focus:outline-none focus:ring-1 focus:ring-club-light"
+              />
+            </div>
             <button
               type="submit"
-              className="absolute right-2 rounded-lg bg-club px-5 py-2 text-xs font-semibold text-white shadow-blue transition hover:bg-[#2e8cff]"
+              className="h-11 rounded-lg bg-club px-5 text-sm font-semibold text-white shadow-blue transition hover:bg-[#2e8cff] shrink-0"
             >
               Verify
             </button>
@@ -194,11 +196,19 @@ function CertificatesContent() {
         {/* State 1: Verified Certificate Display */}
         {verifiedWinner && (
           <div className="mt-12 overflow-hidden rounded-2xl border border-white/14 bg-[#15161d] p-6 shadow-2xl sm:p-10">
-            {/* Header / Status */}
-            <div className="flex flex-col gap-5 border-b border-white/10 pb-6 sm:flex-row sm:items-center sm:justify-between">
-              <div className="flex items-center gap-3.5">
-                <div className="flex size-12 shrink-0 items-center justify-center rounded-xl bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
-                  <CheckCircle2 className="size-6" />
+            {/* Header / Status — close button top-right of card */}
+            <div className="relative">
+              <button
+                onClick={handleReset}
+                className="absolute right-0 top-0 inline-flex size-8 items-center justify-center rounded-lg border border-white/10 bg-white/5 text-white/40 transition hover:bg-white/10 hover:text-white"
+                title="Clear"
+              >
+                <X className="size-4" />
+              </button>
+
+              <div className="flex items-center gap-3.5 pr-10">
+                <div className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
+                  <CheckCircle2 className="size-5" />
                 </div>
                 <div>
                   <div className="flex items-center gap-2">
@@ -206,7 +216,7 @@ function CertificatesContent() {
                       Digitally Verified
                     </span>
                     <span className="h-3 w-px bg-white/20" />
-                    <span className="font-mono text-xs font-semibold text-white/80">
+                    <span className="font-mono text-xs font-semibold text-white/60">
                       {verifiedWinner.certId}
                     </span>
                   </div>
@@ -215,51 +225,44 @@ function CertificatesContent() {
                   </h2>
                 </div>
               </div>
+            </div>
 
-              {/* Action Buttons */}
-              <div className="flex flex-wrap items-center gap-2.5">
-                <a
-                  href={`/certificates/pdf/${verifiedWinner.pdfFilename}`}
-                  download={verifiedWinner.pdfFilename}
-                  className="inline-flex items-center gap-2 rounded-lg bg-club px-4 py-2.5 text-xs font-bold text-white shadow-blue transition hover:bg-[#2e8cff]"
-                >
-                  <Download className="size-4" />
-                  <span>Download PDF</span>
-                </a>
-                <a
-                  href={`/certificates/html/${verifiedWinner.htmlFilename}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 rounded-lg border border-white/14 bg-white/5 px-4 py-2.5 text-xs font-semibold text-white transition hover:bg-white/10"
-                >
-                  <Printer className="size-4" />
-                  <span>Print / HTML</span>
-                </a>
-                <button
-                  onClick={() => handleCopyLink(verifiedWinner.certId)}
-                  className="inline-flex items-center gap-1.5 rounded-lg border border-white/14 bg-white/5 px-3 py-2.5 text-xs font-semibold text-white/70 transition hover:bg-white/10 hover:text-white"
-                  title="Copy verification link"
-                >
-                  {copied ? (
-                    <>
-                      <CheckCircle2 className="size-4 text-emerald-400" />
-                      <span className="text-emerald-400">Copied</span>
-                    </>
-                  ) : (
-                    <>
-                      <Share2 className="size-4" />
-                      <span>Share</span>
-                    </>
-                  )}
-                </button>
-                <button
-                  onClick={handleReset}
-                  className="inline-flex size-9 items-center justify-center rounded-lg border border-white/14 bg-white/5 text-white/50 transition hover:bg-white/10 hover:text-white"
-                  title="Clear"
-                >
-                  <X className="size-4" />
-                </button>
-              </div>
+            {/* Action Buttons row */}
+            <div className="mt-5 flex flex-wrap items-center gap-2 border-t border-white/10 pt-5">
+              <a
+                href={`/certificates/pdf/${verifiedWinner.pdfFilename}`}
+                download={verifiedWinner.pdfFilename}
+                className="inline-flex items-center gap-2 rounded-lg bg-club px-4 py-2.5 text-xs font-bold text-white shadow-blue transition hover:bg-[#2e8cff]"
+              >
+                <Download className="size-4" />
+                <span>Download PDF</span>
+              </a>
+              <a
+                href={`/certificates/html/${verifiedWinner.htmlFilename}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 rounded-lg border border-white/14 bg-white/5 px-4 py-2.5 text-xs font-semibold text-white transition hover:bg-white/10"
+              >
+                <Printer className="size-4" />
+                <span>Print / HTML</span>
+              </a>
+              <button
+                onClick={() => handleCopyLink(verifiedWinner.certId)}
+                className="inline-flex items-center gap-1.5 rounded-lg border border-white/14 bg-white/5 px-3 py-2.5 text-xs font-semibold text-white/70 transition hover:bg-white/10 hover:text-white"
+                title="Copy verification link"
+              >
+                {copied ? (
+                  <>
+                    <CheckCircle2 className="size-4 text-emerald-400" />
+                    <span className="text-emerald-400">Copied</span>
+                  </>
+                ) : (
+                  <>
+                    <Share2 className="size-4" />
+                    <span>Share</span>
+                  </>
+                )}
+              </button>
             </div>
 
             {/* Winner Details Grid */}
