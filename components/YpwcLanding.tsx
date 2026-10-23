@@ -912,14 +912,10 @@ function Leaderboard() {
                     </p>
                   </div>
 
-                  <div className="mt-6 pt-4 border-t border-white/10 flex items-center justify-center gap-2">
-                    <Link
-                      href={`/certificates?id=${entry.certId}`}
-                      className="inline-flex items-center gap-1.5 text-xs font-bold text-club-light hover:text-white transition"
-                    >
-                      <span>View Certificate</span>
-                      <ArrowRight className="size-3.5" />
-                    </Link>
+                  <div className="mt-6 pt-4 border-t border-white/10 flex items-center justify-center">
+                    <span className="rounded bg-white/5 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider text-white/60 border border-white/10">
+                      {entry.track}
+                    </span>
                   </div>
                 </motion.article>
               </Reveal>
@@ -931,7 +927,7 @@ function Leaderboard() {
             <div>
               <h4 className="text-base font-bold text-white">Full Top 10 Leaderboard &amp; Desk Honorees</h4>
               <p className="text-sm text-white/64 mt-1">
-                Explore all 10 published finalists, their schools, article titles, and verified merit certificates.
+                Explore all 10 published finalists, their schools, article titles, and editorial rankings.
               </p>
             </div>
             <Link
@@ -1076,79 +1072,6 @@ function Stats() {
   );
 }
 
-function CertificatesSection() {
-  return (
-    <section id="certificates" className="px-4 py-24 sm:px-6 lg:px-8">
-      <div className="mx-auto max-w-7xl">
-        <SectionHeader
-          eyebrow="Academic Certificates"
-          title="Merit Certificates for Top 10 Published Finalists"
-          text="Each certificate is individually authenticated with a unique ID and QR code verifying publication selection in the Physics Club Magazine."
-        />
-
-        <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {WINNERS_DATA.slice(0, 3).map((winner) => (
-            <div
-              key={winner.certId}
-              className="flex flex-col justify-between rounded-xl border border-white/10 bg-[#0b1626]/70 p-6 shadow-lg transition hover:-translate-y-1 hover:border-club-light"
-            >
-              <div>
-                <div className="flex items-center justify-between text-xs">
-                  <span className="font-mono font-bold text-club-light">
-                    Rank #{winner.rank} &bull; {winner.medal}
-                  </span>
-                  <span className="font-mono text-[#8f9eb2]">{winner.certId}</span>
-                </div>
-                <h3 className="mt-3 font-serif text-xl font-bold text-white">
-                  {winner.name}
-                </h3>
-                <p className="mt-1 text-xs text-[#8f9eb2]">{winner.school}</p>
-                <p className="mt-3 font-serif text-sm italic text-white/80 line-clamp-2">
-                  &ldquo;{winner.title}&rdquo;
-                </p>
-              </div>
-
-              <div className="mt-6 flex items-center gap-2 border-t border-white/10 pt-4">
-                <Link
-                  href={`/certificates?id=${winner.certId}`}
-                  className="flex-1 rounded-lg bg-white/10 py-2 text-center text-xs font-semibold text-white transition hover:bg-club"
-                >
-                  Verify Certificate
-                </Link>
-                <a
-                  href={`/certificates/pdf/${winner.pdfFilename}`}
-                  download={winner.pdfFilename}
-                  className="rounded-lg border border-white/15 bg-white/5 p-2 text-[#8f9eb2] transition hover:bg-white/10 hover:text-white"
-                  title="Download PDF"
-                >
-                  <Download className="size-4" />
-                </a>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        <div className="mt-10 flex flex-col sm:flex-row items-center justify-between gap-4 rounded-xl border border-white/12 bg-white/[0.03] p-6 text-center sm:text-left">
-          <div>
-            <h4 className="text-base font-bold text-white">Browse All 10 Certificates</h4>
-            <p className="mt-1 text-xs text-white/60">
-              Verify any winner by Certificate ID, scan QR codes, or download high-resolution A4 PDFs.
-            </p>
-          </div>
-          <Link
-            href="/certificates"
-            className="inline-flex shrink-0 items-center gap-2 rounded-lg bg-club px-6 py-2.5 text-sm font-semibold text-white shadow-blue transition hover:bg-[#2e8cff]"
-          >
-            <Award className="size-4" />
-            <span>Open Certificates Portal</span>
-            <ArrowRight className="size-4" />
-          </Link>
-        </div>
-      </div>
-    </section>
-  );
-}
-
 function RegistrationClosedSection() {
   return (
     <section id="register" className="px-4 py-24 sm:px-6 lg:px-8">
@@ -1158,8 +1081,8 @@ function RegistrationClosedSection() {
             <div className="absolute -right-20 -top-20 size-64 rounded-full border border-club-light/18" aria-hidden="true" />
             <div className="absolute -left-20 -bottom-20 size-64 rounded-full border border-club/10" aria-hidden="true" />
 
-            <div className="inline-flex items-center gap-2 rounded-full border border-amber-400/30 bg-amber-400/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-amber-300">
-              <span className="size-2 rounded-full bg-amber-400 animate-pulse" />
+            <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/[0.08] px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-zinc-300">
+              <span className="size-2 rounded-full bg-zinc-300 animate-pulse" />
               Submissions Closed
             </div>
 
@@ -1169,23 +1092,16 @@ function RegistrationClosedSection() {
 
             <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-white/70 md:text-lg">
               The submission and judging periods for the Youth Physics Writing Contest (YPWC) have concluded.
-              The editorial committee has finalized evaluation, and the official Leaderboard and Academic Certificates of Merit are now live.
+              The editorial committee has finalized evaluation, and the official Leaderboard is now live.
             </p>
 
-            <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
+            <div className="mt-10 flex items-center justify-center">
               <Link
                 href="/leaderboard"
-                className="inline-flex h-12 w-full sm:w-auto items-center justify-center gap-2 rounded-md bg-club px-6 text-sm font-semibold text-white shadow-blue transition hover:-translate-y-0.5 hover:bg-[#2e8cff]"
+                className="inline-flex h-12 items-center justify-center gap-2 rounded-md border border-white/30 bg-gradient-to-b from-zinc-100 via-zinc-200 to-zinc-300 px-8 text-sm font-semibold text-zinc-950 shadow-lg transition hover:-translate-y-0.5 hover:from-white hover:to-zinc-200"
               >
-                <Trophy className="size-4" aria-hidden="true" />
+                <Trophy className="size-4 text-zinc-800" aria-hidden="true" />
                 View Leaderboard
-              </Link>
-              <Link
-                href="/certificates"
-                className="inline-flex h-12 w-full sm:w-auto items-center justify-center gap-2 rounded-md border border-white/16 bg-white/[0.04] px-6 text-sm font-semibold text-white transition hover:-translate-y-0.5 hover:border-club-light hover:bg-white/[0.07]"
-              >
-                <Award className="size-4 text-club-light" aria-hidden="true" />
-                Verify &amp; Download Certificates
               </Link>
             </div>
 
@@ -1282,7 +1198,6 @@ export function YpwcLanding() {
       <Timeline />
       <Leaderboard />
       <AwardsAndPublication />
-      <CertificatesSection />
       <FAQ />
       <RegistrationClosedSection />
       <Footer />

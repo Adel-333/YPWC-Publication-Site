@@ -5,9 +5,6 @@ import Link from "next/link";
 import {
   Award,
   BookOpen,
-  CheckCircle2,
-  ExternalLink,
-  FileCheck,
   GraduationCap,
   Sparkles,
   Trophy,
@@ -19,24 +16,23 @@ export default function LeaderboardPage() {
   const remainingWinners = WINNERS_DATA.slice(3);
 
   return (
-    <div className="min-h-screen bg-[#070d18] text-[#d3dce8] selection:bg-club selection:text-white">
-      {/* Background Glows */}
+    <div className="min-h-screen bg-[#111014] text-white selection:bg-club selection:text-white">
+      {/* Subtle Ambient Background */}
       <div
         className="pointer-events-none fixed inset-0 overflow-hidden"
         aria-hidden="true"
       >
-        <div className="absolute -left-48 top-0 h-96 w-96 rounded-full bg-[#1b427b]/20 blur-3xl" />
-        <div className="absolute right-0 top-1/4 h-[420px] w-[420px] rounded-full bg-[#5c9eff]/10 blur-3xl" />
-        <div className="absolute bottom-10 left-1/3 h-80 w-80 rounded-full bg-[#0e3f8d]/25 blur-3xl" />
+        <div className="absolute -left-40 top-0 h-96 w-96 rounded-full bg-club/10 blur-[120px]" />
+        <div className="absolute right-0 top-1/4 h-[380px] w-[380px] rounded-full bg-club-light/5 blur-[120px]" />
       </div>
 
       {/* Header / Navbar */}
-      <header className="sticky top-0 z-40 border-b border-white/10 bg-[#070d18]/85 backdrop-blur-md">
+      <header className="sticky top-0 z-40 border-b border-white/10 bg-[#111014]/85 backdrop-blur-md">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3.5 sm:px-6 lg:px-8">
           <Link href="/" className="flex items-center gap-3 transition hover:opacity-90">
             <div className="relative size-9">
               <Image
-                src="/assets/club-shield-transparent.png"
+                src="/assets/club-shield-transparent.webp"
                 alt="Physics Club Shield"
                 fill
                 sizes="36px"
@@ -47,7 +43,7 @@ export default function LeaderboardPage() {
             <div className="h-5 w-px bg-white/20" />
             <div className="relative size-9">
               <Image
-                src="/assets/ypwc-logo-360.png"
+                src="/assets/ypwc-logo-360.webp"
                 alt="YPWC Logo"
                 fill
                 sizes="36px"
@@ -59,14 +55,14 @@ export default function LeaderboardPage() {
               <p className="font-mono text-xs font-bold uppercase tracking-wider text-white">
                 YPWC 2026
               </p>
-              <p className="text-[11px] text-[#8f9eb2]">Physics Club Magazine</p>
+              <p className="text-[11px] text-white/50">Physics Club Magazine</p>
             </div>
           </Link>
 
-          <nav className="flex items-center gap-1 sm:gap-2">
+          <nav className="flex items-center gap-2">
             <Link
               href="/"
-              className="rounded-md px-3 py-1.5 text-xs font-semibold text-[#8f9eb2] transition hover:bg-white/5 hover:text-white sm:text-sm"
+              className="rounded-md px-3 py-1.5 text-xs font-semibold text-white/60 transition hover:bg-white/5 hover:text-white sm:text-sm"
             >
               Overview
             </Link>
@@ -78,43 +74,42 @@ export default function LeaderboardPage() {
             </Link>
             <Link
               href="/certificates"
-              className="inline-flex items-center gap-1.5 rounded-md bg-club/90 px-3.5 py-1.5 text-xs font-semibold text-white shadow-blue transition hover:bg-club sm:text-sm"
+              className="inline-flex items-center gap-1.5 rounded-md border border-white/14 bg-white/[0.04] px-3.5 py-1.5 text-xs font-semibold text-white transition hover:border-club-light hover:bg-white/[0.08] sm:text-sm"
             >
-              <Award className="size-4" />
-              <span>Certificates</span>
+              <Award className="size-4 text-club-light" />
+              <span>Verify Certificate</span>
             </Link>
           </nav>
         </div>
       </header>
 
       {/* Main Content */}
-      <main className="relative z-10 mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-        {/* Hero Section */}
+      <main className="relative z-10 mx-auto max-w-6xl px-4 py-14 sm:px-6 lg:px-8">
+        {/* Header Hero */}
         <div className="text-center">
-          <div className="inline-flex items-center gap-2 rounded-full border border-club-light/30 bg-club/10 px-3.5 py-1 text-xs font-semibold uppercase tracking-wider text-club-light">
-            <Sparkles className="size-3.5" />
-            Official Contest Results
+          <div className="inline-flex items-center gap-2 rounded-full border border-white/12 bg-white/[0.04] px-4 py-1.5 text-xs font-semibold tracking-wider text-white/80">
+            <Sparkles className="size-3.5 text-club-light" />
+            Official Contest Standings
           </div>
-          <h1 className="mt-4 text-balance font-serif text-3xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl">
-            Youth Physics Writing Contest Leaderboard
+          <h1 className="mt-5 text-balance font-serif text-3xl font-bold tracking-tight text-white sm:text-5xl">
+            YPWC 2026 Leaderboard
           </h1>
-          <p className="mx-auto mt-4 max-w-2xl text-balance text-sm leading-relaxed text-[#9fb2cc] sm:text-base">
-            Honoring the premier student science writers nationwide. The top 10 finalists
-            have been formally selected by the editorial committee for feature publication
-            in the <strong className="text-white">Physics Club Magazine</strong> at October STEM School.
+          <p className="mx-auto mt-4 max-w-2xl text-balance text-sm leading-relaxed text-white/65 sm:text-base">
+            Recognizing Egypt&apos;s premier high school physics writers. The editorial committee has selected
+            the Top 10 finalists for feature publication in the <strong className="text-white">Physics Club Magazine</strong>.
           </p>
         </div>
 
-        {/* Top 3 Podium Section */}
+        {/* Podium: Top 3 Laureates */}
         <div className="mt-14">
           <div className="mb-6 flex items-center justify-between border-b border-white/10 pb-3">
             <div className="flex items-center gap-2">
               <Trophy className="size-5 text-[#f4d27a]" />
-              <h2 className="text-lg font-bold tracking-wide text-white">
-                Top 3 Laureates &amp; Special Prizes
+              <h2 className="text-base font-bold tracking-wide text-white sm:text-lg">
+                The Top 3 Laureates
               </h2>
             </div>
-            <span className="text-xs font-medium text-club-light">
+            <span className="text-xs text-white/50">
               Gold &bull; Silver &bull; Bronze
             </span>
           </div>
@@ -126,60 +121,59 @@ export default function LeaderboardPage() {
           </div>
         </div>
 
-        {/* Full Top 10 Finalists Table / Grid */}
+        {/* Positions 4 to 10: Editorial Honorees */}
         <div className="mt-16">
           <div className="mb-6 flex items-center justify-between border-b border-white/10 pb-3">
             <div className="flex items-center gap-2">
               <Award className="size-5 text-club-light" />
-              <h2 className="text-lg font-bold tracking-wide text-white">
+              <h2 className="text-base font-bold tracking-wide text-white sm:text-lg">
                 Top 10 Finalists (Magazine Publication)
               </h2>
             </div>
-            <span className="text-xs text-[#8f9eb2]">
-              Rankings #4 to #10
+            <span className="text-xs text-white/50">
+              Rankings #4 through #10
             </span>
           </div>
 
-          <div className="space-y-3.5">
+          <div className="space-y-3">
             {remainingWinners.map((winner) => (
               <FinalistRow key={winner.rank} winner={winner} />
             ))}
           </div>
         </div>
 
-        {/* Bottom Banner */}
-        <div className="mt-16 rounded-2xl border border-white/12 bg-gradient-to-r from-[#0b1626] via-[#0e1d33] to-[#0b1626] p-6 text-center shadow-2xl sm:p-10">
-          <FileCheck className="mx-auto size-10 text-club-light" />
-          <h3 className="mt-3 text-xl font-bold text-white sm:text-2xl">
-            Looking for Official Certificates?
-          </h3>
-          <p className="mx-auto mt-2 max-w-xl text-xs text-[#9fb2cc] sm:text-sm">
-            All 10 winning certificates are digitally authenticated with unique certificate IDs and QR codes.
-            You can verify any certificate or download high-resolution printable PDFs.
-          </p>
-          <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
-            <Link
-              href="/certificates"
-              className="inline-flex items-center gap-2 rounded-lg bg-club px-6 py-2.5 text-sm font-semibold text-white shadow-blue transition hover:bg-[#2e8cff]"
-            >
-              <Award className="size-4" />
-              Go to Certificates Portal
-            </Link>
+        {/* Publication Summary Box */}
+        <div className="mt-16 rounded-xl border border-white/10 bg-[#15161d] p-6 sm:p-8">
+          <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex items-start gap-4">
+              <div className="flex size-12 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-white/5">
+                <BookOpen className="size-6 text-club-light" />
+              </div>
+              <div>
+                <h3 className="text-base font-bold text-white sm:text-lg">
+                  Physics Club Magazine Publication
+                </h3>
+                <p className="mt-1 max-w-xl text-xs leading-relaxed text-white/60 sm:text-sm">
+                  All 10 finalist manuscripts will be published in a special print and digital issue
+                  dedicated to student science journalism and theoretical physics exploration.
+                </p>
+              </div>
+            </div>
             <Link
               href="/"
-              className="inline-flex items-center gap-2 rounded-lg border border-white/14 bg-white/5 px-6 py-2.5 text-sm font-semibold text-white transition hover:bg-white/10"
+              className="inline-flex shrink-0 items-center justify-center rounded-md border border-white/16 bg-white/[0.04] px-5 py-2.5 text-xs font-semibold text-white transition hover:bg-white/[0.08]"
             >
-              Contest Overview
+              Return to Overview
             </Link>
           </div>
         </div>
       </main>
 
       {/* Footer */}
-      <footer className="mt-20 border-t border-white/10 py-8 text-center text-xs text-[#8f9eb2]">
-        <p>&copy; 2026 Physics Club &bull; October STEM School. All rights reserved.</p>
-        <p className="mt-1 text-[11px] text-[#6c7d93]">
-          Youth Physics Writing Contest (YPWC) &bull; Physics Club Magazine
+      <footer className="mt-20 border-t border-white/10 py-10 text-center text-xs text-white/50">
+        <p>&copy; 2026 Youth Physics Writing Contest &bull; Physics Club Magazine. All rights reserved.</p>
+        <p className="mt-1 text-[11px] text-white/35">
+          October STEM High School for Boys &bull; octphysicsclub.org
         </p>
       </footer>
     </div>
@@ -189,35 +183,34 @@ export default function LeaderboardPage() {
 function PodiumCard({ winner }: { winner: Winner }) {
   const isGold = winner.rank === 1;
   const isSilver = winner.rank === 2;
-  const isBronze = winner.rank === 3;
 
-  const medalBorder = isGold
-    ? "border-[#d8b65f]/50 bg-gradient-to-b from-[#d8b65f]/15 to-[#0b1626]"
+  const cardBorder = isGold
+    ? "border-[#d8b65f]/40 bg-gradient-to-b from-[#d8b65f]/[0.08] via-white/[0.02] to-transparent"
     : isSilver
-    ? "border-[#c7cbd3]/50 bg-gradient-to-b from-[#c7cbd3]/12 to-[#0b1626]"
-    : "border-[#cd7f32]/50 bg-gradient-to-b from-[#cd7f32]/12 to-[#0b1626]";
+    ? "border-zinc-400/40 bg-gradient-to-b from-zinc-300/[0.07] via-white/[0.02] to-transparent"
+    : "border-[#cd7f32]/40 bg-gradient-to-b from-[#cd7f32]/[0.07] via-white/[0.02] to-transparent";
 
-  const badgeColor = isGold
-    ? "bg-[#d8b65f]/20 text-[#f4d27a] border-[#d8b65f]/40"
+  const badgeStyle = isGold
+    ? "border-[#d8b65f]/50 bg-[#d8b65f]/15 text-[#f4d27a]"
     : isSilver
-    ? "bg-[#c7cbd3]/20 text-[#e2e6ee] border-[#c7cbd3]/40"
-    : "bg-[#cd7f32]/20 text-[#e69b5c] border-[#cd7f32]/40";
+    ? "border-zinc-400/50 bg-zinc-400/15 text-zinc-200"
+    : "border-[#cd7f32]/50 bg-[#cd7f32]/15 text-[#e69b5c]";
 
   return (
     <div
-      className={`relative flex flex-col justify-between rounded-xl border p-6 shadow-xl transition hover:-translate-y-1 ${medalBorder}`}
+      className={`relative flex flex-col justify-between rounded-xl border p-6 shadow-lg transition hover:-translate-y-1 ${cardBorder}`}
     >
       <div>
         <div className="flex items-center justify-between">
           <span
-            className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-bold uppercase tracking-wider ${badgeColor}`}
+            className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-bold uppercase tracking-wider ${badgeStyle}`}
           >
             <span>Rank #{winner.rank}</span>
             <span>&bull;</span>
             <span>{winner.medal}</span>
           </span>
-          <span className="font-mono text-xs font-semibold text-[#8f9eb2]">
-            {winner.certId}
+          <span className="rounded bg-white/5 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-white/60 border border-white/10">
+            {winner.track}
           </span>
         </div>
 
@@ -225,34 +218,21 @@ function PodiumCard({ winner }: { winner: Winner }) {
           {winner.name}
         </h3>
 
-        <div className="mt-1.5 flex items-center gap-1.5 text-xs font-medium text-club-light">
+        <div className="mt-1.5 flex items-center gap-1.5 text-xs text-club-light">
           <GraduationCap className="size-4 shrink-0" />
           <span>{winner.school}</span>
         </div>
 
-        <div className="mt-4 border-t border-white/10 pt-4">
-          <p className="font-serif text-sm font-semibold italic text-[#e6edf8]">
+        <div className="mt-5 border-t border-white/10 pt-4">
+          <p className="font-serif text-sm font-semibold italic text-white/90">
             &ldquo;{winner.title}&rdquo;
           </p>
           {winner.summary && (
-            <p className="mt-2 text-xs leading-relaxed text-[#9fb2cc]">
+            <p className="mt-2 text-xs leading-relaxed text-white/60">
               {winner.summary}
             </p>
           )}
         </div>
-      </div>
-
-      <div className="mt-6 flex items-center justify-between border-t border-white/10 pt-4">
-        <span className="rounded bg-[#070d18] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-[#9fb2cc] border border-white/10">
-          {winner.track}
-        </span>
-        <Link
-          href={`/certificates?id=${winner.certId}`}
-          className="inline-flex items-center gap-1.5 text-xs font-bold text-club-light transition hover:text-white"
-        >
-          <span>View Certificate</span>
-          <ExternalLink className="size-3.5" />
-        </Link>
       </div>
     </div>
   );
@@ -260,38 +240,28 @@ function PodiumCard({ winner }: { winner: Winner }) {
 
 function FinalistRow({ winner }: { winner: Winner }) {
   return (
-    <div className="group flex flex-col justify-between gap-4 rounded-xl border border-white/10 bg-[#0b1626]/70 p-4.5 transition hover:border-club-light/40 hover:bg-[#0b1626] sm:flex-row sm:items-center">
-      <div className="flex items-start gap-3.5">
-        <div className="flex size-10 shrink-0 items-center justify-center rounded-lg border border-white/15 bg-white/5 font-mono text-base font-bold text-white">
+    <div className="flex flex-col justify-between gap-4 rounded-xl border border-white/10 bg-white/[0.025] p-5 transition hover:border-white/20 hover:bg-white/[0.04] sm:flex-row sm:items-center">
+      <div className="flex items-start gap-4">
+        <div className="flex size-10 shrink-0 items-center justify-center rounded-lg border border-white/12 bg-white/5 font-mono text-sm font-bold text-white/80">
           #{winner.rank}
         </div>
         <div>
           <div className="flex flex-wrap items-center gap-2">
-            <h4 className="font-serif text-lg font-bold text-white group-hover:text-club-light transition">
+            <h4 className="font-serif text-lg font-bold text-white">
               {winner.name}
             </h4>
-            <span className="font-mono text-xs text-[#8f9eb2] border border-white/10 px-1.5 py-0.5 rounded">
-              {winner.certId}
-            </span>
           </div>
-          <p className="mt-0.5 text-xs text-[#8f9eb2]">{winner.school}</p>
-          <p className="mt-1.5 font-serif text-sm italic text-[#d3dce8]">
+          <p className="mt-0.5 text-xs text-white/50">{winner.school}</p>
+          <p className="mt-2 font-serif text-sm italic text-white/80">
             &ldquo;{winner.title}&rdquo;
           </p>
         </div>
       </div>
 
-      <div className="flex items-center justify-between gap-4 sm:justify-end">
-        <span className="rounded bg-[#070d18] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-[#9fb2cc] border border-white/10">
+      <div className="shrink-0 self-start sm:self-center">
+        <span className="rounded bg-white/5 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-wider text-white/60 border border-white/10">
           {winner.track}
         </span>
-        <Link
-          href={`/certificates?id=${winner.certId}`}
-          className="inline-flex items-center gap-1.5 rounded-lg border border-white/15 bg-white/5 px-3 py-1.5 text-xs font-semibold text-white transition hover:border-club-light hover:bg-club/15 hover:text-club-light"
-        >
-          <Award className="size-3.5" />
-          <span>Certificate</span>
-        </Link>
       </div>
     </div>
   );
