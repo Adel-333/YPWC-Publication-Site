@@ -1,0 +1,150 @@
+{
+  "store": {
+    "scores": {
+      "ypwc-002": {
+        "scientific_accuracy": 23,
+        "physical_reasoning": 18,
+        "clarity_structure": 15,
+        "creativity": 13,
+        "real_world_connection": 8,
+        "research_references": 4
+      },
+      "ypwc-008": {
+        "scientific_accuracy": 0
+      },
+      "ypwc-017": {
+        "scientific_accuracy": 0
+      },
+      "ypwc-020": {
+        "scientific_accuracy": 12,
+        "physical_reasoning": 19,
+        "clarity_structure": 5.5,
+        "creativity": 12.5,
+        "research_references": 4,
+        "real_world_connection": 8
+      },
+      "ypwc-018": {
+        "scientific_accuracy": 22,
+        "physical_reasoning": 16,
+        "clarity_structure": 15,
+        "creativity": 9,
+        "real_world_connection": 8,
+        "research_references": 3
+      },
+      "ypwc-021": {
+        "scientific_accuracy": 11,
+        "physical_reasoning": 14,
+        "clarity_structure": 8,
+        "creativity": 6,
+        "real_world_connection": 6,
+        "research_references": 3
+      },
+      "ypwc-030": {
+        "scientific_accuracy": 23,
+        "physical_reasoning": 10,
+        "clarity_structure": 11,
+        "creativity": 11,
+        "real_world_connection": 9,
+        "research_references": 4
+      }
+    },
+    "notes": {},
+    "statuses": {
+      "ypwc-002": "Done",
+      "ypwc-003": "Excluded",
+      "ypwc-004": "Excluded",
+      "ypwc-001": "Excluded",
+      "ypwc-005": "Excluded",
+      "ypwc-006": "Excluded",
+      "ypwc-007": "Excluded",
+      "ypwc-009": "Excluded",
+      "ypwc-010": "Excluded",
+      "ypwc-011": "Excluded",
+      "ypwc-012": "Excluded",
+      "ypwc-013": "Excluded",
+      "ypwc-008": "Excluded",
+      "ypwc-017": "Excluded",
+      "ypwc-014": "In review",
+      "ypwc-015": "In review",
+      "ypwc-016": "In review",
+      "ypwc-025": "Excluded",
+      "ypwc-036": "Excluded",
+      "ypwc-035": "Excluded",
+      "ypwc-033": "Excluded"
+    },
+    "edits": {},
+    "ai": {
+      "ypwc-003": {
+        "used": true,
+        "percentage": 100,
+        "note": ""
+      },
+      "ypwc-004": {
+        "used": true,
+        "percentage": 0,
+        "note": ""
+      },
+      "ypwc-001": {
+        "used": true,
+        "percentage": 90,
+        "note": ""
+      },
+      "ypwc-005": {
+        "used": true,
+        "percentage": 0,
+        "note": ""
+      },
+      "ypwc-006": {
+        "used": true,
+        "percentage": 0,
+        "note": ""
+      },
+      "ypwc-007": {
+        "used": true,
+        "percentage": 0,
+        "note": ""
+      },
+      "ypwc-009": {
+        "used": true,
+        "percentage": 0,
+        "note": ""
+      },
+      "ypwc-010": {
+        "used": true,
+        "percentage": 0,
+        "note": ""
+      },
+      "ypwc-011": {
+        "used": true,
+        "percentage": 0,
+        "note": ""
+      },
+      "ypwc-012": {
+        "used": true,
+        "percentage": 0,
+        "note": ""
+      },
+      "ypwc-013": {
+        "used": true,
+        "percentage": 0,
+        "note": ""
+      },
+      "ypwc-025": {
+        "used": true,
+        "percentage": 0,
+        "note": ""
+      },
+      "ypwc-036": {
+        "used": true,
+        "percentage": 0,
+        "note": ""
+      },
+      "ypwc-033": {
+        "used": true,
+        "percentage": 0,
+        "note": ""
+      }
+    }
+  },
+  "source": "C:\\Users\\wasfy\\AppData\\Local\\Google\\Chrome\\User Data\\Profile 1\\Local Storage\\leveldb\\010256.ldb"
+}

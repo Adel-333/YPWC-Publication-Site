@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>YPWC Email Templates Preview</title>
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <style>
+    body { background-color: #060c16; color: #D3DCE8; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    iframe { border: none; width: 100%; height: 720px; background-color: #080F1C; border-radius: 8px; }
+    .tab-active { background-color: #5C9EFF; color: #0B1626; font-weight: 700; }
+    .tab-inactive { background-color: #111E30; color: #9FB2CC; border: 1px solid #1E2D44; }
+  </style>
+</head>
+<body class="p-6">
+  <div class="max-w-7xl mx-auto">
+    <!-- Header -->
+    <header class="flex flex-col md:flex-row md:items-center justify-between pb-6 mb-6 border-b border-[#1E2D44] gap-4">
+      <div>
+        <div class="flex items-center gap-3">
+          <span class="inline-block w-2.5 h-2.5 rounded-full bg-[#5C9EFF]"></span>
+          <h1 class="text-xl font-bold text-white tracking-wide">YPWC Minimal &amp; Direct Email Dispatch</h1>
+        </div>
+        <p class="text-xs text-[#8F9EB2] mt-1">
+          Youth Physics Writing Contest &bull; October STEM School
+        </p>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <a href="preview-winner-sample.html" target="_blank" class="text-xs bg-[#111E30] hover:bg-[#1E2D44] text-[#5C9EFF] border border-[#1E2D44] px-3 py-1.5 rounded transition">
+          Open Top 10 Preview &nearr;
+        </a>
+        <a href="preview-participant-sample.html" target="_blank" class="text-xs bg-[#111E30] hover:bg-[#1E2D44] text-[#8F9EB2] border border-[#1E2D44] px-3 py-1.5 rounded transition">
+          Open Non-Winner Preview &nearr;
+        </a>
+      </div>
+    </header>
+
+    <!-- Main Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+      
+      <!-- Controls Column (4 cols) -->
+      <div class="lg:col-span-4 space-y-5">
+        
+        <!-- Template Selection Tabs -->
+        <div class="bg-[#0B1626] border border-[#1E2D44] rounded-lg p-4 shadow-sm">
+          <label class="block text-xs uppercase font-bold tracking-wider text-[#8F9EB2] mb-3">القالب / Template</label>
+          <div class="grid grid-cols-2 gap-2">
+            <button id="tabWinner" onclick="switchTemplate('winner')" class="tab-active py-2 px-3 rounded text-xs text-center transition">
+              Top 10 Winner
+            </button>
+            <button id="tabParticipant" onclick="switchTemplate('participant')" class="tab-inactive py-2 px-3 rounded text-xs text-center transition">
+              Non-Winner
+            </button>
+          </div>
+        </div>
+
+        <!-- Preset Selection -->
+        <div class="bg-[#0B1626] border border-[#1E2D44] rounded-lg p-4 shadow-sm">
+          <label class="block text-xs uppercase font-bold tracking-wider text-[#8F9EB2] mb-2">عينات من الطلاب / Quick Select</label>
+          <div class="space-y-1.5" id="presetsList">
+            <!-- Injected by JS -->
+          </div>
+        </div>
+
+        <!-- Form fields for Mapping -->
+        <div class="bg-[#0B1626] border border-[#1E2D44] rounded-lg p-4 shadow-sm space-y-3.5">
+          <div class="border-b border-[#1E2D44] pb-2">
+            <h3 class="text-xs font-semibold text-white uppercase tracking-wider">حقول البيانات / Tokens</h3>
+          </div>
+
+          <div>
+            <label class="block text-xs text-[#8F9EB2] mb-1">اسم الطالب / {{PARTICIPANT_NAME}}</label>
+            <input type="text" id="f_name" class="w-full bg-[#111E30] border border-[#1E2D44] rounded px-3 py-1.5 text-xs text-white focus:outline-none focus:border-[#5C9EFF]" />
+          </div>
+
+          <div>
+            <label class="block text-xs text-[#8F9EB2] mb-1">عنوان المقال / {{ARTICLE_TITLE}}</label>
+            <input type="text" id="f_title" class="w-full bg-[#111E30] border border-[#1E2D44] rounded px-3 py-1.5 text-xs text-white focus:outline-none focus:border-[#5C9EFF]" />
+          </div>
+
+          <div id="winnerFields" class="space-y-3.5">
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="block text-xs text-[#8F9EB2] mb-1">المركز / {{RANK}}</label>
+                <input type="text" id="f_rank" class="w-full bg-[#111E30] border border-[#1E2D44] rounded px-3 py-1.5 text-xs text-white focus:outline-none focus:border-[#5C9EFF]" />
+              </div>
+              <div>
+                <label class="block text-xs text-[#8F9EB2] mb-1">الميدالية / {{MEDAL}}</label>
+                <select id="f_medal" class="w-full bg-[#111E30] border border-[#1E2D44] rounded px-3 py-1.5 text-xs text-white focus:outline-none focus:border-[#5C9EFF]">
+                  <option value="Gold">Gold</option>
+                  <option value="Silver">Silver</option>
+                  <option value="Bronze">Bronze</option>
+                </select>
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-xs text-[#8F9EB2] mb-1">رابط الشهادة / {{CERTIFICATE_URL}}</label>
+              <input type="text" id="f_cert" class="w-full bg-[#111E30] border border-[#1E2D44] rounded px-3 py-1.5 text-xs text-white" value="https://ypwc.octoberstem.org/certificates/download" />
+            </div>
+          </div>
+
+          <div class="pt-2">
+            <button onclick="updateLiveFrame()" class="w-full py-2 bg-[#5C9EFF] hover:bg-[#4A8BE6] text-[#0B1626] font-bold rounded text-xs transition">
+              تحديث المعاينة
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Preview Column (8 cols) -->
+      <div class="lg:col-span-8 space-y-3">
+        <div class="flex items-center justify-between bg-[#0B1626] border border-[#1E2D44] px-4 py-2.5 rounded-lg">
+          <div class="flex items-center gap-2">
+            <span class="text-xs font-medium text-[#8F9EB2]" id="modeBadge">Top 10 Winner Template</span>
+          </div>
+          <button onclick="copyGeneratedHtml()" class="text-xs bg-[#1E2D44] hover:bg-[#2A3A55] text-white px-3 py-1 rounded transition flex items-center gap-1.5">
+            نسخ كود الـ HTML
+          </button>
+        </div>
+
+        <div class="border border-[#1E2D44] rounded-lg overflow-hidden">
+          <iframe id="previewFrame" src="preview-winner-sample.html"></iframe>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    let currentMode = 'winner';
+    
+    const presets = [
+      {
+        name: "Adham Mohamed Khairy",
+        rank: "1",
+        medal: "Gold",
+        medalColor: "#FFD700",
+        title: "From Ketchup to Oobleck: Non-Newtonian Fluids and Their Behavior",
+        certUrl: "https://ypwc.octoberstem.org/certificates/download?id=ypwc-002"
+      },
+      {
+        name: "Kenzy Raafat Eltablawy",
+        rank: "2",
+        medal: "Gold",
+        medalColor: "#FFD700",
+        title: "GPS & Relativity",
+        certUrl: "https://ypwc.octoberstem.org/certificates/download?id=ypwc-018"
+      },
+      {
+        name: "Ahmed Maher Abdelgwad",
+        rank: "10",
+        medal: "Silver",
+        medalColor: "#C0C0C0",
+        title: "The Invisible Skeleton of the Cosmos",
+        certUrl: "https://ypwc.octoberstem.org/certificates/download?id=ypwc-030"
+      }
+    ];
+
+    const nonWinnerPresets = [
+      {
+        name: "Mennatallah Mahmoud Khedr",
+        title: "Should You Run in the Rain?"
+      },
+      {
+        name: "Saber Hussein Zahran",
+        title: "Why Does Sound Travel Differently Through Different Materials?"
+      },
+      {
+        name: "Shady Mohamed Elkassas",
+        title: "How Does a Microwave Heat Your Food? The Physics Behind Invisible Waves"
+      }
+    ];
+
+    function renderPresets() {
+      const container = document.getElementById('presetsList');
+      container.innerHTML = '';
+      if (currentMode === 'winner') {
+        presets.forEach((p) => {
+          const btn = document.createElement('button');
+          btn.className = 'w-full text-left px-3 py-1.5 rounded bg-[#111E30] hover:bg-[#1E2D44] text-xs text-[#D3DCE8] flex items-center justify-between transition';
+          btn.innerHTML = `<span class="font-medium truncate mr-2">#${p.rank} ${p.name}</span><span class="text-[11px] text-[#5C9EFF] shrink-0">${p.medal}</span>`;
+          btn.onclick = () => loadWinnerPreset(p);
+          container.appendChild(btn);
+        });
+      } else {
+        nonWinnerPresets.forEach((p) => {
+          const btn = document.createElement('button');
+          btn.className = 'w-full text-left px-3 py-1.5 rounded bg-[#111E30] hover:bg-[#1E2D44] text-xs text-[#D3DCE8] flex items-center justify-between transition';
+          btn.innerHTML = `<span class="font-medium truncate mr-2">${p.name}</span><span class="text-[11px] text-[#8F9EB2] shrink-0">Participant</span>`;
+          btn.onclick = () => loadNonWinnerPreset(p);
+          container.appendChild(btn);
+        });
+      }
+    }
+
+    function switchTemplate(mode) {
+      currentMode = mode;
+      if (mode === 'winner') {
+        document.getElementById('tabWinner').className = 'tab-active py-2 px-3 rounded text-xs text-center transition';
+        document.getElementById('tabParticipant').className = 'tab-inactive py-2 px-3 rounded text-xs text-center transition';
+        document.getElementById('winnerFields').classList.remove('hidden');
+        document.getElementById('modeBadge').textContent = 'Top 10 Winner Template';
+        document.getElementById('previewFrame').src = 'preview-winner-sample.html';
+        loadWinnerPreset(presets[0]);
+      } else {
+        document.getElementById('tabParticipant').className = 'tab-active py-2 px-3 rounded text-xs text-center transition';
+        document.getElementById('tabWinner').className = 'tab-inactive py-2 px-3 rounded text-xs text-center transition';
+        document.getElementById('winnerFields').classList.add('hidden');
+        document.getElementById('modeBadge').textContent = 'Non-Winner Template';
+        document.getElementById('previewFrame').src = 'preview-participant-sample.html';
+        loadNonWinnerPreset(nonWinnerPresets[0]);
+      }
+      renderPresets();
+    }
+
+    function loadWinnerPreset(p) {
+      document.getElementById('f_name').value = p.name;
+      document.getElementById('f_title').value = p.title;
+      document.getElementById('f_rank').value = p.rank;
+      document.getElementById('f_medal').value = p.medal;
+      document.getElementById('f_cert').value = p.certUrl;
+    }
+
+    function loadNonWinnerPreset(p) {
+      document.getElementById('f_name').value = p.name;
+      document.getElementById('f_title').value = p.title;
+    }
+
+    loadWinnerPreset(presets[0]);
+    renderPresets();
+
+    function updateLiveFrame() {
+      // Refresh iframe
+      if (currentMode === 'winner') {
+        document.getElementById('previewFrame').src = 'preview-winner-sample.html';
+      } else {
+        document.getElementById('previewFrame').src = 'preview-participant-sample.html';
+      }
+    }
+
+    function copyGeneratedHtml() {
+      const frame = document.getElementById('previewFrame');
+      const doc = frame.contentDocument || frame.contentWindow.document;
+      const html = doc.documentElement.outerHTML;
+      navigator.clipboard.writeText(html).then(() => {
+        alert("تم نسخ كود الـ HTML بنجاح!");
+      });
+    }
+  </script>
+</body>
+</html>

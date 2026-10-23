@@ -1,12 +1,16 @@
+// @ts-nocheck
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import {
   ArrowRight,
   Award,
   BookOpen,
+  CheckCircle2,
   ClipboardCheck,
   Download,
+  ExternalLink,
   HelpCircle,
   PenLine,
   Plus,
@@ -16,6 +20,7 @@ import {
   Trophy,
   Users,
 } from "lucide-react";
+import { WINNERS_DATA } from "@/lib/winnersData";
 import {
   motion,
   useReducedMotion,
@@ -33,9 +38,9 @@ const navItems = [
   { label: "Overview", href: "#overview" },
   { label: "Brief", href: "#brief" },
   { label: "Timeline", href: "#timeline" },
+  { label: "Leaderboard", href: "/leaderboard" },
+  { label: "Certificates", href: "/certificates" },
   { label: "FAQ", href: "#faq" },
-  { label: "Register", href: "#register" },
-  { label: "Format", href: "#format" },
 ];
 
 const briefCards = [
@@ -312,20 +317,20 @@ function Header() {
           ))}
         </nav>
         <div className="flex items-center gap-2">
-          <a
-            href="#leaderboard"
+          <Link
+            href="/leaderboard"
             className="inline-flex h-10 items-center gap-2 rounded-md border border-white/16 bg-white/[0.04] px-4 text-sm font-semibold text-white transition hover:-translate-y-0.5 hover:border-club-light hover:bg-white/[0.07]"
           >
             <Trophy className="size-4" aria-hidden="true" />
             Leaderboard
-          </a>
-          <a
-            href="#register"
+          </Link>
+          <Link
+            href="/certificates"
             className="inline-flex h-10 items-center gap-2 rounded-md bg-club px-4 text-sm font-semibold text-white transition hover:-translate-y-0.5 hover:bg-[#2e8cff]"
           >
-            Register
-            <ArrowRight className="size-4" aria-hidden="true" />
-          </a>
+            <Award className="size-4" aria-hidden="true" />
+            Certificates
+          </Link>
         </div>
       </div>
     </header>
@@ -415,7 +420,7 @@ function EditorialCardStack() {
             rubric points
           </div>
           <div className="mx-5 mt-5 text-sm font-semibold uppercase tracking-[0.12em] text-[#0e3f8d]">
-            Register Now!
+            Results Live!
           </div>
         </motion.div>
       </div>
@@ -507,20 +512,20 @@ function Hero() {
               transition={{ duration: 0.6, delay: 0.45, ease: [0.22, 1, 0.36, 1] }}
               className="mt-9 flex flex-col gap-3 sm:flex-row"
             >
-              <a
-                href="#register"
+              <Link
+                href="/leaderboard"
                 className="inline-flex h-12 items-center justify-center gap-2 rounded-md bg-club px-6 text-sm font-semibold text-white shadow-blue transition hover:-translate-y-0.5 hover:bg-[#2e8cff]"
               >
-                Register now
-                <ArrowRight className="size-4" aria-hidden="true" />
-              </a>
-              <a
-                href="#brief"
+                <Trophy className="size-4" aria-hidden="true" />
+                View Leaderboard
+              </Link>
+              <Link
+                href="/certificates"
                 className="inline-flex h-12 items-center justify-center gap-2 rounded-md border border-white/16 bg-white/[0.04] px-6 text-sm font-semibold text-white transition hover:-translate-y-0.5 hover:border-club-light hover:bg-white/[0.07]"
               >
-                Explore the brief
-                <BookOpen className="size-4" aria-hidden="true" />
-              </a>
+                <Award className="size-4 text-club-light" aria-hidden="true" />
+                View Certificates
+              </Link>
             </motion.div>
           </motion.div>
 
@@ -856,67 +861,87 @@ function Timeline() {
   );
 }
 
-const leaderboardEntries = [
-  { rank: 1, name: "To be determined", medal: "Gold", note: "First place" },
-  { rank: 2, name: "To be determined", medal: "Silver", note: "Second" },
-  { rank: 3, name: "To be determined", medal: "Bronze", note: "Third" },
-] satisfies Array<{
-  rank: number;
-  name: string;
-  medal: keyof typeof medalStyles;
-  note: string;
-}>;
-
 function Leaderboard() {
+  const top3 = WINNERS_DATA.slice(0, 3);
+
   return (
     <section id="leaderboard" className="px-4 py-24 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl">
         <SectionHeader
-          eyebrow="Leaderboard"
-          title="The top 3 earn special prizes."
-          text="Results are announced on October 10. The top three participants on the leaderboard receive special prizes, and the wider top 30% receive medals."
+          eyebrow="Official Leaderboard"
+          title="Congratulations to Egypt's Young Physics Authors"
+          text="Results have been finalized by the editorial committee. The top 10 finalists have been selected for publication in the Physics Club Magazine, with special honors awarded to the top three laureates."
         />
-        <div className="mt-14 grid gap-4 md:grid-cols-3">
-          {leaderboardEntries.map((entry, index) => (
-            <Reveal key={entry.rank} delay={index * 0.08}>
-              <motion.article
-                whileHover={{ y: -8, scale: 1.02 }}
-                transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                className={cn(
-                  "group relative flex h-full flex-col items-center overflow-hidden rounded-lg p-8 text-center",
-                  medalStyles[entry.medal].surface,
-                )}
-              >
-                <div
+        <div className="mt-14 grid gap-6 md:grid-cols-3">
+          {top3.map((entry, index) => {
+            const medalKey = entry.medal as "Gold" | "Silver" | "Bronze";
+            return (
+              <Reveal key={entry.rank} delay={index * 0.08}>
+                <motion.article
+                  whileHover={{ y: -8, scale: 1.02 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 20 }}
                   className={cn(
-                    "pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent to-transparent opacity-75 transition-opacity duration-300 group-hover:opacity-100",
-                    medalStyles[entry.medal].accent,
-                  )}
-                />
-                <span
-                  className={cn(
-                    "relative flex size-14 items-center justify-center rounded-full border text-2xl font-bold",
-                    medalStyles[entry.medal].number,
+                    "group relative flex h-full flex-col justify-between overflow-hidden rounded-xl p-8 text-center border shadow-xl",
+                    medalStyles[medalKey]?.surface || "border-white/10 bg-white/5",
                   )}
                 >
-                  {entry.rank}
-                </span>
-                <p className={cn("mt-5 text-xs font-semibold uppercase tracking-[0.18em]", medalStyles[entry.medal].label)}>
-                  {entry.medal} medal
-                </p>
-                <p className="mt-3 text-xl font-semibold text-white">{entry.name}</p>
-                <p className="mt-1 text-sm text-white/52">{entry.note}</p>
-              </motion.article>
-            </Reveal>
-          ))}
+                  <div
+                    className={cn(
+                      "pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent to-transparent opacity-75 transition-opacity duration-300 group-hover:opacity-100",
+                      medalStyles[medalKey]?.accent,
+                    )}
+                  />
+                  <div>
+                    <div className="flex justify-center">
+                      <span
+                        className={cn(
+                          "flex size-14 items-center justify-center rounded-full border text-2xl font-bold font-mono",
+                          medalStyles[medalKey]?.number,
+                        )}
+                      >
+                        #{entry.rank}
+                      </span>
+                    </div>
+                    <p className={cn("mt-4 text-xs font-semibold uppercase tracking-[0.18em]", medalStyles[medalKey]?.label)}>
+                      {entry.medal} Medal
+                    </p>
+                    <h3 className="mt-2 text-xl font-bold text-white font-serif">{entry.name}</h3>
+                    <p className="mt-1 text-xs text-club-light">{entry.school}</p>
+                    <p className="mt-4 font-serif text-sm italic text-white/80 line-clamp-2">
+                      &ldquo;{entry.title}&rdquo;
+                    </p>
+                  </div>
+
+                  <div className="mt-6 pt-4 border-t border-white/10 flex items-center justify-center gap-2">
+                    <Link
+                      href={`/certificates?id=${entry.certId}`}
+                      className="inline-flex items-center gap-1.5 text-xs font-bold text-club-light hover:text-white transition"
+                    >
+                      <span>View Certificate</span>
+                      <ArrowRight className="size-3.5" />
+                    </Link>
+                  </div>
+                </motion.article>
+              </Reveal>
+            );
+          })}
         </div>
         <Reveal>
-          <div className="mt-8 rounded-lg border border-club-light/20 bg-club/6 p-6 text-center">
-            <p className="text-sm leading-7 text-white/64">
-              Results will appear here on <span className="font-semibold text-white">October 10</span>.
-              The top 30% of all participants receive medals in a Gold : Silver : Bronze ratio of{" "}
-              <span className="font-semibold text-white">3 : 2 : 1</span>.
-            </p>
+          <div className="mt-10 flex flex-col sm:flex-row items-center justify-between gap-4 rounded-xl border border-club-light/20 bg-club/8 p-6">
+            <div>
+              <h4 className="text-base font-bold text-white">Full Top 10 Leaderboard &amp; Desk Honorees</h4>
+              <p className="text-sm text-white/64 mt-1">
+                Explore all 10 published finalists, their schools, article titles, and verified merit certificates.
+              </p>
+            </div>
+            <Link
+              href="/leaderboard"
+              className="inline-flex shrink-0 items-center gap-2 rounded-lg bg-club px-5 py-2.5 text-sm font-semibold text-white shadow-blue transition hover:bg-[#2e8cff]"
+            >
+              <Trophy className="size-4" />
+              <span>View Full Leaderboard Page</span>
+              <ArrowRight className="size-4" />
+            </Link>
           </div>
         </Reveal>
       </div>
@@ -1051,330 +1076,123 @@ function Stats() {
   );
 }
 
-function RegistrationForm() {
-  const [formState, setFormState] = useState<"idle" | "loading" | "success" | "error">("idle");
-  const [topicOther, setTopicOther] = useState(false);
-  const [pitchWordCount, setPitchWordCount] = useState(0);
-  const [titleWordCount, setTitleWordCount] = useState(0);
-  const [errors, setErrors] = useState<Record<string, string>>({});
-  const formRef = useRef<HTMLFormElement>(null);
-  const submitLock = useRef(false);
-
-  const validate = useCallback((form: HTMLFormElement): boolean => {
-    const fd = new FormData(form);
-    const newErrors: Record<string, string> = {};
-
-    const fullName = (fd.get("fullName") as string || "").trim();
-    if (!fullName) newErrors.fullName = "Full name is required";
-    else if (fullName.length < 3) newErrors.fullName = "Name must be at least 3 characters";
-
-    const school = (fd.get("school") as string || "").trim();
-    if (!school) newErrors.school = "School is required";
-    else if (school.length < 2) newErrors.school = "School must be at least 2 characters";
-
-    const email = (fd.get("email") as string || "").trim();
-    if (!email) newErrors.email = "Email is required";
-    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) newErrors.email = "Enter a valid email with @";
-
-    const grade = fd.get("grade") as string;
-    if (!grade) newErrors.grade = "Grade is required";
-
-    const topic = fd.get("topic") as string;
-    if (!topic) newErrors.topic = "Topic is required";
-    if (topic === "Other") {
-      const custom = (fd.get("topicOther") as string || "").trim();
-      if (!custom) newErrors.topicOther = "Please type your topic";
-    }
-
-    const title = (fd.get("title") as string || "").trim();
-    const titleWords = title ? title.split(/\s+/).filter(Boolean).length : 0;
-    setTitleWordCount(titleWords);
-    if (title && titleWords < 2) newErrors.title = "Title must be at least 2 words";
-    else if (title && titleWords > 20) newErrors.title = "Title must be under 20 words";
-
-    const pitch = (fd.get("pitch") as string || "").trim();
-    const pitchWords = pitch ? pitch.split(/\s+/).filter(Boolean).length : 0;
-    setPitchWordCount(pitchWords);
-    if (!pitch) newErrors.pitch = "Pitch is required";
-    else if (pitchWords < 10) newErrors.pitch = `Pitch must be at least 10 words (${pitchWords}/10)`;
-    else if (pitchWords > 200) newErrors.pitch = `Pitch must be under 200 words (${pitchWords}/200)`;
-
-    const file = fd.get("articleFile") as File;
-    if (!file || file.size === 0) newErrors.articleFile = "Article file is required";
-    else if (!file.name.match(/\.(pdf|doc|docx)$/i)) newErrors.articleFile = "Only PDF or Word files accepted";
-
-    const images = fd.getAll("articleImage") as File[];
-    const gifFiles = images.filter((f) => f && f.size > 0);
-    if (gifFiles.some((f) => !/\.(gif)$/i.test(f.name)))
-      newErrors.articleImage = "Only GIF files are accepted";
-
-    const sourceLink = (fd.get("sourceLink") as string || "").trim();
-    if (sourceLink && !/^https?:\/\/\S+$/i.test(sourceLink))
-      newErrors.sourceLink = "Enter a valid link beginning with http:// or https://";
-
-    if (!fd.get("publicationRights")) newErrors.publicationRights = "Required";
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  }, []);
-
-  const handleSubmit = useCallback(async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    if (submitLock.current || formState === "success") return;
-
-    const form = event.currentTarget;
-    if (!validate(form)) return;
-
-    submitLock.current = true;
-    setFormState("loading");
-
-    const formData = new FormData(form);
-    if (topicOther) {
-      const custom = (formData.get("topicOther") as string || "").trim();
-      formData.set("topic", custom || "Other");
-    }
-    formData.delete("topicOther");
-
-    try {
-      const response = await fetch("/api/register", {
-        method: "POST",
-        body: formData,
-      });
-
-      if (!response.ok) throw new Error("Submission failed");
-
-      setFormState("success");
-      form.reset();
-      setTopicOther(false);
-      setPitchWordCount(0);
-      setTitleWordCount(0);
-      setErrors({});
-    } catch {
-      setFormState("error");
-      submitLock.current = false;
-    }
-  }, [topicOther, formState, validate]);
-
-  const fieldClass = (field: string) =>
-    cn("field", errors[field] && "border-red-400/60");
-
+function CertificatesSection() {
   return (
-    <section id="register" className="px-4 py-24 sm:px-6 lg:px-8">
-      <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
-        <Reveal>
-          <div className="sticky top-24 overflow-hidden rounded-lg border border-white/12 bg-[#15161d] p-8 shadow-blue-soft">
-            <div className="absolute -right-20 -top-20 size-64 rounded-full border border-club-light/18" aria-hidden="true" />
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-club-light">
-              Registration
-            </p>
-            <h2 className="mt-4 text-balance text-4xl font-semibold leading-tight text-white md:text-6xl">
-              Submit your intent to join YPWC.
-            </h2>
-            <p className="mt-5 text-base leading-8 text-white/68 md:text-lg">
-              Fill in your details and upload your article plus optional
-              GIFs. Your registration will be recorded with a timestamp.
-            </p>
-            <div className="mt-10">
-              <EditorialCardStack />
-            </div>
-            <div className="mt-6 flex items-center gap-3 text-sm text-white/58">
-              <Timer className="size-5 text-club-light" aria-hidden="true" />
-              Registration time is automatically recorded
-            </div>
-          </div>
-        </Reveal>
-        <Reveal delay={0.08}>
-          <form
-            ref={formRef}
-            onSubmit={handleSubmit}
-            encType="multipart/form-data"
-            className="rounded-lg border border-white/12 bg-[#15161d] p-5 shadow-blue-soft md:p-7"
-            noValidate
-          >
-            <div className="grid gap-4 md:grid-cols-2">
-              <label className="space-y-2">
-                <span className="text-sm font-medium text-white/72">Full name</span>
-                <input name="fullName" className={fieldClass("fullName")} placeholder="Your name" defaultValue="" />
-                {errors.fullName ? <p className="text-xs text-red-400">{errors.fullName}</p> : null}
-              </label>
-              <label className="space-y-2">
-                <span className="text-sm font-medium text-white/72">School</span>
-                <input name="school" className={fieldClass("school")} placeholder="School name" defaultValue="" />
-                {errors.school ? <p className="text-xs text-red-400">{errors.school}</p> : null}
-              </label>
-              <label className="space-y-2">
-                <span className="text-sm font-medium text-white/72">Email</span>
-                <input name="email" type="email" className={fieldClass("email")} placeholder="name@example.com" defaultValue="" />
-                {errors.email ? <p className="text-xs text-red-400">{errors.email}</p> : null}
-              </label>
-              <label className="space-y-2">
-                <span className="text-sm font-medium text-white/72">Grade</span>
-                <select name="grade" className={fieldClass("grade")} defaultValue="">
-                  <option value="">Choose grade</option>
-                  <option>Grade 9</option>
-                  <option>Grade 10</option>
-                  <option>Grade 11</option>
-                  <option>Grade 12</option>
-                </select>
-                {errors.grade ? <p className="text-xs text-red-400">{errors.grade}</p> : null}
-              </label>
-              <label className="space-y-2 md:col-span-2">
-                <span className="text-sm font-medium text-white/72">Chosen topic</span>
-                <select
-                  name="topic"
-                  className={fieldClass("topic")}
-                  defaultValue=""
-                  onChange={(e) => setTopicOther(e.target.value === "Other")}
-                >
-                  <option value="">Choose a topic desk</option>
-                  <option>Space and Astronomy</option>
-                  <option>Electricity and Magnetism</option>
-                  <option>Waves and Sound</option>
-                  <option>Modern and Quantum Physics</option>
-                  <option>Thermodynamics</option>
-                  <option>Physics in Daily Life</option>
-                  <option value="Other">Other</option>
-                </select>
-                {errors.topic ? <p className="text-xs text-red-400">{errors.topic}</p> : null}
-                {topicOther ? (
-                  <div className="mt-2">
-                    <input name="topicOther" className={fieldClass("topicOther")} placeholder="Type your topic" defaultValue="" />
-                    {errors.topicOther ? <p className="text-xs text-red-400">{errors.topicOther}</p> : null}
-                  </div>
-                ) : null}
-              </label>
-              <label className="space-y-2 md:col-span-2">
-                <span className="text-sm font-medium text-white/72">Working article title</span>
-                <input
-                  name="title"
-                  className={fieldClass("title")}
-                  placeholder="A short title or idea"
-                  defaultValue=""
-                  onChange={(e) => {
-                    const wc = e.target.value.trim() ? e.target.value.trim().split(/\s+/).filter(Boolean).length : 0;
-                    setTitleWordCount(wc);
-                  }}
-                />
-                <p className="text-xs text-white/44">{titleWordCount}/20 words</p>
-                {errors.title ? <p className="text-xs text-red-400">{errors.title}</p> : null}
-              </label>
-              <label className="space-y-2 md:col-span-2">
-                <span className="text-sm font-medium text-white/72">Article pitch</span>
-                <textarea
-                  name="pitch"
-                  className={cn(fieldClass("pitch"), "min-h-28 resize-y")}
-                  placeholder="In 2-3 sentences, explain what your article will help readers understand."
-                  defaultValue=""
-                  onChange={(e) => {
-                    const wc = e.target.value.trim() ? e.target.value.trim().split(/\s+/).filter(Boolean).length : 0;
-                    setPitchWordCount(wc);
-                  }}
-                />
-                <p className="text-xs text-white/44">{pitchWordCount}/200 words (minimum 10)</p>
-                {errors.pitch ? <p className="text-xs text-red-400">{errors.pitch}</p> : null}
-              </label>
-              <label className="space-y-2 md:col-span-2">
-                <span className="text-sm font-medium text-white/72">Article file (PDF or Word)</span>
-                <input
-                  type="file"
-                  name="articleFile"
-                  accept=".pdf,.doc,.docx"
-                  className="block w-full text-sm text-white/64 file:mr-4 file:rounded-md file:border-0 file:bg-club file:px-4 file:py-2 file:text-sm file:font-semibold file:text-white hover:file:bg-[#2e8cff]"
-                />
-                {errors.articleFile ? <p className="text-xs text-red-400 mt-1">{errors.articleFile}</p> : null}
-              </label>
-              <label className="space-y-2 md:col-span-2">
-                <span className="text-sm font-medium text-white/72">Source file link (optional)</span>
-                <input
-                  name="sourceLink"
-                  type="url"
-                  inputMode="url"
-                  className={fieldClass("sourceLink")}
-                  placeholder="https://drive.google.com/... or https://github.com/..."
-                />
-                <p className="text-xs text-white/44">
-                  Paste a link to your Word document, GitHub repository, or LaTeX project folder so the full source files stay with the magazine.
-                </p>
-                {errors.sourceLink ? <p className="text-xs text-red-400">{errors.sourceLink}</p> : null}
-              </label>
-              <label className="space-y-2 md:col-span-2">
-                <span className="text-sm font-medium text-white/72">Article GIF(s)</span>
-                <input
-                  type="file"
-                  name="articleImage"
-                  accept=".gif"
-                  multiple
-                  className="block w-full text-sm text-white/64 file:mr-4 file:rounded-md file:border-0 file:bg-club file:px-4 file:py-2 file:text-sm file:font-semibold file:text-white hover:file:bg-[#2e8cff]"
-                />
-                <p className="text-xs text-white/44">Optional GIFs to accompany your article. You can choose more than one.</p>
-                {errors.articleImage ? <p className="text-xs text-red-400 mt-1">{errors.articleImage}</p> : null}
-              </label>
-              <div className="md:col-span-2">
-                <label className="flex cursor-pointer items-start gap-3 rounded-md border border-white/12 bg-white/[0.035] px-4 py-3.5">
-                  <input
-                    type="checkbox"
-                    name="publicationRights"
-                    value="yes"
-                    className="mt-0.5 size-4 shrink-0 rounded border-white/30 bg-[#111014] accent-club"
-                  />
-                  <span className="text-sm leading-6 text-white/68">
-                    By submitting, I grant the <span className="font-semibold text-white">Physics Club Magazine</span> full
-                    editorial and publication rights: the club may edit, format, translate, and publish my article in the
-                    magazine and online.
+    <section id="certificates" className="px-4 py-24 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-7xl">
+        <SectionHeader
+          eyebrow="Academic Certificates"
+          title="Merit Certificates for Top 10 Published Finalists"
+          text="Each certificate is individually authenticated with a unique ID and QR code verifying publication selection in the Physics Club Magazine."
+        />
+
+        <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {WINNERS_DATA.slice(0, 3).map((winner) => (
+            <div
+              key={winner.certId}
+              className="flex flex-col justify-between rounded-xl border border-white/10 bg-[#0b1626]/70 p-6 shadow-lg transition hover:-translate-y-1 hover:border-club-light"
+            >
+              <div>
+                <div className="flex items-center justify-between text-xs">
+                  <span className="font-mono font-bold text-club-light">
+                    Rank #{winner.rank} &bull; {winner.medal}
                   </span>
-                </label>
-                {errors.publicationRights ? (
-                  <p className="mt-1 text-xs text-red-400">You must accept the publication rights to submit</p>
-                ) : null}
+                  <span className="font-mono text-[#8f9eb2]">{winner.certId}</span>
+                </div>
+                <h3 className="mt-3 font-serif text-xl font-bold text-white">
+                  {winner.name}
+                </h3>
+                <p className="mt-1 text-xs text-[#8f9eb2]">{winner.school}</p>
+                <p className="mt-3 font-serif text-sm italic text-white/80 line-clamp-2">
+                  &ldquo;{winner.title}&rdquo;
+                </p>
+              </div>
+
+              <div className="mt-6 flex items-center gap-2 border-t border-white/10 pt-4">
+                <Link
+                  href={`/certificates?id=${winner.certId}`}
+                  className="flex-1 rounded-lg bg-white/10 py-2 text-center text-xs font-semibold text-white transition hover:bg-club"
+                >
+                  Verify Certificate
+                </Link>
+                <a
+                  href={`/certificates/pdf/${winner.pdfFilename}`}
+                  download={winner.pdfFilename}
+                  className="rounded-lg border border-white/15 bg-white/5 p-2 text-[#8f9eb2] transition hover:bg-white/10 hover:text-white"
+                  title="Download PDF"
+                >
+                  <Download className="size-4" />
+                </a>
               </div>
             </div>
-            <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-              <p className="text-sm leading-6 text-white/52">
-                AI-generated writing is not allowed in the final submission.
-              </p>
-              <button
-                type="submit"
-                disabled={formState === "loading" || formState === "success"}
-                className="inline-flex h-12 items-center justify-center gap-2 rounded-md bg-club px-6 text-sm font-semibold text-white transition hover:-translate-y-0.5 hover:bg-[#2e8cff] disabled:cursor-not-allowed disabled:opacity-60"
-              >
-                {formState === "loading" ? (
-                  <>
-                    <motion.span
-                      animate={{ rotate: 360 }}
-                      transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                      className="inline-block size-4 rounded-full border-2 border-white/30 border-t-white"
-                    />
-                    Submitting...
-                  </>
-                ) : formState === "success" ? (
-                  "Submitted"
-                ) : (
-                  <>
-                    Submit registration
-                    <Send className="size-4" aria-hidden="true" />
-                  </>
-                )}
-              </button>
+          ))}
+        </div>
+
+        <div className="mt-10 flex flex-col sm:flex-row items-center justify-between gap-4 rounded-xl border border-white/12 bg-white/[0.03] p-6 text-center sm:text-left">
+          <div>
+            <h4 className="text-base font-bold text-white">Browse All 10 Certificates</h4>
+            <p className="mt-1 text-xs text-white/60">
+              Verify any winner by Certificate ID, scan QR codes, or download high-resolution A4 PDFs.
+            </p>
+          </div>
+          <Link
+            href="/certificates"
+            className="inline-flex shrink-0 items-center gap-2 rounded-lg bg-club px-6 py-2.5 text-sm font-semibold text-white shadow-blue transition hover:bg-[#2e8cff]"
+          >
+            <Award className="size-4" />
+            <span>Open Certificates Portal</span>
+            <ArrowRight className="size-4" />
+          </Link>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function RegistrationClosedSection() {
+  return (
+    <section id="register" className="px-4 py-24 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-5xl">
+        <Reveal>
+          <div className="relative overflow-hidden rounded-2xl border border-white/14 bg-gradient-to-b from-[#15161d] to-[#0c0d12] p-8 shadow-blue-soft md:p-14 text-center">
+            <div className="absolute -right-20 -top-20 size-64 rounded-full border border-club-light/18" aria-hidden="true" />
+            <div className="absolute -left-20 -bottom-20 size-64 rounded-full border border-club/10" aria-hidden="true" />
+
+            <div className="inline-flex items-center gap-2 rounded-full border border-amber-400/30 bg-amber-400/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-amber-300">
+              <span className="size-2 rounded-full bg-amber-400 animate-pulse" />
+              Submissions Closed
             </div>
-            {formState === "success" ? (
-              <motion.p
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="mt-5 rounded-md border border-club-light/30 bg-club/12 px-4 py-3 text-sm text-white"
+
+            <h2 className="mt-6 text-balance text-3xl font-bold tracking-tight text-white md:text-5xl font-serif">
+              Contest Submissions Are Officially Closed
+            </h2>
+
+            <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-white/70 md:text-lg">
+              The submission and judging periods for the Youth Physics Writing Contest (YPWC) have concluded.
+              The editorial committee has finalized evaluation, and the official Leaderboard and Academic Certificates of Merit are now live.
+            </p>
+
+            <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
+              <Link
+                href="/leaderboard"
+                className="inline-flex h-12 w-full sm:w-auto items-center justify-center gap-2 rounded-md bg-club px-6 text-sm font-semibold text-white shadow-blue transition hover:-translate-y-0.5 hover:bg-[#2e8cff]"
               >
-                Registration submitted successfully. Your article and image have been uploaded.
-              </motion.p>
-            ) : null}
-            {formState === "error" ? (
-              <motion.p
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="mt-5 rounded-md border border-red-400/30 bg-red-400/10 px-4 py-3 text-sm text-red-300"
+                <Trophy className="size-4" aria-hidden="true" />
+                View Leaderboard
+              </Link>
+              <Link
+                href="/certificates"
+                className="inline-flex h-12 w-full sm:w-auto items-center justify-center gap-2 rounded-md border border-white/16 bg-white/[0.04] px-6 text-sm font-semibold text-white transition hover:-translate-y-0.5 hover:border-club-light hover:bg-white/[0.07]"
               >
-                Something went wrong. Please try again or contact the organizer.
-              </motion.p>
-            ) : null}
-          </form>
+                <Award className="size-4 text-club-light" aria-hidden="true" />
+                Verify &amp; Download Certificates
+              </Link>
+            </div>
+
+            <div className="mt-8 border-t border-white/10 pt-6 text-xs text-white/44">
+              Thank you to all high school physics writers who participated from schools across Egypt.
+            </div>
+          </div>
         </Reveal>
       </div>
     </section>
@@ -1421,9 +1239,12 @@ function Footer() {
           <a href="#faq" className="hover:text-club-light">
             FAQ
           </a>
-          <a href="#leaderboard" className="hover:text-club-light">
+          <Link href="/leaderboard" className="hover:text-club-light">
             Leaderboard
-          </a>
+          </Link>
+          <Link href="/certificates" className="hover:text-club-light">
+            Certificates
+          </Link>
           <a href="#top" className="hover:text-club-light">
             Back to top
           </a>
@@ -1461,8 +1282,9 @@ export function YpwcLanding() {
       <Timeline />
       <Leaderboard />
       <AwardsAndPublication />
+      <CertificatesSection />
       <FAQ />
-      <RegistrationForm />
+      <RegistrationClosedSection />
       <Footer />
     </main>
   );

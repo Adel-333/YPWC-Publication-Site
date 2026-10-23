@@ -1,0 +1,648 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>YPWC Review Workbench</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #0c1118;
+      --panel: #121a25;
+      --panel-2: #0f1620;
+      --line: rgba(255, 255, 255, 0.1);
+      --line-2: rgba(255, 255, 255, 0.16);
+      --text: #f8fbff;
+      --muted: rgba(248, 251, 255, 0.62);
+      --soft: rgba(248, 251, 255, 0.42);
+      --blue: #1473e6;
+      --sky: #8dd3ff;
+      --green: #86efac;
+      --teal: #2dd4bf;
+      --gold: #fbbf24;
+      --rose: #fda4af;
+      --radius: 8px;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at 18% -8%, rgba(20, 115, 230, 0.22), transparent 30rem),
+        radial-gradient(circle at 96% 12%, rgba(45, 212, 191, 0.12), transparent 26rem),
+        var(--bg);
+      color: var(--text);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    button, input, select, textarea { font: inherit; }
+    button { cursor: pointer; }
+    a { color: inherit; text-decoration: none; }
+    .shell { max-width: 1540px; margin: 0 auto; padding: 20px; }
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      border-bottom: 1px solid var(--line);
+      background: rgba(12, 17, 24, 0.9);
+      backdrop-filter: blur(18px);
+    }
+    .topbar-inner {
+      max-width: 1540px;
+      margin: 0 auto;
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .brand { min-width: 0; display: flex; align-items: center; gap: 12px; }
+    .logo {
+      width: 46px;
+      height: 46px;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      background: linear-gradient(145deg, rgba(20, 115, 230, 0.28), rgba(255, 255, 255, 0.05));
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      color: var(--sky);
+    }
+    .eyebrow { margin: 0; color: var(--sky); font-size: 12px; font-weight: 800; letter-spacing: 0.16em; text-transform: uppercase; }
+    h1 { margin: 2px 0 0; font-size: clamp(22px, 3vw, 34px); line-height: 1.1; }
+    .actions { display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-end; }
+    .btn {
+      min-height: 40px;
+      border: 1px solid var(--line-2);
+      border-radius: 7px;
+      background: rgba(255, 255, 255, 0.045);
+      color: var(--text);
+      padding: 9px 12px;
+      font-weight: 750;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: transform 160ms ease, background 160ms ease, border-color 160ms ease;
+    }
+    .btn:hover { transform: translateY(-1px); background: rgba(255, 255, 255, 0.075); border-color: rgba(141, 211, 255, 0.45); }
+    .btn.primary { border-color: transparent; background: var(--blue); }
+    .btn.primary:hover { background: #2e8cff; }
+    .metrics { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; margin: 18px 0; }
+    .metric { border: 1px solid var(--line); border-radius: var(--radius); background: rgba(255,255,255,0.04); padding: 14px; }
+    .metric span { color: var(--muted); font-size: 13px; }
+    .metric strong { display: block; margin-top: 4px; font-size: 28px; }
+    .metric small { display: block; margin-top: 4px; color: var(--soft); }
+    .grid { display: grid; grid-template-columns: minmax(360px, 0.9fr) minmax(0, 1.35fr); gap: 16px; align-items: start; }
+    .panel { border: 1px solid var(--line); border-radius: var(--radius); background: rgba(18, 26, 37, 0.96); overflow: hidden; }
+    .filters { padding: 14px; border-bottom: 1px solid var(--line); }
+    .filter-row { display: grid; grid-template-columns: 1fr 145px; gap: 10px; }
+    .filter-row + .filter-row { grid-template-columns: 1fr 1fr 135px; margin-top: 10px; }
+    input, select, textarea {
+      width: 100%;
+      border: 1px solid var(--line-2);
+      border-radius: 7px;
+      background: rgba(255,255,255,0.045);
+      color: var(--text);
+      outline: none;
+    }
+    input, select { min-height: 42px; padding: 0 11px; }
+    textarea { min-height: 116px; padding: 11px; resize: vertical; line-height: 1.55; }
+    input:focus, select:focus, textarea:focus { border-color: rgba(141, 211, 255, 0.75); box-shadow: 0 0 0 3px rgba(20,115,230,0.16); }
+    option { background: #111827; }
+    .checkbox { display: flex; align-items: center; gap: 8px; min-height: 42px; border: 1px solid var(--line-2); border-radius: 7px; padding: 0 11px; color: var(--muted); }
+    .checkbox input { width: 16px; min-height: auto; accent-color: var(--blue); }
+    .list-head, .row {
+      min-width: 760px;
+      display: grid;
+      grid-template-columns: 66px 1.25fr 0.8fr 82px 104px;
+      gap: 10px;
+      align-items: center;
+    }
+    .list-head { padding: 10px 14px; color: var(--soft); font-size: 11px; font-weight: 850; letter-spacing: 0.13em; text-transform: uppercase; border-bottom: 1px solid var(--line); }
+    .list { max-height: calc(100vh - 256px); overflow: auto; }
+    .row {
+      width: 100%;
+      border: 0;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+      background: transparent;
+      color: var(--text);
+      padding: 12px 14px;
+      text-align: left;
+    }
+    .row:hover, .row.active { background: rgba(20,115,230,0.12); }
+    .truncate { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .subtle { color: var(--muted); font-size: 13px; }
+    .scorebar { height: 6px; margin-top: 5px; border-radius: 999px; overflow: hidden; background: rgba(255,255,255,0.1); }
+    .scorebar i { display: block; height: 100%; border-radius: inherit; background: var(--teal); }
+    .status { display: inline-block; border-radius: 6px; padding: 5px 7px; font-size: 12px; font-weight: 800; text-align: center; }
+    .status.not { background: rgba(255,255,255,0.055); color: rgba(255,255,255,0.48); }
+    .status.review { background: rgba(20,115,230,0.18); color: var(--sky); }
+    .status.done { background: rgba(34,197,94,0.14); color: var(--green); }
+    .status.short { background: rgba(245,158,11,0.14); color: var(--gold); }
+    .status.excluded { background: rgba(248,113,113,0.15); color: #fca5a5; }
+    .detail-head { padding: 18px; border-bottom: 1px solid var(--line); display: grid; grid-template-columns: 1fr 132px; gap: 16px; }
+    .meta { color: var(--muted); font-size: 13px; }
+    .title-input { margin-top: 8px; min-height: auto; padding: 5px 7px; border-color: transparent; background: transparent; font-size: clamp(24px, 3vw, 34px); font-weight: 800; line-height: 1.12; }
+    .edit-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-top: 12px; }
+    .mini-label { display: block; margin-bottom: 5px; color: var(--soft); font-size: 11px; font-weight: 850; letter-spacing: 0.12em; text-transform: uppercase; }
+    .rankbox { border: 1px solid var(--line); border-radius: var(--radius); background: var(--panel-2); padding: 13px; text-align: center; }
+    .rankbox strong { display: block; font-size: 34px; }
+    .detail-body { display: grid; grid-template-columns: minmax(0, 1fr) 360px; gap: 16px; padding: 16px; }
+    .card { border: 1px solid var(--line); border-radius: var(--radius); background: var(--panel-2); padding: 14px; }
+    .card h2 { margin: 0 0 12px; font-size: 18px; display: flex; align-items: center; gap: 8px; }
+    .rubric-head { display: flex; justify-content: space-between; gap: 10px; align-items: center; margin-bottom: 12px; }
+    .rubric-head h2 { margin: 0; }
+    .criterion { border: 1px solid var(--line); border-radius: 7px; background: rgba(255,255,255,0.035); padding: 12px; margin-top: 10px; }
+    .criterion-top { display: grid; grid-template-columns: 1fr 98px; gap: 10px; }
+    .criterion strong { display: block; }
+    .criterion p { margin: 5px 0 0; color: var(--muted); font-size: 13px; line-height: 1.55; }
+    .criterion input { text-align: right; font-size: 18px; font-weight: 850; }
+    .data-line { margin-top: 12px; }
+    .pitch { margin-top: 12px; border: 1px solid var(--line); border-radius: 7px; background: rgba(255,255,255,0.035); padding: 12px; color: rgba(255,255,255,0.76); line-height: 1.65; }
+    .link-grid { display: grid; gap: 8px; margin-top: 12px; }
+    .link { min-height: 38px; border: 1px solid var(--line-2); border-radius: 7px; padding: 9px 10px; font-weight: 800; display: flex; justify-content: space-between; align-items: center; }
+    .link.disabled { opacity: 0.35; pointer-events: none; }
+    .ai-grid { display: grid; grid-template-columns: 1fr 120px; gap: 10px; align-items: end; }
+    .ai-check { min-height: 42px; display: flex; align-items: center; gap: 9px; border: 1px solid var(--line-2); border-radius: 7px; background: rgba(255,255,255,0.04); padding: 0 11px; font-weight: 800; }
+    .ai-check input { width: 16px; min-height: auto; accent-color: #ef4444; }
+    .top-five { display: grid; gap: 8px; }
+    .top-five button { display: grid; grid-template-columns: 42px 1fr 42px; gap: 10px; align-items: center; border: 1px solid var(--line); border-radius: 7px; background: rgba(255,255,255,0.035); color: var(--text); padding: 10px; text-align: left; }
+    .top-five button:hover { background: rgba(255,255,255,0.07); }
+    .pill { border-radius: 7px; background: rgba(20,115,230,0.18); color: var(--sky); padding: 9px 0; text-align: center; font-weight: 850; }
+    .checks { display: grid; gap: 10px; color: var(--muted); font-size: 14px; }
+    .check.done { color: rgba(255,255,255,0.8); }
+    .toast { position: fixed; right: 18px; bottom: 18px; z-index: 50; display: none; border: 1px solid rgba(141,211,255,0.35); border-radius: 8px; background: #101722; padding: 12px 14px; box-shadow: 0 20px 70px rgba(0,0,0,0.4); }
+    .toast.show { display: block; }
+    @media (max-width: 1100px) {
+      .grid, .detail-body { grid-template-columns: 1fr; }
+      .list { max-height: 520px; }
+    }
+    @media (max-width: 760px) {
+      .topbar-inner { align-items: stretch; flex-direction: column; }
+      .actions { justify-content: flex-start; }
+      .metrics, .filter-row, .filter-row + .filter-row, .detail-head, .edit-grid { grid-template-columns: 1fr; }
+      .shell { padding: 12px; }
+    }
+  </style>
+</head>
+<body>
+  <script id="ypwc-payload" type="application/json">{"sourceFile": "C:\\Users\\wasfy\\Downloads\\YPWC Assets\\YPWC registration deduped.xlsx", "generatedFrom": "YPWC registration deduped.xlsx", "entries": [{"id": "ypwc-001", "timestamp": "2026-09-08T22:32:03.964Z", "fullName": "Zyad Ahmed Soliman", "school": "Fayoum STEM School", "email": "freefirezezo12@gmail.com", "grade": "Grade 12", "topic": "Modern and Quantum Physics", "title": "The Ghost That Preserves Yesterday: How Quantum Leaps Lock Your Memories", "pitch": "This article explores how quantum tunneling a phenomenon where subatomic particles pass through solid physical barriers is utilized in modern flash memory technology. By explaining floating gate transistors in smartphones and SSDs, it bridges complex quantum mechanics with the personal experience of digital memory retention. Readers will understand the physics behind data storage, its physical limits, and why flash devices eventually wear out.", "sourceFileLink": null, "publicationRights": null, "articleFile": "https://drive.google.com/file/d/1v9woKvJPptPYX4_H25dprQE9aBOi_MiP/view?usp=drivesdk", "articleImage": null}, {"id": "ypwc-002", "timestamp": "2026-09-09T10:25:02.691Z", "fullName": "Adham Mohamed Khairy", "school": "STEM High School for Boys - 6th of October", "email": "adhamfaied14@gmail.com", "grade": "Grade 11", "topic": "Fluid Mechanics", "title": "From Ketchup to Oobleck: Non-Newtonian Fluids and Their Behavior", "pitch": "Most of us have seen or heard about Oobleck, a mixture of water and cornstarch that is normally a liquid, but turns solid when pressure is applied to it. However, few actually think about the physics behind this fascinating phenomenon. But before diving into the physics behind non-Newtonian fluids, we have to understand what Newtonian fluids are.", "sourceFileLink": null, "publicationRights": null, "articleFile": "https://docs.google.com/document/d/15f6kb_Lokd6WArOxTp0A6J8lpUz0yQhp/edit?usp=drivesdk\u0026ouid=103649845197450882344\u0026rtpof=true\u0026sd=true", "articleImage": null}, {"id": "ypwc-003", "timestamp": "2026-09-10T22:24:57.053Z", "fullName": "Yasser Soumati", "school": "Moulay Youssef high school", "email": "yassersoumati11@gmail.com", "grade": "Grade 10", "topic": "Physics in Daily Life", "title": "Newton on the Field: The Physics of Biomechanics, Flight, and Friction in Sports", "pitch": "This article reveals the physical principles governing athletic performance, from the fluid dynamics of a curved football trajectory to the biomechanics of energy transfer in jumping and running. By analyzing real-world movement through classical mechanics, readers will understand how athletes unconsciously manipulate laws of motion to achieve peak results.", "sourceFileLink": null, "publicationRights": "Yes", "articleFile": "https://drive.google.com/file/d/1A4DAlLAXsAOoC0xUan1D0rAWx5H41pf2/view?usp=drivesdk", "articleImage": null}, {"id": "ypwc-004", "timestamp": "2026-09-13T17:27:11.919Z", "fullName": "Youssef Abdelhakim", "school": "STEM High School for Boys - 6th of October", "email": "yousef.mohamed.safwat1015@gmail.com", "grade": "Grade 11", "topic": "Physics in Daily Life", "title": "A Chain at the Butcher's", "pitch": "The article illustrates how a sight in the butcher's place struck me with the idea of analyzing the motion of the chain he was pulling behind.", "sourceFileLink": "https://docs.google.com/document/d/16-T32f50HgNADkMDNO93sA2kGEpGGzsO/edit?usp=sharing\u0026ouid=107910141542041940722\u0026rtpof=true\u0026sd=true", "publicationRights": "Yes", "articleFile": "https://docs.google.com/document/d/1xJPCUZa9YRxvWKSbutnlgPsqg_LR3OlC/edit?usp=drivesdk\u0026ouid=114295127748400554488\u0026rtpof=true\u0026sd=true", "articleImage": null}, {"id": "ypwc-005", "timestamp": "2026-09-17T20:02:03.339Z", "fullName": "Karen Ashraf Kamal", "school": "Deshna Secondary School", "email": "ka0305938@gmail.com", "grade": "Grade 12", "topic": "Space and Astronomy", "title": "Secrets of black holes: How does the universe swallow light and time?", "pitch": "This article explores the concept of black holes and how they form as a result of the collapse of giant stars, using a simplified style suitable for non-specialists. It also explains the effect of a black hole's immense gravity on the bending of light and the slowing down of time near it.", "sourceFileLink": null, "publicationRights": "Yes", "articleFile": "https://drive.google.com/file/d/1a_j9VdrhPj019_oaKizcz8_MmZZWwTdG/view?usp=drivesdk", "articleImage": null}, {"id": "ypwc-006", "timestamp": "2026-09-18T06:37:44.979Z", "fullName": "Hagar Antar Abdelrahman", "school": "Juhayna East Secondary School", "email": "hagarantar182009@gmail.com", "grade": "الصف الحادي عشر", "topic": "الفيزياء الحديثة والكمية", "title": "Modern and Quantum physics A journey into the unexpected", "pitch": "This essay takes readers on a journey through one of the strangest and most fascinating revolutions in science: the birth of quantum physics. It explains, in simple and engaging language, how scientists discovered that particles can exist in multiple states at once, how observation itself can change reality, and how these bizarre ideas quietly power technologies we use every day — from lasers to smartphones. Readers will come away understanding not just the history of quantum theory, but why it remains one of the most mind-bending and important ideas humanity has ever uncovered.", "sourceFileLink": null, "publicationRights": "Yes", "articleFile": "https://docs.google.com/document/d/1VlJNmcTj8F04d9WcUyK8FR7r5TqnaDXV/edit?usp=drivesdk\u0026ouid=114295127748400554488\u0026rtpof=true\u0026sd=true", "articleImage": null}, {"id": "ypwc-007", "timestamp": "2026-09-18T09:20:18.090Z", "fullName": "Youssef Emad Mahrous Hassen Abdelhafez", "school": "The advanced school for nuclear tchnology", "email": "tojifashion@gmail.com", "grade": "Grade 12", "topic": "Modern and Quantum Physics", "title": "The Physics of Time: Understanding Time Dilation", "pitch": "Time is something we experience every day, but is it really the same for everyone? In this article, I explore how Einstein's theories of relativity explain the effects of speed and gravity on time, using simple examples and the GPS system to show how these ideas connect to our everyday lives", "sourceFileLink": null, "publicationRights": "Yes", "articleFile": "https://docs.google.com/document/d/1brEpbhyx7aBVvP5lTxP3AEPxDinPlBMn/edit?usp=drivesdk\u0026ouid=114295127748400554488\u0026rtpof=true\u0026sd=true", "articleImage": null}, {"id": "ypwc-008", "timestamp": "2026-09-20T08:51:44.546Z", "fullName": "ساره عبدالعال احمد", "school": "الصلب الثانويه بنات", "email": "hamoabada122@gmail.com", "grade": "الصف الثاني عشر", "topic": "الفضاء وعلم الفلك", "title": "هل نحن وحدنا في الكون؟ رحلة البحث عن الحياة خارج الأرض", "pitch": "سيتناول المقال كيفية اكتشاف الكواكب خارج المجموعة الشمسية، وأهم الطرق التي يستخدمها العلماء لرصدها، مثل طريقة العبور وطريقة السرعة الشعاعية، مع توضيح كيف تساعدنا هذه الاكتشافات على فهم تكوّن الأنظمة الكوكبية وإمكانية وجود ظروف مناسبة للحياة خارج الأرض.", "sourceFileLink": null, "publicationRights": "Yes", "articleFile": "https://drive.google.com/file/d/19tLgDuknMchk0Gu6-jTmbwOvh5UQCKMG/view?usp=drivesdk", "articleImage": null}, {"id": "ypwc-009", "timestamp": "2026-09-22T06:15:41.295Z", "fullName": "Kinzy Wessam Mohamed Ali", "school": "Stem behera", "email": "kinzy.wessam1@gmail.com", "grade": "Grade 11", "topic": "Light Scattering and Fluorescence in Medical Imaging", "title": "Glowing Molecules: The Physics Behind Finding Tumors", "pitch": "This article explains the physics behind fluorescence imaging, a technique researchers are using to help surgeons see tumors that are invisible to the naked eye. It breaks down why near-infrared light travels deeper into tissue than visible light, and how a glowing molecule can be engineered to light up only when it finds cancer cells. Readers will walk away understanding a real diagnostic tool used in cancer research today.", "sourceFileLink": null, "publicationRights": "Yes", "articleFile": "https://docs.google.com/document/d/1anXStzTayAL47J-3d_5u8NHuZlX5IrGc/edit?usp=drivesdk\u0026ouid=114295127748400554488\u0026rtpof=true\u0026sd=true", "articleImage": null}, {"id": "ypwc-010", "timestamp": "2026-09-24T07:06:25.995Z", "fullName": "mohamed sabry ahmed marie", "school": "Stem el fayoum", "email": "mohamedsabry32010@gmail.com", "grade": "Grade 11", "topic": "Physics in Daily Life", "title": "How Physics Explains Everyday Wonders: From Smartphones to Coffee", "pitch": "This article explores how fundamental physics concepts shape our daily lives, from how touchscreens work to the thermodynamics of cooling hot coffee. It aims to help readers realize that physics is not just formulas in textbooks, but an active force behind every technology and natural phenomenon we encounter daily.", "sourceFileLink": "https://drive.google.com/file/d/1voIXmUTCnSzuC9vXqUcxJx3rC1-330AG/view?usp=drivesdk", "publicationRights": "Yes", "articleFile": "https://drive.google.com/file/d/1UGQWr_oJBWqY4sdSe-I2jQ6a9U70WAKG/view?usp=drivesdk", "articleImage": null}, {"id": "ypwc-011", "timestamp": "2026-09-25T13:42:34.418Z", "fullName": "Haneen Abdelhamid Abdelrahman Khalifa", "school": "Kafr Sengab Secondary school", "email": "haneenabdelhamid76@gmail.com", "grade": "Grade 12", "topic": "Space and Astronomy", "title": "The Cosmic Illusion: Why Time Bends in Deep Space", "pitch": "This article explores the mind-bending reality of Einstein’s time dilation for a general audience. It investigates how immense gravity and near-light speeds warp the fabric of time, using engaging cosmic scenarios like black holes and space exploration. The piece aims to bridge the gap between advanced physical reasoning and human wonder, visually illustrating why time is a flexible dimension rather than an absolute constant.", "sourceFileLink": null, "publicationRights": "Yes", "articleFile": "https://drive.google.com/file/d/1Q9CxmlDGQ_nvavNW-qsZaKFFNTpF0tiv/view?usp=drivesdk", "articleImage": "https://drive.google.com/file/d/1ZCmttslM46ohqzb64GiQ7T5v-Zg9OJBk/view?usp=drivesdk, https://drive.google.com/file/d/11RNgEHQlcpTS7sCTi-L8n5JndJ7VqB2N/view?usp=drivesdk, https://drive.google.com/file/d/1Lrw9Ahv0PR080RaLKNwIg0tUQavh0Y_d/view?usp=drivesdk"}, {"id": "ypwc-012", "timestamp": "2026-09-26T14:47:43.691Z", "fullName": "Marwan Mohamed Gebril Hassan", "school": "El_Behera STEM", "email": "marwan00mohamed2010@gmail.com", "grade": "Grade 11", "topic": "Physics in Daily Life", "title": "The Physics of Now: Why Time Bends in Our Daily Lives", "pitch": "This article explores how our daily perception of time is shaped by the physics of information processing and memory formation. It breaks down complex concepts of relative time perception into relatable, everyday experiences, helping readers understand why time seems to accelerate as we grow older or get busy.", "sourceFileLink": null, "publicationRights": "Yes", "articleFile": "https://drive.google.com/file/d/17KWyRtck5QFt-U5F2u7sDf-2OOFrEq5D/view?usp=drivesdk", "articleImage": null}, {"id": "ypwc-013", "timestamp": "2026-09-26T15:05:06.283Z", "fullName": "Ammar Mohamed Gebril Hassan", "school": "elsaghr language school", "email": "ammariko2009@gmail.com", "grade": "Grade 12", "topic": "Waves and Sound", "title": "The Symphony of Spacetime: How Sound Waves Shape Our Reality", "pitch": "This article explores the hidden physics of sound waves, examining how acoustic phenomena—from the Doppler effect of passing sirens to the silence of acoustic levitation—manipulate the physical world. It translates complex wave mechanics into engaging, everyday insights that reveal how sound is much more than just what we hear.", "sourceFileLink": null, "publicationRights": "Yes", "articleFile": "https://docs.google.com/document/d/1KsN53vgQnXuES1XNvZ1tHyyYro-TXNtF/edit?usp=drivesdk\u0026ouid=114295127748400554488\u0026rtpof=true\u0026sd=true", "articleImage": null}, {"id": "ypwc-014", "timestamp": "2026-09-27T09:51:51.003Z", "fullName": "George Mekhael Younan", "school": "Luxor STEM School", "email": "georgemekhael99@gmail.com", "grade": "Grade 11", "topic": "Modern and Quantum Physics", "title": "Quantum Mechanics", "pitch": "This article takes you on an astonishing journey to decipher the mysteries of quantum mechanics, from the shock of the double-slit experiment to the quantum computing revolution that will reshape technology. It serves as a comprehensive guide that equips young scientific minds with the knowledge needed to excel in global quantum physics challenges, revealing how the universe behaves in its hidden depths.", "sourceFileLink": "https://drive.google.com/drive/folders/1GNyjHs-dFeaJmT9FBMQcM9VQRR5Z_1ZX", "publicationRights": "Yes", "articleFile": "https://docs.google.com/document/d/1qa4Oc2MOaBKEwapHhKwF9c8MxdpEFLqc/edit?usp=drivesdk\u0026ouid=114295127748400554488\u0026rtpof=true\u0026sd=true", "articleImage": null}, {"id": "ypwc-015", "timestamp": "2026-09-28T22:29:13.356Z", "fullName": "Farha Soliman Abdelaziz", "school": "Antar Bedair Salama High School", "email": "farhaslyman2009@gmail.com", "grade": "Grade 12", "topic": "Electricity and Magnetism", "title": "Parallel conduction physics", "pitch": "The article simply explains the importance of parallel wiring in our daily lives and homes compared to series wiring while clarifying the physical laws governing it and how circuit breakers protect us from the dangers of overloads", "sourceFileLink": null, "publicationRights": "Yes", "articleFile": "https://drive.google.com/file/d/1Y6QJ32iA3NOHFPyYJW67nRJ536byYMSp/view?usp=drivesdk", "articleImage": null}, {"id": "ypwc-016", "timestamp": "2026-09-29T19:18:30.998Z", "fullName": "Qutoof Mohamed Al_shykh", "school": "Al_azhar", "email": "qtwfalshykh@gmail.com", "grade": "Grade 11", "topic": "Space and Astronomy", "title": "Why Is the Night Sky Dark?", "pitch": "My article will explore a simple question with a surprising answer: if the universe is filled with countless stars, why is the night sky still dark? I will explain how light, the age and expansion of the universe, and the redshift of distant galaxies are connected to this mystery.", "sourceFileLink": "https://docs.google.com/document/d/1tbxGfJ9rjaR2ua6-lHC-npQt_Vl1QWk2qt1U1W3vZeE/edit?usp=drivesdk", "publicationRights": "Yes", "articleFile": "https://drive.google.com/file/d/19geuz3doiWGQuIYCxltsV8pkOTlXB2r4/view?usp=drivesdk", "articleImage": "https://drive.google.com/file/d/1JO10CeNzzssQNVKuv0ulUbb4Aqq1P3P3/view?usp=drivesdk"}, {"id": "ypwc-017", "timestamp": "2026-09-30T09:44:25.994Z", "fullName": "Marwan Hijiza Mohmed", "school": "STEM EL MINYA", "email": "mrwanhjazymhmd18@gmail.com", "grade": "Grade 11", "topic": "Waves and Sound", "title": "why sound change with temperature", "pitch": "Temperature affects how sound waves travel through a medium. This article will explain why sound travels faster in warmer air, how temperature changes the motion of air molecules, and how this affects the behavior of sound in real-life situations.", "sourceFileLink": "https://drive.google.com/file/d/1m3dC9AhomyElyAnW_jOTd2k3kUQmwGrj/view?usp=drive_link", "publicationRights": "Yes", "articleFile": "https://drive.google.com/file/d/1sQKcdGOzuCOlc-asX76woPu8RDpVikeb/view?usp=drivesdk", "articleImage": "https://drive.google.com/file/d/1jHlN3wUXmkieCnllkelJXy2NrxPyPU8A/view?usp=drivesdk"}, {"id": "ypwc-018", "timestamp": "2026-09-30T11:09:23.367Z", "fullName": "Kenzy Raafat Eltablawy", "school": "Menofia STEM School", "email": "Kenzyrafat98@gmail.com", "grade": "Grade 11", "topic": "Physics in Daily Life", "title": "GPS \u0026 Relativity", "pitch": "Readers will understand how Einstein’s theories of relativity are connected to a technology they use every day: GPS. They will learn how motion and gravity affect the measurement of time and why these tiny effects are important for accurate positioning. By the end of the article, readers will see how modern physics is not only a theoretical subject but also an essential part of everyday technology.", "sourceFileLink": null, "publicationRights": "Yes", "articleFile": "https://drive.google.com/file/d/1mxflZjol7a-AUb6HF-fB6qMSHrdcKZ0-/view?usp=drivesdk", "articleImage": null}, {"id": "ypwc-019", "timestamp": "2026-10-01T08:06:57.960Z", "fullName": "Omnia Emad", "school": "Temai Elamdid Language School", "email": "omniaemad10920@gmail.com", "grade": "Grade 10", "topic": "Electricity and Magnetism", "title": "How can MRI and Magnet see inside the body And the physics behind MRI?", "pitch": "Research is about ( Magnetic Resonance Imaging is a medical Imaging technique which is used to make detailed images of the inside body using a noninvasive method. \nMRI use strong magnetic field and radio frequency pulse.", "sourceFileLink": "https://docs.google.com/document/d/1qvLfeyex16MmpGOJSSE5hOHuCo22jS_t/edit?usp=drivesdk\u0026ouid=111473259447458316761\u0026rtpof=true\u0026sd=true", "publicationRights": "Yes", "articleFile": "https://docs.google.com/document/d/1pEkGUAmUOT5Gw-Lx8uUaNfmoZQR32gZL/edit?usp=drivesdk\u0026ouid=114295127748400554488\u0026rtpof=true\u0026sd=true", "articleImage": null}, {"id": "ypwc-020", "timestamp": "2026-10-01T15:55:21.964Z", "fullName": "Rahma Samy Atallah", "school": "Technical Secondary School of Nursing", "email": "ririsamy7@gmail.com", "grade": "Grade 12", "topic": "Space and Astronomy", "title": "The Jacobi Constant: The Hidden Boundaries of Space", "pitch": "In this article, I explain how one number, the Jacobi constant, can create an invisible map of walls and doors in space. It helps us understand why a spacecraft cannot simply go anywhere it wants between Earth and the Moon. I will also show how NASA’s Genesis mission used these natural gravitational paths to move through space while using very little fuel.", "sourceFileLink": null, "publicationRights": "Yes", "articleFile": "https://drive.google.com/file/d/13ViAb6o4EieQvcBxsBjf1mxz_wMhrCdC/view?usp=drivesdk", "articleImage": null}, {"id": "ypwc-021", "timestamp": "2026-10-01T17:47:57.655Z", "fullName": "Hager yahia zakaria elsayed", "school": "الرسميه المتميزه بالعاصمه الاداريه", "email": "hy1762009@gmail.com", "grade": "Grade 11", "topic": "Mechanics", "title": "The concept of relative velocity", "pitch": "This article explains the difference between speed and velocity and shows how the same object can have different velocities at the same moment depending on its direction of motion.", "sourceFileLink": null, "publicationRights": "Yes", "articleFile": "https://drive.google.com/file/d/1iOSQB6Fgkmhg0-kEoPBEe_ksuSLrnj_P/view?usp=drivesdk", "articleImage": null}, {"id": "ypwc-022", "timestamp": "2026-10-01T22:23:04.527Z", "fullName": "Abdullah Ahmed", "school": "Qena STEM  School", "email": "abdullah0hawa@gmail.com", "grade": "Grade 11", "topic": "Electricity and Magnetism", "title": "How Electricity and Magnetism Shape Our Modern World", "pitch": "This article focuses on the connection between electricity and magnetism and the formation of electromagnetism from the interrelation of both forces. We shall discuss practical uses such as generators and motors to simplify physics concepts.", "sourceFileLink": null, "publicationRights": "Yes", "articleFile": "https://docs.google.com/document/d/1hMtUisQ7Cp0BQcAw5FV-tjotVgLaL3by/edit?usp=drivesdk\u0026ouid=114295127748400554488\u0026rtpof=true\u0026sd=true", "articleImage": null}, {"id": "ypwc-023", "timestamp": "2026-10-03T16:57:57.748Z", "fullName": "Somaya Yasser ElSawaf", "school": "STEM Gharbiya", "email": "somayaelsawaf00@gmail.com", "grade": "Grade 11", "topic": "Physics in Daily Life", "title": "The Physics of Microwaves: Why Metal Sparks and Water Dances Inside Your Kitchen", "pitch": "This article explains how microwaves use electromagnetic waves to vibrate water molecules generating heat through friction rather than cooking food from the inside out. It also clarifies why metals cause sparks and why some plastics melt turning a daily kitchen appliance into a simple accessible physics lesson on wave energy.", "sourceFileLink": null, "publicationRights": "Yes", "articleFile": "https://docs.google.com/document/d/1jslthpqax7_IVWuKjaGywehItpj5Ghnv/edit?usp=drivesdk\u0026ouid=114295127748400554488\u0026rtpof=true\u0026sd=true", "articleImage": null}, {"id": "ypwc-024", "timestamp": "2026-10-03T21:27:06.384Z", "fullName": "Ahmed Hany Suleiman AbdelHamid", "school": "Shatanouf Co-educational Secondary School", "email": "ahmed.hany.17.2.2011.2@gmail.com", "grade": "Grade 10", "topic": "Physics in Daily Life", "title": "How Does Your Phone Know Where You Are? The Physics Behind the Blue Dot", "pitch": "This article explores how GPS uses radio signals, precise timing, geometry, atomic clocks, and relativity to determine our location. It explains the physics behind the familiar blue dot on our phones in a simple and accessible way.", "sourceFileLink": null, "publicationRights": "Yes", "articleFile": "https://drive.google.com/file/d/1CLCT9mQoYoUk0Ywm3fWwjiP5Neym6d-p/view?usp=drivesdk", "articleImage": null}, {"id": "ypwc-025", "timestamp": "2026-10-04T12:02:03.607Z", "fullName": "Rahma Hassan Elsawy badr", "school": "محمد هاشم الثانويه المشتركه", "email": "romabader5@gmail.com", "grade": "Grade 10", "topic": "Physics in Daily Life", "title": "Surface Tension : Nature's invisible skin", "pitch": "This article explores how surface tension works in fluid physics and its fascinating roles in our daily lives. Readers will understand why small insects can walk on water, how water droplets form spherical shapes, and how this phenomenon impacts natural and industrial processes.", "sourceFileLink": null, "publicationRights": "Yes", "articleFile": "https://drive.google.com/file/d/1EmQFSzsbciXjs-l_otJJfpHQJ3MqWEen/view?usp=drivesdk", "articleImage": null}, {"id": "ypwc-026", "timestamp": "2026-10-04T12:45:26.873Z", "fullName": "Malak", "school": "Alexandria STEM school", "email": "lokaahmedwagdymoca@gmail.com", "grade": "Grade 11", "topic": "Waves and Sound", "title": "Can Sound Become Electricity?  Turning Everyday Vibrations into Energy.", "pitch": "What sound is and how we can get benefit from energy in sound.", "sourceFileLink": "https://docs.google.com/document/d/1aMFmW20fMAJuUILNorMVeItpho3hc_H8rPLh1zticyw/edit?usp=sharing", "publicationRights": "Yes", "articleFile": "https://drive.google.com/file/d/1mlSGfGAMIQpt_4oxxZtNY6a0xIx3qCZ0/view?usp=drivesdk", "articleImage": null}, {"id": "ypwc-027", "timestamp": "2026-10-04T13:02:21.821Z", "fullName": "Eyad Kewan", "school": "Behera STEM", "email": "eyadkewan946@gmail.com", "grade": "Grade 11", "topic": "Physics in Daily Life", "title": "Why Does a Fan Feel Cool If It Doesn't Cool the Room?", "pitch": "\"This article explores a common daily phenomenon: why fans make humans feel cool despite not reducing ambient room temperature. The study breaks down the human thermal energy balance into forced convection and latent heat of sweat evaporation. By distinguishing between thermal sensation and core body temperature, it analyzes how environmental variables—such as air velocity, humidity, and skin temperature—interact. Additionally, it highlights key research from OpenStax, Ravanelli et al., Morris et al., and a 2024 Lancet review to explain why fans become less effective or even counterproductive in extreme heat.\"", "sourceFileLink": null, "publicationRights": "Yes", "articleFile": "https://drive.google.com/file/d/1EcME_zNekzqUw2vxCIb40WLLfuaO5UEq/view?usp=drivesdk", "articleImage": null}, {"id": "ypwc-028", "timestamp": "2026-10-04T16:26:47.203Z", "fullName": "Ahmed Maher Abdelgwad", "school": "STEM October 11th District", "email": "ahmdmaher5349@gmail.com", "grade": "Grade 11", "topic": "Space and Astronomy", "title": "The Invisible Skeleton of the Cosmos", "pitch": "This article guides readers through one of astrophysics' greatest mysteries: the nature and proof of Dark Matter. It clearly explains how optical and gravitational measurements proved that 27% of the universe consists of invisible matter that acted as a scaffolding for cosmic structure. Ultimately, it helps readers grasp why without this hidden mass, galaxies, Earth, and human life would never have formed.", "sourceFileLink": "https://drive.google.com/file/d/1S30eYmA8NO5J858g7pFQgVfndYQnNhI2/view?usp=sharing", "publicationRights": "Yes", "articleFile": "https://drive.google.com/file/d/115tqyxv4rFkJdnn_KK8quMmrCamH7sHD/view?usp=drivesdk", "articleImage": null}, {"id": "ypwc-029", "timestamp": "2026-10-04T17:20:01.335Z", "fullName": "روان محمود عنتر عبدالله", "school": "ابراهيم محفوظ الثانويه العامه بالحواتكه", "email": "rawanmamood3131@gmail.com", "grade": "الصف الثاني عشر", "topic": "الكهرباء والمغناطيسية", "title": "رحلة فى أعماق الفزياء التى تحرك عالمنا", "pitch": "الفزياء ليست مجرد معادلات جافه نحفظها بل هي التفسير الحقيقي لكل تفصيله صغيره فى حياتنا اليومية وعندما نتحدث عن الكهرباء المغناطيسية ، فنحن لا نتحدث عن فصلين فى كتاب المدرسة بل عن القوتين اللتين يقودان التطور التكنولجى الحديث", "sourceFileLink": null, "publicationRights": "Yes", "articleFile": "https://docs.google.com/document/d/1UspZ3a7KFSJngTorcmLd4IGNSyFHu8b9/edit?usp=drivesdk\u0026ouid=114295127748400554488\u0026rtpof=true\u0026sd=true", "articleImage": null}, {"id": "ypwc-030", "timestamp": "2026-10-05T00:23:18.974Z", "fullName": "Lina Eslam Reda Elanbary", "school": "Ismailia STEM high schools", "email": "linn28stm@gmail.com", "grade": "Grade 11", "topic": "Thermodynamics", "title": "Heatwaves and urban heat island", "pitch": "Why are there areas have higher\n temperatures than other areas surrounding them ???", "sourceFileLink": null, "publicationRights": "Yes", "articleFile": "https://drive.google.com/file/d/1MramwwzMdasRt3hjUzVBzeDFOKCYzZbl/view?usp=drivesdk", "articleImage": null}, {"id": "ypwc-031", "timestamp": "2026-10-05T09:45:21.571Z", "fullName": "Saber hussein Zahran", "school": "Stem Alex", "email": "saberzahran2010@gmail.com", "grade": "Grade 10", "topic": "Waves and Sound", "title": "Why Does Sound Travel Differently Through Different Materials?", "pitch": "This article explains why sound travels at different speeds through air, water, and solids. It explores how properties such as density and stiffness affect the speed of sound and uses physics equations and everyday examples to make these ideas easier to understand.", "sourceFileLink": "https://drive.google.com/file/d/1TcC3kAsBbv6Vm9V0EJn43HSDF6y8r_KA/view?usp=drive_link", "publicationRights": "Yes", "articleFile": "https://drive.google.com/file/d/1fWy_AcBWRlptuJE332J-p8hzWjJzTnBN/view?usp=drivesdk", "articleImage": null}, {"id": "ypwc-032", "timestamp": "2026-10-05T15:26:59.151Z", "fullName": "Abdelrahman Ehab Abdelrahman", "school": "STEM October High-shool for Boys", "email": "abdohoba321@gmail.com", "grade": "Grade 11", "topic": "Thermodynamics", "title": "Entropy and time reverse", "pitch": "The time reversal concepts and its relation with entropy, and how can time be seen in reverse.", "sourceFileLink": null, "publicationRights": "Yes", "articleFile": "https://docs.google.com/document/d/1ohDYkhViLKataoE-CuxhRqL6lc95hGbh/edit?usp=drivesdk\u0026ouid=114295127748400554488\u0026rtpof=true\u0026sd=true", "articleImage": null}, {"id": "ypwc-033", "timestamp": "2026-10-05T17:06:19.984Z", "fullName": "Saif Magdy", "school": "الاوسط قمولا الثانوية المشتركة", "email": "catcota5587@gmail.com", "grade": "Grade 10", "topic": "Physics in Daily Life", "title": "Physics in our lives", "pitch": "This article explores the role of physics in our daily lives and its key applications in devices and technology. It explains how physics helps us understand phenomena such as motion, heat, light, and electricity. The article also connects various physical concepts.", "sourceFileLink": "https://drive.google.com/file/d/1NM3gNg8O2Jj_axap8xs9fTvKgfJ8HUuE/view?usp=drivesdk", "publicationRights": "Yes", "articleFile": "https://drive.google.com/file/d/1V-KBAZa_-oNOilMyxEra0SQ7fNDun4av/view?usp=drivesdk", "articleImage": null}, {"id": "ypwc-034", "timestamp": "2026-10-05T18:41:12.968Z", "fullName": "Mennatallah Mahmoud Khedr", "school": "El shohadaaschool for girls", "email": "mennatallahkhedr1711@gmail.com", "grade": "Grade 12", "topic": "Physics in Daily Life", "title": "Should You Run in the Rain?", "pitch": "Should you run or walk when it starts raining? By following a single raindrop, this article turns an everyday dilemma into a journey through direction, area, relative velocity, and motion—showing how changing your own movement can completely change the rain you experience.", "sourceFileLink": "https://openstax.org/books/college-physics/pages/3-5-addition-of-velocities?utm_source=chatgpt.com", "publicationRights": "Yes", "articleFile": "https://drive.google.com/file/d/1tEs9xA9uMO_mL87oiC87fnlZ2P4trMbZ/view?usp=drivesdk", "articleImage": null}, {"id": "ypwc-035", "timestamp": "2026-10-05T20:32:51.661Z", "fullName": "Youssef Emad Hamed Tourky", "school": "STEM Gharbiya", "email": "youssefparkq@gmail.com", "grade": "Grade 11", "topic": "Physics in Daily Life", "title": "Engineering a Low-Cost Multifunctional Bio-Filter from Organic Waste: Thermal Pyrolysis and Soil Amendment Applications", "pitch": "Soil degradation and water scarcity threaten arid regions like Egypt. This article presents an innovative, low-cost bio-filter engineered from pyrolyzed spent coffee grounds, bone ash hydroxyapatite, and iron powder, bound with natural starch. Utilizing thermal pyrolysis (400–600°C), the porous carbon structure enhances water retention, neutralizes alkaline soil pH from 8.0 to 7.0 within 48 hours, provides slow-release phosphorus, and removes water contaminants. Costing only 15 EGP per kilogram, this multidisciplinary project bridges thermodynamics, material science, and daily agricultural needs to pioneer a sustainable circular economy model for smallholder farmers.", "sourceFileLink": null, "publicationRights": "Yes", "articleFile": "https://docs.google.com/document/d/12vKjBAbbI7Iy7vO9AUa8r-aDKJrLgd_0/edit?usp=drivesdk\u0026ouid=114295127748400554488\u0026rtpof=true\u0026sd=true", "articleImage": null}, {"id": "ypwc-036", "timestamp": "2026-10-05T20:35:37.691Z", "fullName": "Roaa Mostafa", "school": "الثانويه بنات", "email": "roaa1978566@gmail.com", "grade": "الصف العاشر", "topic": "الفيزياء الحديثة والكمية", "title": "كيف تتواجد الاجسام في مكانين في وقت واحد", "pitch": "كيف تتواجد الاجسام في مكانين في وقت واحد \nما الفرق بين الفيزياء الكلاسيكيه والعالم الذري", "sourceFileLink": "https://youtu.be/no14BMI_0BE?si=QVGgb3GbR1ZY0Q-K", "publicationRights": "Yes", "articleFile": "https://docs.google.com/document/d/1uohK5PXAkUUAf2lE-1QQPDod21Z8nU2h/edit?usp=drivesdk\u0026ouid=114295127748400554488\u0026rtpof=true\u0026sd=true", "articleImage": null}, {"id": "ypwc-037", "timestamp": "2026-10-06T11:33:47.150Z", "fullName": "Abdullah Shaker Abdullah", "school": "STEM 6-October for boys", "email": "abdullahshaker286@gmail.com", "grade": "Grade 11", "topic": "Thermodynamics", "title": "The Arrow in the Coffee Cup: How Entropy Gives Time Its Direction", "pitch": "Entropy often defined as \" disorder \" but this picture hide what it really measures the number of microscopic ways a state can exist. This article builds on Boltzmann's idea of counting microstates. Using real examples to visualize what the second law holds and explains how it gives time its direction. \nEventually, the article describe how the the entropy gives the time direction showing that how the second low is open system hold the lifetime .", "sourceFileLink": null, "publicationRights": "Yes", "articleFile": "https://docs.google.com/document/d/190J30kIG4Bq_jGeeNmyf3Li8EZIrbFdv/edit?usp=drivesdk\u0026ouid=114295127748400554488\u0026rtpof=true\u0026sd=true", "articleImage": "https://drive.google.com/file/d/1671rRjGiP6N7xRyMwaPm_Kk79weWTHDi/view?usp=drivesdk"}, {"id": "ypwc-038", "timestamp": "2026-10-09T12:08:34.167Z", "fullName": "Shady Mohamed  Elkassas", "school": "WE School for applied technology", "email": "shadyelkasas924@gmail.com", "grade": "Grade 11", "topic": "Physics in Daily Life", "title": "How Does a Microwave Heat Your Food? The Physics Behind Invisible Waves", "pitch": "We use microwaves daily without asking: how do they heat food without fire? This article explains how electromagnetic waves cause water molecules inside food to vibrate rapidly, generating heat, while correcting the common misconception that food heats from the inside out. Ultimately, readers will understand why food heats unevenly and how to prevent it.", "sourceFileLink": null, "publicationRights": "Yes", "articleFile": "https://drive.google.com/file/d/1DS53rUCyG7qwXmljEriTOMQ1MsYUtw-5/view?usp=drivesdk", "articleImage": "https://drive.google.com/file/d/1cd2bnbY83wYu55UmGe-ssQ0xLBDJwNRi/view?usp=drivesdk"}], "rubric": [{"key": "scientific_accuracy", "label": "Scientific accuracy and conceptual understanding", "max": 30, "description": "Facts, concepts, assumptions and limits are handled correctly."}, {"key": "physical_reasoning", "label": "Physical reasoning and analysis", "max": 20, "description": "Claims follow logically and numbers or examples are used honestly."}, {"key": "clarity_structure", "label": "Clarity, structure and communication", "max": 20, "description": "The article is organized, readable and precise for a curious nonspecialist."}, {"key": "creativity", "label": "Creativity and intellectual contribution", "max": 15, "description": "The piece has an original angle and clear independent thinking."}, {"key": "real_world_connection", "label": "Real-world connection", "max": 10, "description": "The physics is applied correctly to a real situation outside the classroom."}, {"key": "research_references", "label": "Research and references", "max": 5, "description": "Sources are reliable, useful and traceable."}]}</script>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <div class="logo">Y</div>
+        <div>
+          <p class="eyebrow">Review workbench</p>
+          <h1>Young Physics Writing Contest</h1>
+        </div>
+      </div>
+      <div class="actions">
+        <button class="btn" id="exportCsv">Export CSV</button>
+        <button class="btn" id="exportBackup">Backup JSON</button>
+        <button class="btn primary" id="importBackup">Import Backup</button>
+        <input id="backupInput" type="file" accept="application/json,.json" hidden />
+      </div>
+    </div>
+  </header>
+
+  <main class="shell">
+    <section class="metrics" id="metrics"></section>
+    <section class="grid">
+      <aside class="panel">
+        <div class="filters">
+          <div class="filter-row">
+            <input id="query" placeholder="Search name, school, topic, article..." />
+            <select id="sortMode">
+              <option value="rank">Rank</option>
+              <option value="recent">Recent</option>
+              <option value="name">Name</option>
+              <option value="topic">Topic</option>
+            </select>
+          </div>
+          <div class="filter-row">
+            <select id="topicFilter"></select>
+            <select id="statusFilter">
+              <option>All statuses</option>
+              <option>Not started</option>
+              <option>In review</option>
+              <option>Done</option>
+              <option>Shortlisted</option>
+            </select>
+            <label class="checkbox"><input id="missingOnly" type="checkbox" /> Missing file</label>
+          </div>
+        </div>
+        <div class="list-head">
+          <span>Rank</span><span>Article</span><span>Topic</span><span>Score</span><span>Status</span>
+        </div>
+        <div class="list" id="entryList"></div>
+      </aside>
+      <section class="panel" id="detail"></section>
+    </section>
+  </main>
+  <div class="toast" id="toast"></div>
+
+  <script>
+    const payload = JSON.parse(document.getElementById("ypwc-payload").textContent);
+    const entries = payload.entries;
+    const rubric = payload.rubric;
+    const storageKey = "ypwc-static-review-workbench-v1";
+    const statuses = ["Not started", "In review", "Done", "Shortlisted", "Excluded"];
+    let selectedId = entries[0]?.id || "";
+    let store = loadStore();
+
+    const $ = (id) => document.getElementById(id);
+    const escapeHtml = (value) => String(value ?? "").replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;" }[char]));
+    const totalScore = (scores = {}) => rubric.reduce((sum, item) => sum + Number(scores[item.key] || 0), 0);
+    const wordCount = (value) => value && value.trim() ? value.trim().split(/\s+/).length : 0;
+
+    function loadStore() {
+      try {
+        return Object.assign({ scores: {}, notes: {}, statuses: {}, edits: {}, ai: {} }, JSON.parse(localStorage.getItem(storageKey) || "{}"));
+      } catch {
+        return { scores: {}, notes: {}, statuses: {}, edits: {}, ai: {} };
+      }
+    }
+
+    function saveStore() {
+      localStorage.setItem(storageKey, JSON.stringify(store));
+    }
+
+    function mergedEntries() {
+      return entries.map((entry) => Object.assign({}, entry, store.edits[entry.id] || {}));
+    }
+
+    function medalForRank(rank, total) {
+      if (total <= 0) return "";
+      const medalCount = Math.ceil(entries.length * 0.3);
+      const gold = Math.round((medalCount * 3) / 6);
+      const silver = Math.round((medalCount * 2) / 6);
+      if (rank <= gold) return "Gold";
+      if (rank <= gold + silver) return "Silver";
+      if (rank <= medalCount) return "Bronze";
+      return "";
+    }
+
+    function aiReview(id) {
+      const item = store.ai[id] || {};
+      const percentage = Math.max(0, Math.min(100, Number(item.percentage || 0)));
+      return {
+        used: Boolean(item.used) || percentage > 0,
+        percentage,
+        note: item.note || "",
+      };
+    }
+
+    function rankedRows() {
+      const rows = mergedEntries().map((entry) => {
+        const ai = aiReview(entry.id);
+        const excluded = ai.used || store.statuses[entry.id] === "Excluded";
+        return {
+          entry,
+          ai,
+          excluded,
+          total: totalScore(store.scores[entry.id]),
+          status: excluded ? "Excluded" : (store.statuses[entry.id] || "Not started"),
+        };
+      });
+      const eligible = rows
+        .filter((row) => !row.excluded)
+        .sort((a, b) => b.total - a.total || String(a.entry.timestamp || "").localeCompare(String(b.entry.timestamp || "")))
+        .map((row, index) => Object.assign(row, { rank: index + 1, medal: medalForRank(index + 1, row.total) }));
+      const excluded = rows
+        .filter((row) => row.excluded)
+        .sort((a, b) => String(a.entry.fullName || "").localeCompare(String(b.entry.fullName || "")))
+        .map((row) => Object.assign(row, { rank: null, medal: "" }));
+      return [...eligible, ...excluded];
+    }
+
+    function visibleRows() {
+      const query = $("query").value.trim().toLowerCase();
+      const topic = $("topicFilter").value;
+      const status = $("statusFilter").value;
+      const missingOnly = $("missingOnly").checked;
+      const sortMode = $("sortMode").value;
+      const rows = rankedRows().filter((row) => {
+        const entry = row.entry;
+        const blob = [entry.fullName, entry.school, entry.email, entry.topic, entry.title, entry.pitch].filter(Boolean).join(" ").toLowerCase();
+        return (!query || blob.includes(query))
+          && (topic === "All topics" || entry.topic === topic)
+          && (status === "All statuses" || row.status === status)
+          && (!missingOnly || !entry.articleFile);
+      });
+      return rows.sort((a, b) => {
+        if (sortMode === "name") return String(a.entry.fullName || "").localeCompare(String(b.entry.fullName || ""));
+        if (sortMode === "topic") return String(a.entry.topic || "").localeCompare(String(b.entry.topic || ""));
+        if (sortMode === "recent") return String(b.entry.timestamp || "").localeCompare(String(a.entry.timestamp || ""));
+        return a.rank - b.rank;
+      });
+    }
+
+    function statusClass(status) {
+      if (status === "Done") return "done";
+      if (status === "Shortlisted") return "short";
+      if (status === "In review") return "review";
+      if (status === "Excluded") return "excluded";
+      return "not";
+    }
+
+    function formatDate(value) {
+      if (!value) return "No timestamp";
+      return new Intl.DateTimeFormat("en", { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" }).format(new Date(value));
+    }
+
+    function renderMetrics() {
+      const rows = rankedRows();
+      const reviewed = rows.filter((row) => row.status === "Done" || row.status === "Shortlisted").length;
+      const eligible = rows.filter((row) => !row.excluded);
+      const excluded = rows.length - eligible.length;
+      const avg = eligible.length ? eligible.reduce((sum, row) => sum + row.total, 0) / eligible.length : 0;
+      const metricData = [
+        ["Submissions", entries.length, "from " + payload.generatedFrom, "var(--sky)"],
+        ["Reviewed", reviewed + "/" + entries.length, "done or shortlisted", "var(--green)"],
+        ["Average score", avg.toFixed(1), "live from eligible entries", "var(--gold)"],
+        ["Excluded", excluded, "AI flagged entries", "#fca5a5"],
+        ["Medal pool", Math.ceil(entries.length * 0.3), "top 30% using 3:2:1", "var(--rose)"],
+      ];
+      $("metrics").innerHTML = metricData.map(([label, value, detail, color]) => `
+        <div class="metric"><span>${label}</span><strong style="color:${color}">${value}</strong><small>${detail}</small></div>
+      `).join("");
+    }
+
+    function renderTopics() {
+      const topics = ["All topics", ...new Set(mergedEntries().map((entry) => entry.topic || "Untitled topic"))].sort((a, b) => a === "All topics" ? -1 : b === "All topics" ? 1 : a.localeCompare(b));
+      $("topicFilter").innerHTML = topics.map((topic) => `<option>${escapeHtml(topic)}</option>`).join("");
+    }
+
+    function renderList() {
+      const rows = visibleRows();
+      $("entryList").innerHTML = rows.map((row) => {
+        const entry = row.entry;
+        return `
+          <button class="row ${entry.id === selectedId ? "active" : ""}" data-id="${entry.id}">
+            <span><strong>${row.excluded ? "EX" : "#" + row.rank}</strong>${row.medal ? `<br><span class="subtle" style="color:var(--gold)">${row.medal}</span>` : ""}</span>
+            <span class="truncate"><strong>${escapeHtml(entry.title || "Untitled article")}</strong><br><span class="subtle">${escapeHtml(entry.fullName || "Unknown writer")} · ${escapeHtml(entry.school || "No school")}</span></span>
+            <span class="truncate subtle">${escapeHtml(entry.topic || "No topic")}</span>
+            <span><strong>${row.total}</strong><span class="scorebar"><i style="width:${row.total}%"></i></span></span>
+            <span class="status ${statusClass(row.status)}">${row.status}</span>
+          </button>
+        `;
+      }).join("");
+      document.querySelectorAll(".row").forEach((button) => button.addEventListener("click", () => {
+        selectedId = button.dataset.id;
+        render();
+      }));
+    }
+
+    function renderDetail() {
+      const selected = rankedRows().find((row) => row.entry.id === selectedId) || rankedRows()[0];
+      if (!selected) return;
+      const entry = selected.entry;
+      const scores = store.scores[entry.id] || {};
+      const notes = store.notes[entry.id] || "";
+      const ai = aiReview(entry.id);
+      $("detail").innerHTML = `
+        <div class="detail-head">
+          <div>
+            <div class="meta">${entry.id.toUpperCase()} · ${formatDate(entry.timestamp)}${selected.medal ? " · " + selected.medal + " band" : ""}${selected.excluded ? " · Excluded by AI screen" : ""}</div>
+            <input class="title-input" data-edit="title" value="${escapeHtml(entry.title || "")}" />
+            <div class="edit-grid">
+              ${editField("Writer", "fullName", entry.fullName)}
+              ${editField("School", "school", entry.school)}
+              ${editField("Topic", "topic", entry.topic)}
+              <div><span class="mini-label">Grade</span><div class="subtle">${escapeHtml(entry.grade || "No grade")}</div></div>
+            </div>
+          </div>
+          <div class="rankbox"><span class="subtle">${selected.excluded ? "Review status" : "Live rank"}</span><strong>${selected.excluded ? "EX" : "#" + selected.rank}</strong><span class="subtle">${selected.total}/100 points</span></div>
+        </div>
+        <div class="detail-body">
+          <div>
+            <div class="card">
+              <div class="rubric-head">
+                <h2>Rubric scoring</h2>
+                <select id="selectedStatus">${statuses.map((status) => `<option ${status === selected.status ? "selected" : ""}>${status}</option>`).join("")}</select>
+              </div>
+              ${rubric.map((item) => criterionHtml(item, scores[item.key] || 0)).join("")}
+            </div>
+            <div class="card" style="margin-top:16px">
+              <h2>Editorial notes</h2>
+              <textarea id="notes" placeholder="Strengths, issues, publication edits, or judge comments...">${escapeHtml(notes)}</textarea>
+              <button class="btn" id="resetEntry" style="margin-top:10px">Reset this entry</button>
+            </div>
+          </div>
+          <aside>
+            <div class="card">
+              <h2>AI screening</h2>
+              <div class="ai-grid">
+                <label class="ai-check"><input id="aiUsed" type="checkbox" ${ai.used ? "checked" : ""} /> AI used</label>
+                <label><span class="mini-label">AI %</span><input id="aiPercent" type="number" min="0" max="100" step="0.1" value="${ai.percentage}" /></label>
+              </div>
+              <textarea id="aiNote" style="margin-top:10px; min-height:76px" placeholder="AI detector, copied section, reviewer evidence...">${escapeHtml(ai.note)}</textarea>
+              <div class="subtle" style="margin-top:8px">Any AI flag or percentage above 0 marks this entry as Excluded.</div>
+            </div>
+            <div class="card" style="margin-top:16px">
+              <h2>Article data</h2>
+              ${dataLine("Email", entry.email)}
+              ${dataLine("Publication rights", entry.publicationRights || "Missing")}
+              ${dataLine("Pitch words", String(wordCount(entry.pitch)))}
+              <div class="pitch">${escapeHtml(entry.pitch || "No pitch provided.")}</div>
+              <div class="link-grid">
+                ${linkButton(entry.articleFile, "Open article file")}
+                ${linkButton(entry.sourceFileLink, "Open source file")}
+                ${linkButton(entry.articleImage, "Open article image")}
+              </div>
+            </div>
+            <div class="card" style="margin-top:16px">
+              <h2>Current top 5</h2>
+              <div class="top-five">
+                ${rankedRows().filter((row) => !row.excluded).slice(0, 5).map((row) => `<button data-top="${row.entry.id}"><span class="pill">#${row.rank}</span><span class="truncate"><strong>${escapeHtml(row.entry.fullName || "Unknown")}</strong><br><span class="subtle">${escapeHtml(row.entry.title || "Untitled")}</span></span><strong>${row.total}</strong></button>`).join("")}
+              </div>
+            </div>
+            <div class="card" style="margin-top:16px">
+              <h2>Workflow checks</h2>
+              <div class="checks">
+                ${checkLine(Boolean(entry.articleFile), "Article file link")}
+                ${checkLine(!selected.excluded, "Eligible for ranking")}
+                ${checkLine(selected.total > 0, "Any score entered")}
+                ${checkLine(rubric.every((item) => scores[item.key] !== undefined), "All rubric categories scored")}
+                ${checkLine(notes.trim().length > 0, "Editorial note added")}
+              </div>
+            </div>
+          </aside>
+        </div>
+      `;
+
+      document.querySelectorAll("[data-edit]").forEach((input) => input.addEventListener("input", () => {
+        updateEdit(entry.id, input.dataset.edit, input.value);
+      }));
+      document.querySelectorAll("[data-score]").forEach((input) => input.addEventListener("input", () => {
+        const key = input.dataset.score;
+        const max = Number(input.dataset.max);
+        const value = Math.max(0, Math.min(max, Number(input.value || 0)));
+        input.value = value;
+        store.scores[entry.id] = Object.assign({}, store.scores[entry.id], { [key]: value });
+        saveStore();
+        render();
+      }));
+      $("selectedStatus").addEventListener("change", (event) => {
+        store.statuses[entry.id] = event.target.value;
+        saveStore();
+        render();
+      });
+      $("notes").addEventListener("input", (event) => {
+        store.notes[entry.id] = event.target.value;
+        saveStore();
+        renderMetrics();
+      });
+      $("aiUsed").addEventListener("change", (event) => updateAi(entry.id, { used: event.target.checked }));
+      $("aiPercent").addEventListener("input", (event) => updateAi(entry.id, { percentage: Math.max(0, Math.min(100, Number(event.target.value || 0))) }));
+      $("aiNote").addEventListener("input", (event) => updateAi(entry.id, { note: event.target.value }));
+      $("resetEntry").addEventListener("click", () => {
+        delete store.scores[entry.id];
+        delete store.notes[entry.id];
+        delete store.statuses[entry.id];
+        delete store.edits[entry.id];
+        delete store.ai[entry.id];
+        saveStore();
+        render();
+      });
+      document.querySelectorAll("[data-top]").forEach((button) => button.addEventListener("click", () => {
+        selectedId = button.dataset.top;
+        render();
+      }));
+    }
+
+    function editField(label, key, value) {
+      return `<label><span class="mini-label">${label}</span><input data-edit="${key}" value="${escapeHtml(value || "")}" /></label>`;
+    }
+
+    function criterionHtml(item, score) {
+      return `
+        <div class="criterion">
+          <div class="criterion-top">
+            <div><strong>${escapeHtml(item.label)} <span class="subtle">/${item.max}</span></strong><p>${escapeHtml(item.description)}</p></div>
+            <input type="number" min="0" max="${item.max}" step="0.5" data-score="${item.key}" data-max="${item.max}" value="${score}" />
+          </div>
+          <span class="scorebar"><i style="width:${(Number(score) / item.max) * 100}%"></i></span>
+        </div>
+      `;
+    }
+
+    function dataLine(label, value) {
+      return `<div class="data-line"><span class="mini-label">${label}</span><div class="subtle">${escapeHtml(value || "Missing")}</div></div>`;
+    }
+
+    function linkButton(href, label) {
+      return `<a class="link ${href ? "" : "disabled"}" href="${escapeHtml(href || "#")}" target="_blank" rel="noreferrer"><span>${label}</span><span>↗</span></a>`;
+    }
+
+    function checkLine(done, label) {
+      return `<div class="check ${done ? "done" : ""}">${done ? "✓" : "○"} ${label}</div>`;
+    }
+
+    function updateEdit(id, key, value) {
+      store.edits[id] = Object.assign({}, store.edits[id], { [key]: value });
+      saveStore();
+      renderList();
+    }
+
+    function updateAi(id, patch) {
+      store.ai[id] = Object.assign({ used: false, percentage: 0, note: "" }, store.ai[id] || {}, patch);
+      if (store.ai[id].used || Number(store.ai[id].percentage || 0) > 0) {
+        store.statuses[id] = "Excluded";
+      } else if (store.statuses[id] === "Excluded") {
+        store.statuses[id] = "Not started";
+      }
+      saveStore();
+      render();
+    }
+
+    function render() {
+      renderMetrics();
+      renderList();
+      renderDetail();
+    }
+
+    function csvEscape(value) {
+      return `"${String(value ?? "").replace(/"/g, '""')}"`;
+    }
+
+    function exportCsv() {
+      const headers = ["Rank", "Medal", "Status", "Excluded", "AI Used", "AI Percent", "AI Notes", "Total", ...rubric.map((item) => item.label), "Name", "School", "Grade", "Topic", "Title", "Email", "Article File", "Source File", "Notes"];
+      const lines = rankedRows().map((row) => [
+        row.excluded ? "EX" : row.rank,
+        row.medal,
+        row.status,
+        row.excluded ? "Yes" : "No",
+        row.ai.used ? "Yes" : "No",
+        row.ai.percentage,
+        row.ai.note,
+        row.total,
+        ...rubric.map((item) => (store.scores[row.entry.id] || {})[item.key] || 0),
+        row.entry.fullName,
+        row.entry.school,
+        row.entry.grade,
+        row.entry.topic,
+        row.entry.title,
+        row.entry.email,
+        row.entry.articleFile,
+        row.entry.sourceFileLink,
+        store.notes[row.entry.id] || "",
+      ]);
+      download("ypwc-review-results.csv", [headers, ...lines].map((line) => line.map(csvEscape).join(",")).join("\n"), "text/csv");
+    }
+
+    function exportBackup() {
+      download("ypwc-review-backup.json", JSON.stringify({ exportedAt: new Date().toISOString(), store }, null, 2), "application/json");
+    }
+
+    function download(filename, content, type) {
+      const blob = new Blob([content], { type });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = filename;
+      link.click();
+      URL.revokeObjectURL(url);
+      toast("Downloaded " + filename);
+    }
+
+    function toast(message) {
+      $("toast").textContent = message;
+      $("toast").classList.add("show");
+      setTimeout(() => $("toast").classList.remove("show"), 2400);
+    }
+
+    $("query").addEventListener("input", renderList);
+    $("topicFilter").addEventListener("change", renderList);
+    $("statusFilter").addEventListener("change", renderList);
+    $("missingOnly").addEventListener("change", renderList);
+    $("sortMode").addEventListener("change", renderList);
+    $("exportCsv").addEventListener("click", exportCsv);
+    $("exportBackup").addEventListener("click", exportBackup);
+    $("importBackup").addEventListener("click", () => $("backupInput").click());
+    $("backupInput").addEventListener("change", async (event) => {
+      const file = event.target.files[0];
+      if (!file) return;
+      const parsed = JSON.parse(await file.text());
+      store = Object.assign({ scores: {}, notes: {}, statuses: {}, edits: {}, ai: {} }, parsed.store || parsed);
+      saveStore();
+      render();
+      toast("Backup imported");
+    });
+
+    renderTopics();
+    render();
+  </script>
+
+  <script>
+    (function () {
+      const recoveredStore = {"scores": {"ypwc-002": {"scientific_accuracy": 23, "physical_reasoning": 18, "clarity_structure": 15, "creativity": 13, "real_world_connection": 8, "research_references": 4}, "ypwc-008": {"scientific_accuracy": 0}, "ypwc-017": {"scientific_accuracy": 0}, "ypwc-020": {"scientific_accuracy": 12, "physical_reasoning": 19, "clarity_structure": 5.5, "creativity": 12.5, "research_references": 4, "real_world_connection": 8}, "ypwc-018": {"scientific_accuracy": 22, "physical_reasoning": 16, "clarity_structure": 15, "creativity": 9, "real_world_connection": 8, "research_references": 3}, "ypwc-021": {"scientific_accuracy": 11, "physical_reasoning": 14, "clarity_structure": 8, "creativity": 6, "real_world_connection": 6, "research_references": 3}, "ypwc-030": {"scientific_accuracy": 23, "physical_reasoning": 10, "clarity_structure": 11, "creativity": 11, "real_world_connection": 9, "research_references": 4}}, "notes": {}, "statuses": {"ypwc-002": "Done", "ypwc-003": "Excluded", "ypwc-004": "Excluded", "ypwc-001": "Excluded", "ypwc-005": "Excluded", "ypwc-006": "Excluded", "ypwc-007": "Excluded", "ypwc-009": "Excluded", "ypwc-010": "Excluded", "ypwc-011": "Excluded", "ypwc-012": "Excluded", "ypwc-013": "Excluded", "ypwc-008": "Excluded", "ypwc-017": "Excluded", "ypwc-014": "In review", "ypwc-015": "In review", "ypwc-016": "In review", "ypwc-025": "Excluded", "ypwc-036": "Excluded", "ypwc-035": "Excluded", "ypwc-033": "Excluded"}, "edits": {}, "ai": {"ypwc-003": {"used": true, "percentage": 100, "note": ""}, "ypwc-004": {"used": true, "percentage": 0, "note": ""}, "ypwc-001": {"used": true, "percentage": 90, "note": ""}, "ypwc-005": {"used": true, "percentage": 0, "note": ""}, "ypwc-006": {"used": true, "percentage": 0, "note": ""}, "ypwc-007": {"used": true, "percentage": 0, "note": ""}, "ypwc-009": {"used": true, "percentage": 0, "note": ""}, "ypwc-010": {"used": true, "percentage": 0, "note": ""}, "ypwc-011": {"used": true, "percentage": 0, "note": ""}, "ypwc-012": {"used": true, "percentage": 0, "note": ""}, "ypwc-013": {"used": true, "percentage": 0, "note": ""}, "ypwc-025": {"used": true, "percentage": 0, "note": ""}, "ypwc-036": {"used": true, "percentage": 0, "note": ""}, "ypwc-033": {"used": true, "percentage": 0, "note": ""}}};
+      try {
+        localStorage.setItem("ypwc-static-review-workbench-v1", JSON.stringify(recoveredStore));
+      } catch (error) {
+        console.warn("Could not preload recovered YPWC review data", error);
+      }
+    })();
+  </script>
+</body>
+</html>
